@@ -1,0 +1,17 @@
+# Secrets — never commit Google Business Profile credentials
+.env
+.env.local
+*.pem
+*-credentials.json
+token.json
+
+# Build output (regenerate with `npm run build`)
+dist/
+
+# Local preview artifacts (synthetic demo data — never production)
+preview-demo.html
+
+# OS / editor
+.DS_Store
+node_modules/
+npm-debug.log*

@@ -1,0 +1,632 @@
+{
+  "_note": "Reference pricing extracted from the existing Vivid Clinic Surgery Price Calculator (Price1.html) for an INDICATIVE 'from' estimate only. Not a quote. No online payment. Final pricing confirmed after consultation. Currency EUR.",
+  "currency": "EUR",
+  "currencySymbol": "€",
+  "lastUpdated": "2026-06-23",
+  "lastUpdatedLabel": "June 2026",
+  "sourceNote": "Indicative prices extracted from the Vivid Clinic Surgery Price Calculator source (April 2026), reviewed on consolidation. Final pricing confirmed after consultation.",
+  "disclaimers": [
+    "Estimate only — not a quote or a binding price.",
+    "No online payment and no commitment.",
+    "Final pricing is confirmed after a consultation and medical evaluation.",
+    "A coordinator follows up on WhatsApp with the details."
+  ],
+  "categories": [
+    {
+      "value": "body-aesthetics",
+      "label": "Body Aesthetics"
+    },
+    {
+      "value": "breast-aesthetics",
+      "label": "Breast Aesthetics"
+    },
+    {
+      "value": "nose",
+      "label": "Nose"
+    },
+    {
+      "value": "face",
+      "label": "Face"
+    },
+    {
+      "value": "eye",
+      "label": "Eye"
+    },
+    {
+      "value": "genital",
+      "label": "Genital"
+    },
+    {
+      "value": "ear",
+      "label": "Ear"
+    },
+    {
+      "value": "dental-treatment",
+      "label": "Dental Treatment"
+    },
+    {
+      "value": "weight-loss-surgeries",
+      "label": "Weight Loss Surgeries"
+    },
+    {
+      "value": "medical-aesthetic",
+      "label": "Medical Aesthetic"
+    },
+    {
+      "value": "check-up",
+      "label": "Check-Up"
+    },
+    {
+      "value": "hair-transplant",
+      "label": "Hair Transplant"
+    },
+    {
+      "value": "eye-treatment-surgeries",
+      "label": "Eye Treatment Surgeries"
+    }
+  ],
+  "services": [
+    {
+      "value": "liposuction-360",
+      "name": "Liposuction 360",
+      "category": "body-aesthetics",
+      "categoryLabel": "Body Aesthetics",
+      "fromPrice": 2700,
+      "description": "Comprehensive fat removal from multiple areas"
+    },
+    {
+      "value": "tummy-tuck-liposuction-360",
+      "name": "Tummy Tuck+Liposuction 360",
+      "category": "body-aesthetics",
+      "categoryLabel": "Body Aesthetics",
+      "fromPrice": 4400,
+      "description": "Abdominal tightening with fat removal"
+    },
+    {
+      "value": "tummy-tuck-liposuction-360-bbl",
+      "name": "Tummy Tuck+Liposuction 360+BBL",
+      "category": "body-aesthetics",
+      "categoryLabel": "Body Aesthetics",
+      "fromPrice": 5800,
+      "description": "Includes Brazilian Butt Lift"
+    },
+    {
+      "value": "arm-lift",
+      "name": "Arm Lift",
+      "category": "body-aesthetics",
+      "categoryLabel": "Body Aesthetics",
+      "fromPrice": 3000,
+      "description": "Removes excess skin from arms"
+    },
+    {
+      "value": "leg-lift",
+      "name": "Leg Lift",
+      "category": "body-aesthetics",
+      "categoryLabel": "Body Aesthetics",
+      "fromPrice": 3500,
+      "description": "Tightens skin on legs"
+    },
+    {
+      "value": "extra-liposuction-zone",
+      "name": "Extra Liposuction zone",
+      "category": "body-aesthetics",
+      "categoryLabel": "Body Aesthetics",
+      "fromPrice": 450,
+      "description": "Additional fat removal for specific areas"
+    },
+    {
+      "value": "arm-lift-with-lipo-combo",
+      "name": "Arm Lift (with lipo) Combo",
+      "category": "body-aesthetics",
+      "categoryLabel": "Body Aesthetics",
+      "fromPrice": 1500,
+      "description": "Arm lift with targeted liposuction"
+    },
+    {
+      "value": "leg-lift-with-lipo-combo",
+      "name": "Leg lift (with Lipo) Combo",
+      "category": "body-aesthetics",
+      "categoryLabel": "Body Aesthetics",
+      "fromPrice": 1500,
+      "description": "Leg lift with targeted liposuction"
+    },
+    {
+      "value": "face-fat-transfer",
+      "name": "Face Fat Transfer",
+      "category": "body-aesthetics",
+      "categoryLabel": "Body Aesthetics",
+      "fromPrice": 1200,
+      "description": "Enhances facial volume with fat transfer"
+    },
+    {
+      "value": "j-plasma-argon-plazma",
+      "name": "J plasma (Argon plazma)",
+      "category": "body-aesthetics",
+      "categoryLabel": "Body Aesthetics",
+      "fromPrice": 1500,
+      "description": "Skin tightening using plasma technology"
+    },
+    {
+      "value": "breast-implant",
+      "name": "Breast Implant",
+      "category": "breast-aesthetics",
+      "categoryLabel": "Breast Aesthetics",
+      "fromPrice": 4000,
+      "description": "Enhances breast size with implants"
+    },
+    {
+      "value": "breast-lift",
+      "name": "Breast Lift",
+      "category": "breast-aesthetics",
+      "categoryLabel": "Breast Aesthetics",
+      "fromPrice": 3100,
+      "description": "Lifts and reshapes breasts"
+    },
+    {
+      "value": "breast-reduction",
+      "name": "Breast Reduction",
+      "category": "breast-aesthetics",
+      "categoryLabel": "Breast Aesthetics",
+      "fromPrice": 3100,
+      "description": "Reduces breast size for comfort"
+    },
+    {
+      "value": "breast-implant-lift",
+      "name": "Breast Implant+lift",
+      "category": "breast-aesthetics",
+      "categoryLabel": "Breast Aesthetics",
+      "fromPrice": 5600,
+      "description": "Combines implants with lifting"
+    },
+    {
+      "value": "breast-reduction-lift",
+      "name": "Breast Reduction+lift",
+      "category": "breast-aesthetics",
+      "categoryLabel": "Breast Aesthetics",
+      "fromPrice": 3300,
+      "description": "Reduces and lifts breasts"
+    },
+    {
+      "value": "gynecomastia",
+      "name": "Gynecomastia",
+      "category": "breast-aesthetics",
+      "categoryLabel": "Breast Aesthetics",
+      "fromPrice": 2900,
+      "description": "Male breast reduction"
+    },
+    {
+      "value": "rhinoplasty",
+      "name": "Rhinoplasty",
+      "category": "nose",
+      "categoryLabel": "Nose",
+      "fromPrice": 3300,
+      "description": "Reshapes the nose"
+    },
+    {
+      "value": "revision-rhinoplasty",
+      "name": "Revision Rhinoplasty",
+      "category": "nose",
+      "categoryLabel": "Nose",
+      "fromPrice": 5000,
+      "description": "Corrects previous nose surgery"
+    },
+    {
+      "value": "face-lift",
+      "name": "Face Lift",
+      "category": "face",
+      "categoryLabel": "Face",
+      "fromPrice": 4500,
+      "description": "Tightens facial skin for youthful look"
+    },
+    {
+      "value": "neck-lift",
+      "name": "Neck Lift",
+      "category": "face",
+      "categoryLabel": "Face",
+      "fromPrice": 4200,
+      "description": "Reduces sagging in neck area"
+    },
+    {
+      "value": "face-and-neck-lift",
+      "name": "Face and Neck Lift",
+      "category": "face",
+      "categoryLabel": "Face",
+      "fromPrice": 6800,
+      "description": "Comprehensive face and neck tightening"
+    },
+    {
+      "value": "double-chin-liposuction",
+      "name": "Double Chin Liposuction",
+      "category": "face",
+      "categoryLabel": "Face",
+      "fromPrice": 2600,
+      "description": "Removes excess fat under chin"
+    },
+    {
+      "value": "bichectomy-boccal-fat-removal",
+      "name": "Bichectomy (Boccal Fat Removal)",
+      "category": "face",
+      "categoryLabel": "Face",
+      "fromPrice": 2200,
+      "description": "Reduces cheek fat for defined look"
+    },
+    {
+      "value": "jaw-implant",
+      "name": "Jaw Implant",
+      "category": "face",
+      "categoryLabel": "Face",
+      "fromPrice": 4000,
+      "description": "Enhances jawline with implants"
+    },
+    {
+      "value": "upper-blepharoplasty",
+      "name": "Upper Blepharoplasty",
+      "category": "eye",
+      "categoryLabel": "Eye",
+      "fromPrice": 2000,
+      "description": "Removes excess eyelid skin"
+    },
+    {
+      "value": "lower-blepharoplasty",
+      "name": "Lower Blepharoplasty",
+      "category": "eye",
+      "categoryLabel": "Eye",
+      "fromPrice": 2800,
+      "description": "Reduces under-eye bags"
+    },
+    {
+      "value": "upper-and-lower-blepharoplasty",
+      "name": "Upper and Lower Blepharoplasty",
+      "category": "eye",
+      "categoryLabel": "Eye",
+      "fromPrice": 3400,
+      "description": "Comprehensive eyelid surgery"
+    },
+    {
+      "value": "fox-eyes",
+      "name": "Fox Eyes",
+      "category": "eye",
+      "categoryLabel": "Eye",
+      "fromPrice": 3800,
+      "description": "Creates almond-shaped eyes"
+    },
+    {
+      "value": "eyebrow-lift",
+      "name": "Eyebrow Lift",
+      "category": "eye",
+      "categoryLabel": "Eye",
+      "fromPrice": 3800,
+      "description": "Lifts eyebrows for youthful appearance"
+    },
+    {
+      "value": "labioplasty",
+      "name": "Labioplasty",
+      "category": "genital",
+      "categoryLabel": "Genital",
+      "fromPrice": 2600,
+      "description": "Reshapes labia for comfort"
+    },
+    {
+      "value": "vaginoplasty",
+      "name": "Vaginoplasty",
+      "category": "genital",
+      "categoryLabel": "Genital",
+      "fromPrice": 3000,
+      "description": "Tightens vaginal tissue"
+    },
+    {
+      "value": "prominent-ear-otoplasty",
+      "name": "Prominent Ear (Otoplasty)",
+      "category": "ear",
+      "categoryLabel": "Ear",
+      "fromPrice": 2800,
+      "description": "Corrects protruding ears"
+    },
+    {
+      "value": "simple-teeth-extraction",
+      "name": "Simple teeth extraction",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 50,
+      "description": "Removes a single tooth"
+    },
+    {
+      "value": "wisdom-or-complicated-teeth-extraction",
+      "name": "Wisdom or complicated teeth extraction",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 80,
+      "description": "Complex tooth removal"
+    },
+    {
+      "value": "laser-whitening",
+      "name": "Laser whitening",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 125,
+      "description": "Whitens teeth using laser"
+    },
+    {
+      "value": "e-max-crown",
+      "name": "E-max crown",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 225,
+      "description": "High-quality dental crown"
+    },
+    {
+      "value": "zirconium-crown-on-implant",
+      "name": "Zirconium crown on Implant",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 225,
+      "description": "Crown for dental implant"
+    },
+    {
+      "value": "zirconium-crown",
+      "name": "Zirconium Crown",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 200,
+      "description": "Durable dental crown"
+    },
+    {
+      "value": "b6pro-implant-germany",
+      "name": "B6PRO IMPLANT (Germany)",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 350,
+      "description": "German-made dental implant"
+    },
+    {
+      "value": "staumann-implant-swiss",
+      "name": "Straumann implant (Swiss)",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 950,
+      "description": "Swiss-made dental implant"
+    },
+    {
+      "value": "osstem-implant-korea",
+      "name": "Osstem implant (Korea)",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 280,
+      "description": "Korean-made dental implant"
+    },
+    {
+      "value": "jdi-zygoma-implant",
+      "name": "JDI zygoma implant",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 2500,
+      "description": "Specialized cheekbone implant"
+    },
+    {
+      "value": "open-sinus-lift",
+      "name": "Open sinus lift",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 450,
+      "description": "Sinus lift for implants"
+    },
+    {
+      "value": "closed-sinus-lift",
+      "name": "Closed Sinus lift",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 250,
+      "description": "Minimally invasive sinus lift"
+    },
+    {
+      "value": "filling",
+      "name": "Filling",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 60,
+      "description": "Repairs tooth cavities"
+    },
+    {
+      "value": "root-canal-treatment",
+      "name": "Root Canal Treatment",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 120,
+      "description": "Treats tooth nerve issues"
+    },
+    {
+      "value": "invisalign",
+      "name": "Invisalign",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 3400,
+      "description": "Clear aligners for teeth straightening"
+    },
+    {
+      "value": "hollywood-smile-zirconium-crown",
+      "name": "Hollywood smile Zirconium Crown",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 4100,
+      "description": "Full smile makeover"
+    },
+    {
+      "value": "deep-cleaning-1-jaw",
+      "name": "Deep Cleaning 1 Jaw",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 400,
+      "description": "Deep dental cleaning"
+    },
+    {
+      "value": "fiber-posting",
+      "name": "Fiber Posting",
+      "category": "dental-treatment",
+      "categoryLabel": "Dental Treatment",
+      "fromPrice": 150,
+      "description": "Strengthens damaged teeth"
+    },
+    {
+      "value": "gastric-sleeve",
+      "name": "Gastric Sleeve",
+      "category": "weight-loss-surgeries",
+      "categoryLabel": "Weight Loss Surgeries",
+      "fromPrice": 3800,
+      "description": "Reduces stomach size"
+    },
+    {
+      "value": "gastric-bypass",
+      "name": "Gastric Bypass",
+      "category": "weight-loss-surgeries",
+      "categoryLabel": "Weight Loss Surgeries",
+      "fromPrice": 4700,
+      "description": "Reroutes digestive system"
+    },
+    {
+      "value": "gastric-balloon",
+      "name": "Gastric Balloon",
+      "category": "weight-loss-surgeries",
+      "categoryLabel": "Weight Loss Surgeries",
+      "fromPrice": 1800,
+      "description": "Temporary stomach balloon"
+    },
+    {
+      "value": "gastric-balloon-removal",
+      "name": "Gastric Balloon Removal",
+      "category": "weight-loss-surgeries",
+      "categoryLabel": "Weight Loss Surgeries",
+      "fromPrice": 650,
+      "description": "Removes gastric balloon"
+    },
+    {
+      "value": "botox-per-1ml",
+      "name": "Botox (per 1ML)",
+      "category": "medical-aesthetic",
+      "categoryLabel": "Medical Aesthetic",
+      "fromPrice": 200,
+      "description": "Reduces facial wrinkles"
+    },
+    {
+      "value": "filler-per-1ml",
+      "name": "Filler (per 1ML)",
+      "category": "medical-aesthetic",
+      "categoryLabel": "Medical Aesthetic",
+      "fromPrice": 250,
+      "description": "Enhances facial volume"
+    },
+    {
+      "value": "mesotherapy",
+      "name": "Mesotherapy",
+      "category": "medical-aesthetic",
+      "categoryLabel": "Medical Aesthetic",
+      "fromPrice": 250,
+      "description": "Treats skin imperfections"
+    },
+    {
+      "value": "pearl-powder-skin-whitening",
+      "name": "Pearl Powder (skin whitening)",
+      "category": "medical-aesthetic",
+      "categoryLabel": "Medical Aesthetic",
+      "fromPrice": 550,
+      "description": "Brightens skin tone"
+    },
+    {
+      "value": "male-under-40",
+      "name": "Male under 40",
+      "category": "check-up",
+      "categoryLabel": "Check-Up",
+      "fromPrice": 1400,
+      "description": "Comprehensive health check"
+    },
+    {
+      "value": "male-above-40",
+      "name": "Male above 40",
+      "category": "check-up",
+      "categoryLabel": "Check-Up",
+      "fromPrice": 1700,
+      "description": "Health check for older males"
+    },
+    {
+      "value": "female-under-40",
+      "name": "Female under 40",
+      "category": "check-up",
+      "categoryLabel": "Check-Up",
+      "fromPrice": 1400,
+      "description": "Comprehensive health check"
+    },
+    {
+      "value": "female-above-40",
+      "name": "Female above 40",
+      "category": "check-up",
+      "categoryLabel": "Check-Up",
+      "fromPrice": 1700,
+      "description": "Health check for older females"
+    },
+    {
+      "value": "hair-transplant-treatment",
+      "name": "Hair Transplant treatment",
+      "category": "hair-transplant",
+      "categoryLabel": "Hair Transplant",
+      "fromPrice": 2300,
+      "description": "Restores hair growth"
+    },
+    {
+      "value": "laser-treatment-both-eyes",
+      "name": "Laser Treatment both eyes",
+      "category": "eye-treatment-surgeries",
+      "categoryLabel": "Eye Treatment Surgeries",
+      "fromPrice": 1400,
+      "description": "Corrects vision"
+    },
+    {
+      "value": "smart-lens-zeiss-trifocal",
+      "name": "Smart Lens (Zeiss- Trifocal)",
+      "category": "eye-treatment-surgeries",
+      "categoryLabel": "Eye Treatment Surgeries",
+      "fromPrice": 2500,
+      "description": "Advanced lens implant"
+    },
+    {
+      "value": "smart-lens-multifocal-1-eye",
+      "name": "Smart Lens (Multifocal 1 eye)",
+      "category": "eye-treatment-surgeries",
+      "categoryLabel": "Eye Treatment Surgeries",
+      "fromPrice": 1600,
+      "description": "Multifocal lens for one eye"
+    }
+  ],
+  "packages": [
+    {
+      "value": "full-body-transformation",
+      "name": "Full Body Transformation",
+      "procedures": [
+        "liposuction-360",
+        "tummy-tuck-liposuction-360",
+        "breast-lift"
+      ],
+      "discount": 0.15,
+      "description": "Complete body contouring with liposuction, tummy tuck, and breast lift"
+    },
+    {
+      "value": "facial-rejuvenation",
+      "name": "Facial Rejuvenation",
+      "procedures": [
+        "face-lift",
+        "upper-and-lower-blepharoplasty",
+        "botox-per-1ml"
+      ],
+      "discount": 0.12,
+      "description": "Comprehensive facial enhancement with lift, eyelid surgery, and Botox"
+    },
+    {
+      "value": "smile-makeover",
+      "name": "Smile Makeover",
+      "procedures": [
+        "hollywood-smile-zirconium-crown",
+        "laser-whitening"
+      ],
+      "discount": 0.1,
+      "description": "Perfect your smile with zirconium crowns and laser whitening"
+    }
+  ]
+}

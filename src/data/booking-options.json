@@ -1,0 +1,114 @@
+{
+  "_note": "Single source of truth for the booking form options AND the server-side allow-lists. If you change a value here, mirror the allow-lists in functions/api/booking.js (kept in sync intentionally, see README-booking.md). Labels are user-facing; values are stable machine keys.",
+  "categories": [
+    { "value": "plastic-surgery", "label": "Plastic Surgery", "treatments": [
+      { "value": "rhinoplasty", "label": "Rhinoplasty" },
+      { "value": "breast-augmentation", "label": "Breast Augmentation" },
+      { "value": "breast-lift", "label": "Breast Lift" },
+      { "value": "breast-reduction", "label": "Breast Reduction" },
+      { "value": "liposuction", "label": "Liposuction" },
+      { "value": "tummy-tuck", "label": "Tummy Tuck" },
+      { "value": "bbl", "label": "BBL" },
+      { "value": "facelift", "label": "Facelift" },
+      { "value": "eyelid-surgery", "label": "Eyelid Surgery" },
+      { "value": "gynecomastia", "label": "Gynecomastia" },
+      { "value": "other", "label": "Other" }
+    ] },
+    { "value": "hair-transplant", "label": "Hair Transplant", "treatments": [
+      { "value": "hair-transplant", "label": "Hair Transplant" },
+      { "value": "dhi-hair-transplant", "label": "DHI Hair Transplant" },
+      { "value": "fue-hair-transplant", "label": "FUE Hair Transplant" },
+      { "value": "beard-transplant", "label": "Beard Transplant" },
+      { "value": "female-hair-transplant", "label": "Female Hair Transplant" },
+      { "value": "other", "label": "Other" }
+    ] },
+    { "value": "dentistry", "label": "Dentistry", "treatments": [
+      { "value": "dental-implants", "label": "Dental Implants" },
+      { "value": "dental-veneers", "label": "Dental Veneers" },
+      { "value": "hollywood-smile", "label": "Hollywood Smile" },
+      { "value": "teeth-whitening", "label": "Teeth Whitening" },
+      { "value": "dental-crowns", "label": "Dental Crowns" },
+      { "value": "other", "label": "Other" }
+    ] },
+    { "value": "medical-aesthetics", "label": "Medical Aesthetics", "treatments": [
+      { "value": "botox", "label": "Botox" },
+      { "value": "dermal-fillers", "label": "Dermal Fillers" },
+      { "value": "lip-filler", "label": "Lip Filler" },
+      { "value": "skin-treatments", "label": "Skin Treatments" },
+      { "value": "other", "label": "Other" }
+    ] },
+    { "value": "body-contouring", "label": "Body Contouring", "treatments": [
+      { "value": "vaser-liposuction", "label": "Vaser Liposuction" },
+      { "value": "body-contouring", "label": "Body Contouring" },
+      { "value": "mommy-makeover", "label": "Mommy Makeover" },
+      { "value": "other", "label": "Other" }
+    ] },
+    { "value": "weight-loss", "label": "Weight Loss", "treatments": [
+      { "value": "gastric-sleeve", "label": "Gastric Sleeve" },
+      { "value": "gastric-balloon", "label": "Gastric Balloon" },
+      { "value": "other", "label": "Other" }
+    ] },
+    { "value": "other", "label": "Other / Not sure", "treatments": [
+      { "value": "not-sure", "label": "Not sure yet" },
+      { "value": "other", "label": "Other" }
+    ] }
+  ],
+  "timelines": [
+    { "value": "asap", "label": "As soon as possible" },
+    { "value": "within-1-month", "label": "Within 1 month" },
+    { "value": "1-3-months", "label": "1–3 months" },
+    { "value": "3-6-months", "label": "3–6 months" },
+    { "value": "researching", "label": "Just researching" }
+  ],
+  "languages": [
+    { "value": "english", "label": "English" },
+    { "value": "turkish", "label": "Turkish" },
+    { "value": "persian", "label": "Persian" },
+    { "value": "arabic", "label": "Arabic" },
+    { "value": "russian", "label": "Russian" },
+    { "value": "german", "label": "German" },
+    { "value": "french", "label": "French" },
+    { "value": "other", "label": "Other" }
+  ],
+  "contactMethods": [
+    { "value": "whatsapp", "label": "WhatsApp" },
+    { "value": "phone", "label": "Phone call" },
+    { "value": "email", "label": "Email" }
+  ],
+  "consultationTypes": [
+    { "value": "whatsapp", "label": "WhatsApp consultation" },
+    { "value": "video", "label": "Video consultation" },
+    { "value": "in-clinic", "label": "In-clinic appointment" }
+  ],
+  "timeRanges": [
+    { "value": "morning", "label": "Morning" },
+    { "value": "afternoon", "label": "Afternoon" },
+    { "value": "evening", "label": "Evening" },
+    { "value": "flexible", "label": "Flexible" }
+  ],
+  "travelOptions": [
+    { "value": "yes", "label": "Yes" },
+    { "value": "no", "label": "No" },
+    { "value": "not-sure", "label": "Not sure yet" }
+  ],
+  "transferOptions": [
+    { "value": "yes", "label": "Yes" },
+    { "value": "no", "label": "No" },
+    { "value": "not-sure", "label": "Not sure" }
+  ],
+  "previousTreatmentOptions": [
+    { "value": "yes", "label": "Yes" },
+    { "value": "no", "label": "No" },
+    { "value": "private", "label": "Prefer to discuss privately" }
+  ],
+  "countries": [
+    "United Kingdom", "United States", "Canada", "Ireland", "Australia", "Türkiye",
+    "Germany", "France", "Netherlands", "Belgium", "Switzerland", "Austria", "Spain",
+    "Italy", "Portugal", "Sweden", "Norway", "Denmark", "Finland", "Poland", "Romania",
+    "Greece", "United Arab Emirates", "Saudi Arabia", "Qatar", "Kuwait", "Bahrain",
+    "Oman", "Iraq", "Jordan", "Lebanon", "Egypt", "Morocco", "Algeria", "Tunisia",
+    "Iran", "Israel", "Azerbaijan", "Kazakhstan", "Russia", "Ukraine", "Bulgaria",
+    "Libya", "Nigeria", "South Africa", "Kenya", "India", "Pakistan", "Bangladesh",
+    "Other"
+  ]
+}

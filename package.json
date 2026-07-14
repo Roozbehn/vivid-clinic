@@ -1,0 +1,24 @@
+{
+  "name": "vivid-clinic-reviews",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Patient review landing page for Vivid Clinic (vivid.clinic) — built from authorized Google Business Profile review data.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "import": "node scripts/import-google-reviews.mjs",
+    "import:media": "node scripts/import-google-media.mjs",
+    "import:export": "node scripts/import-export.mjs",
+    "validate": "node scripts/validate-reviews.mjs",
+    "test:booking": "node scripts/test-booking.mjs",
+    "summary": "node scripts/build-review-summary.mjs",
+    "build": "node scripts/build-site.mjs",
+    "build:index": "node scripts/build-site.mjs --index",
+    "build:demo": "node scripts/build-site.mjs --demo --out preview-demo.html",
+    "refresh": "npm run import && npm run import:media && npm run validate && npm run build",
+    "serve": "node --version >/dev/null && (command -v python3 >/dev/null && python3 -m http.server 8787 --directory dist || npx --yes serve dist -l 8787)"
+  },
+  "license": "UNLICENSED"
+}

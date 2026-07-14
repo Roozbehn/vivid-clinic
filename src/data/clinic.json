@@ -1,0 +1,79 @@
+{
+  "name": "Vivid Clinic",
+  "legalName": "Vivid Clinic",
+  "tagline": "Premium aesthetics. Quietly delivered. Istanbul.",
+  "descriptor": "Istanbul's Premier Aesthetic and Cosmetic Surgery Center",
+  "businessSite": "https://vividclinic.net",
+  "reviewSite": "https://vivid.clinic",
+  "_note_facts": "All values below are sourced from the live vividclinic.net MedicalOrganization/Place schema and visible site markup (verified during recon). Do not invent or alter. Update only from authoritative sources.",
+  "contact": {
+    "phonePrimary": "+90 545 749 3565",
+    "phonePrimaryHref": "tel:+905457493565",
+    "whatsappNumber": "905457423565",
+    "whatsappUrl": "https://api.whatsapp.com/send/?phone=905457423565",
+    "whatsappDisplay": "+905457423565",
+    "whatsappPrefill": "Hello Vivid Clinic, I read your patient reviews and would like a free consultation.",
+    "emailGeneral": "info@vividclinic.net",
+    "emailAdmin": "admin@vividclinic.net",
+    "contactPageUrl": "https://vividclinic.net/",
+    "consultationUrl": "https://vividclinic.net/surgery-price-calculator/",
+    "aboutUrl": "https://vividclinic.net/about-us/",
+    "galleryUrl": "https://vividclinic.net/before-and-after-gallery/",
+    "privacyUrl": "https://vividclinic.net/privacy-policy/",
+    "legalUrl": "https://vividclinic.net/legal/"
+  },
+  "address": {
+    "streetAddress": "Atakoy 7-8-9-10. Kisim Mah. Cobancesme E-5 Yan Yol Cad. No: 8/1 Ic Kapi No: 14",
+    "addressLocality": "Bakirkoy",
+    "addressRegion": "Istanbul",
+    "postalCode": "34158",
+    "addressCountry": "TR",
+    "addressCountryName": "Turkiye"
+  },
+  "geo": {
+    "latitude": 40.992139,
+    "longitude": 28.833059
+  },
+  "openingHours": [
+    { "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "09:00", "closes": "19:00" },
+    { "days": ["Saturday"], "opens": "09:00", "closes": "17:00" }
+  ],
+  "openingHoursHuman": "Mon-Fri 09:00-19:00 - Sat 09:00-17:00 - Sun closed",
+  "priceRange": "$$$",
+  "googleBusinessProfile": {
+    "cid": "13820382962229413624",
+    "mapsUrl": "https://maps.google.com/?cid=13820382962229413624",
+    "writeReviewUrl": "https://search.google.com/local/writereview?placeid=",
+    "_placeid_note": "Populate placeId after the GBP API import resolves the location; the cid URL above already opens the live listing."
+  },
+  "wikidata": "https://www.wikidata.org/wiki/Q140479512",
+  "sameAs": [
+    "https://www.instagram.com/vividclinic.istanbul/",
+    "https://www.facebook.com/clinicvivid",
+    "https://x.com/Vividclinic",
+    "https://www.linkedin.com/company/vivid-clinic/",
+    "https://www.tiktok.com/@vivid.clinic",
+    "https://www.youtube.com/@vivid.clinic"
+  ],
+  "logo": "https://vividclinic.net/wp-content/uploads/2024/07/Vivid-PNG-Transparent-e1724164889603.png.webp",
+  "specialties": [
+    "Hair transplantation",
+    "Face aesthetics",
+    "Body aesthetics",
+    "Breast aesthetics",
+    "Weight loss surgery",
+    "Dental treatments"
+  ],
+  "languagesSpoken": ["English", "Turkish", "Arabic"],
+  "brand": {
+    "teal": "#0E4B4E",
+    "tealDeep": "#073538",
+    "gold": "#B8945A",
+    "cream": "#FAF7F2",
+    "ink": "#1F2937",
+    "surfaceWhite": "#FFFFFF",
+    "whatsappGreen": "#25D366",
+    "fontDisplay": "Cormorant Garamond",
+    "fontBody": "Inter"
+  }
+}

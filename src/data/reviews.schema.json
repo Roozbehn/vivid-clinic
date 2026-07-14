@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vivid.clinic/schemas/google-reviews.json",
+  "title": "Vivid Clinic — normalized Google reviews dataset",
+  "description": "Authoritative shape for data/google-reviews.json. Reviews are NEVER fabricated, rewritten, or exaggerated. Original text, reviewer name, rating, date, language and source are preserved exactly as returned by the authorized source (Google Business Profile API).",
+  "type": "object",
+  "required": ["meta", "summary", "reviews"],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["source", "lastImportedAt", "generator"],
+      "additionalProperties": true,
+      "properties": {
+        "source": { "type": "string", "enum": ["Google Business Profile", "Google Business Profile API", "Manual export", "Google Places API", "none"] },
+        "sourceComplete": { "type": "boolean", "description": "true only when the full authorized review set was imported (GBP API). false for Places API or partial exports." },
+        "lastImportedAt": { "type": ["string", "null"], "format": "date-time" },
+        "locationResource": { "type": ["string", "null"] },
+        "generator": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["totalReviewCount", "averageRating", "ratingDistribution"],
+      "additionalProperties": true,
+      "properties": {
+        "totalReviewCount": { "type": "integer", "minimum": 0 },
+        "averageRating": { "type": "number", "minimum": 0, "maximum": 5 },
+        "ratingDistribution": {
+          "type": "object",
+          "required": ["5", "4", "3", "2", "1"],
+          "properties": {
+            "5": { "type": "integer", "minimum": 0 },
+            "4": { "type": "integer", "minimum": 0 },
+            "3": { "type": "integer", "minimum": 0 },
+            "2": { "type": "integer", "minimum": 0 },
+            "1": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "languageDistribution": { "type": "object", "additionalProperties": { "type": "integer" } },
+        "fiveStarPercentage": { "type": "number", "minimum": 0, "maximum": 100 },
+        "reviewsWithText": { "type": "integer", "minimum": 0 },
+        "reviewsWithOwnerReply": { "type": "integer", "minimum": 0 },
+        "latestReviewDate": { "type": ["string", "null"] }
+      }
+    },
+    "reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "source", "reviewerName", "rating", "originalText", "publishedAt"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "description": "Stable source review id. Used for dedupe. Not rendered in the frontend." },
+          "source": { "type": "string", "description": "e.g. 'Google Business Profile'" },
+          "reviewerName": { "type": "string", "description": "Display name exactly as publicly shown. Never altered." },
+          "reviewerPhotoUrl": { "type": "string", "description": "Reviewer's public Google profile photo (googleusercontent.com only, as shown beside the review on Google). Empty when unavailable; frontend falls back to an initials avatar." },
+          "rating": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "originalText": { "type": "string", "description": "Original review text, verbatim. May be empty for rating-only reviews." },
+          "translatedText": { "type": "string", "description": "Optional. Google-provided translation, clearly labeled. Never replaces originalText." },
+          "originalLanguage": { "type": "string", "description": "BCP-47-ish language code/name if known, else ''." },
+          "publishedAt": { "type": ["string", "null"], "format": "date-time" },
+          "updatedAt": { "type": ["string", "null"], "format": "date-time" },
+          "relativeDate": { "type": "string", "description": "Human relative date computed at build time, e.g. '3 months ago'." },
+          "ownerReply": { "type": "string", "description": "Owner's reply text if present, else ''." },
+          "ownerReplyAt": { "type": ["string", "null"] },
+          "reviewUrl": { "type": "string", "description": "Deep link/reference when available, else ''." },
+          "isFeatured": { "type": "boolean", "description": "Manual flag to surface a detailed/helpful review first. Never hides others." },
+          "tags": { "type": "array", "items": { "type": "string" }, "description": "Derived theme tags (e.g. communication, staff). Only themes that actually appear in the text." }
+        }
+      }
+    }
+  }
+}

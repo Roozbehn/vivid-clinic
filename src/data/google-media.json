@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "source": "Google Business Profile API (media/customers)",
+    "lastImportedAt": "2026-07-09T06:51:32.238Z",
+    "locationResource": "accounts/100354327083196280161/locations/363087193856778890",
+    "notes": "Customer-uploaded photos from the public Google listing. The API provides no review linkage; the site must never attribute a photo to a specific review."
+  },
+  "items": [
+    {
+      "id": "CIABIhDZAswY3LJV-4dT1olUbmmX",
+      "photoUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf50QH7EeSl_iKl93eU5di3FJq6vNyqzZcAteGqfaaWj17i6AfJxkEtFFRxtz3GfdM2nFgvXnqQ6DHxCTCKif1iEICM3Tu5b1sqpYoA9tB6EtdmYKnon00qPLEiqnoSXEC6Av0g6p6AZLmD0=s0",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf50QH7EeSl_iKl93eU5di3FJq6vNyqzZcAteGqfaaWj17i6AfJxkEtFFRxtz3GfdM2nFgvXnqQ6DHxCTCKif1iEICM3Tu5b1sqpYoA9tB6EtdmYKnon00qPLEiqnoSXEC6Av0g6p6AZLmD0=s300",
+      "uploader": "Hasan Basri Alan",
+      "createdAt": "2026-03-25T18:00:00Z",
+      "width": 2316,
+      "height": 3088
+    },
+    {
+      "id": "CIABIhBu9wvq7vu94baNFkcqZ2-p",
+      "photoUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf53pinf7xcW2xHdCHVtIfKeCeR82LgkmrlS9s-muZwYGSEiVyDWvZVbawtFkb0NUXOqSBRp1yKv1KpNk-GI3KoZZJlOCkIM159a4Ep1TjqFrgcHNmoiDmMMd844OJucHGHa1sgeoqpWB1ivT=s0",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf53pinf7xcW2xHdCHVtIfKeCeR82LgkmrlS9s-muZwYGSEiVyDWvZVbawtFkb0NUXOqSBRp1yKv1KpNk-GI3KoZZJlOCkIM159a4Ep1TjqFrgcHNmoiDmMMd844OJucHGHa1sgeoqpWB1ivT=s300",
+      "uploader": "Hasan Basri Alan",
+      "createdAt": "2026-03-25T18:00:00Z",
+      "width": 2316,
+      "height": 3088
+    },
+    {
+      "id": "CIABIhCB3QuDj7HEUYq8oJ4mxNVC",
+      "photoUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf524LmznlT3WVkCfnDprqLC3uwjtpETmG43bTa9CJRAPi4uBnuch926o7Gu6_4D4c75YdQhIckHVMwHDM_7hym6KKmeer9Nbl9lx4Z8X7UxnEVgA7VBo2LNxFg2vUo7J-_gmzvEA_i4JpJki=s0",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf524LmznlT3WVkCfnDprqLC3uwjtpETmG43bTa9CJRAPi4uBnuch926o7Gu6_4D4c75YdQhIckHVMwHDM_7hym6KKmeer9Nbl9lx4Z8X7UxnEVgA7VBo2LNxFg2vUo7J-_gmzvEA_i4JpJki=s300",
+      "uploader": "Marie-Gloria SAMSON",
+      "createdAt": "2025-08-13T11:00:00Z",
+      "width": 1066,
+      "height": 1600
+    },
+    {
+      "id": "CIABIhDcTQi1Edh6W2-z3tqprPuY",
+      "photoUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf50b91w8YeUs5CG4TCU_g18tpsYN13uGl4twYd-4YSoq97j7YH54WgduBXeO7xuHZs1N4gJaPpwyKLgNsmmyhmpfYTI42rTq7AKNtFiOrVWRxkWBBB57HeH30LIwlWKocJR4teySTVyV6Dc=s0",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf50b91w8YeUs5CG4TCU_g18tpsYN13uGl4twYd-4YSoq97j7YH54WgduBXeO7xuHZs1N4gJaPpwyKLgNsmmyhmpfYTI42rTq7AKNtFiOrVWRxkWBBB57HeH30LIwlWKocJR4teySTVyV6Dc=s300",
+      "uploader": "Talat Sethi",
+      "createdAt": "2025-06-15T15:00:00Z",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "id": "CIABIhA_3awx1PvWq2iekhf-QnxS",
+      "photoUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf50DRPyxKkwHbI65fMFG4d80lZ2EPNn87eBZBslKP7Y3puro22Dbo5a6fEMZnFTY3PXKk687uLerbxnU6JT2QK2cilRCkJ7Tycv7StewDZwzQzTWwKwhehtxP8snILfPktB43CSsa9T3R5jI=s0",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf50DRPyxKkwHbI65fMFG4d80lZ2EPNn87eBZBslKP7Y3puro22Dbo5a6fEMZnFTY3PXKk687uLerbxnU6JT2QK2cilRCkJ7Tycv7StewDZwzQzTWwKwhehtxP8snILfPktB43CSsa9T3R5jI=s300",
+      "uploader": "Kenly Mosquera",
+      "createdAt": "2026-01-19T17:00:00Z",
+      "width": 3056,
+      "height": 3056
+    },
+    {
+      "id": "CIHM0ogKEICAgIDvvM3f-QE",
+      "photoUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51kht4vyIc0gKUNoVWBcD1UdBktMulz0ihsIHbMlVsYrM6kuLhias5GEwRA8Se5wqK7ys_Pyp3IsQaoFcfBlalzi3QbCn5uHtQRpwNdx8Y4ML4iPxFLlLsINTnedvq2ERg2X_ie=s0",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51kht4vyIc0gKUNoVWBcD1UdBktMulz0ihsIHbMlVsYrM6kuLhias5GEwRA8Se5wqK7ys_Pyp3IsQaoFcfBlalzi3QbCn5uHtQRpwNdx8Y4ML4iPxFLlLsINTnedvq2ERg2X_ie=s300",
+      "uploader": "Veysel Baz",
+      "createdAt": "2024-12-18T15:00:00Z",
+      "width": 3024,
+      "height": 4032
+    },
+    {
+      "id": "CIABIhBi2rNr3DVCEjA_ncFQBrTh",
+      "photoUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf52sIbG7xhAYod6WnlXGCBVmEQ4NRYNZikTfZ0B7CGryNzg7pUoZNtVDQBjlzhyMSr6Antk63BSjtgt8GlBdfhbino3tAenw4criOy2LGxDpPvckx0ozt9-fHiwqWIQWefAXqnnuF667jCqX=s0",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf52sIbG7xhAYod6WnlXGCBVmEQ4NRYNZikTfZ0B7CGryNzg7pUoZNtVDQBjlzhyMSr6Antk63BSjtgt8GlBdfhbino3tAenw4criOy2LGxDpPvckx0ozt9-fHiwqWIQWefAXqnnuF667jCqX=s300",
+      "uploader": "Marie-Gloria SAMSON",
+      "createdAt": "2025-08-12T15:00:00Z",
+      "width": 2448,
+      "height": 3264
+    },
+    {
+      "id": "CIABIhDKMCzbwFjX2No3DIV9Oikx",
+      "photoUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf53kXL7Ch5FvxE9p8TfpZWox0eBfpcs8AVinNxvvPIMrOmsJYXlDJ5H4XdeDsSl-nj098ZIT9hxjlc5xnXknu6Pb4fbFuUzpiviprwgnyvCXgW5svzJY7yHPOHVIfK1xoqrDo9VhmRRuL8hL=s0",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf53kXL7Ch5FvxE9p8TfpZWox0eBfpcs8AVinNxvvPIMrOmsJYXlDJ5H4XdeDsSl-nj098ZIT9hxjlc5xnXknu6Pb4fbFuUzpiviprwgnyvCXgW5svzJY7yHPOHVIfK1xoqrDo9VhmRRuL8hL=s300",
+      "uploader": "Eric Samson",
+      "createdAt": "2025-08-12T15:00:00Z",
+      "width": 2267,
+      "height": 3090
+    },
+    {
+      "id": "CIABIhD32ERswfPI141STDOCFyiu",
+      "photoUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51aOSkoEoBXe-GN0eR73PfntFVnluaq_lCfMxKcwDIG1Etqd_nCawCHEdv4fMr1MMpjBAfH9p3YF4LYxhCVTtsFvTpoK7Io9LgbVgLbv4D59gi-_rPv04uacPNpqbqjF6sOqWZ75bwn-CQ=s0",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51aOSkoEoBXe-GN0eR73PfntFVnluaq_lCfMxKcwDIG1Etqd_nCawCHEdv4fMr1MMpjBAfH9p3YF4LYxhCVTtsFvTpoK7Io9LgbVgLbv4D59gi-_rPv04uacPNpqbqjF6sOqWZ75bwn-CQ=s300",
+      "uploader": "Michelle Cuvos",
+      "createdAt": "2025-09-22T21:00:00Z",
+      "width": 2316,
+      "height": 3088
+    },
+    {
+      "id": "CIABIhDjpEnDHX8LSAQe6Oncv9B8",
+      "photoUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51Kemi2ZQZSmV_gP8jC3kcdHnOgO6McdicAX-8qc8LgIryTf-AIkZOoNnMNEjmslkXrM67Sr_fycsdZN_1xvcP5OviwubBfqJXKKKBPeYN3enWbOMzkQBx9ntB2cqNm0w-5baUz6NjNyLmn=s0",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51Kemi2ZQZSmV_gP8jC3kcdHnOgO6McdicAX-8qc8LgIryTf-AIkZOoNnMNEjmslkXrM67Sr_fycsdZN_1xvcP5OviwubBfqJXKKKBPeYN3enWbOMzkQBx9ntB2cqNm0w-5baUz6NjNyLmn=s300",
+      "uploader": "Silvia Mery Pacaje Laura de Velasquez",
+      "createdAt": "2025-09-02T03:00:00Z",
+      "width": 1737,
+      "height": 3088
+    },
+    {
+      "id": "CIABIhDV88Y_f1g2yrVr_z6qgA2M",
+      "photoUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51oXWk7qTR4xw5IIoE3Hd_nF4WWAsrX0wr3ZcgsN_qAkW-lf7HWs5j2pXsDauvm18DTrEV_8rWMpH1-ClBoW94ErpnbxgFnxCw_1SkjASPPSHNpsZgwz9Fk7ZG_2rejQ2z687ZHy5KRU9w=s0",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51oXWk7qTR4xw5IIoE3Hd_nF4WWAsrX0wr3ZcgsN_qAkW-lf7HWs5j2pXsDauvm18DTrEV_8rWMpH1-ClBoW94ErpnbxgFnxCw_1SkjASPPSHNpsZgwz9Fk7ZG_2rejQ2z687ZHy5KRU9w=s300",
+      "uploader": "Jose Jorge Garcia",
+      "createdAt": "2025-12-29T14:00:00Z",
+      "width": 2544,
+      "height": 3392
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "WebSite": {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://vivid.clinic/#website",
+    "url": "https://vivid.clinic/",
+    "name": "Vivid Clinic Reviews",
+    "publisher": {
+      "@id": "https://vivid.clinic/#clinic"
+    },
+    "inLanguage": "en"
+  },
+  "WebApplication": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "@id": "https://vivid.clinic/consultation/#estimator",
+    "name": "Vivid Clinic Treatment Cost Estimator",
+    "url": "https://vivid.clinic/consultation/#estimate",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Any (web browser)",
+    "isAccessibleForFree": true,
+    "provider": {
+      "@id": "https://vivid.clinic/#clinic"
+    },
+    "description": "Free planning tool showing indicative starting prices for treatments at Vivid Clinic, Istanbul. Estimates only — no online payment; final pricing is confirmed after a medical consultation."
+  },
+  "ImageGallery": {
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    "@id": "https://vivid.clinic/#patient-photos",
+    "url": "https://vivid.clinic/#photos",
+    "name": "Photos from patients on Google",
+    "about": {
+      "@id": "https://vivid.clinic/#clinic"
+    },
+    "image": [
+      {
+        "@type": "ImageObject",
+        "contentUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf50QH7EeSl_iKl93eU5di3FJq6vNyqzZcAteGqfaaWj17i6AfJxkEtFFRxtz3GfdM2nFgvXnqQ6DHxCTCKif1iEICM3Tu5b1sqpYoA9tB6EtdmYKnon00qPLEiqnoSXEC6Av0g6p6AZLmD0=s0",
+        "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf50QH7EeSl_iKl93eU5di3FJq6vNyqzZcAteGqfaaWj17i6AfJxkEtFFRxtz3GfdM2nFgvXnqQ6DHxCTCKif1iEICM3Tu5b1sqpYoA9tB6EtdmYKnon00qPLEiqnoSXEC6Av0g6p6AZLmD0=s300",
+        "creditText": "Hasan Basri Alan",
+        "uploadDate": "2026-03-25"
+      },
+      {
+        "@type": "ImageObject",
+        "contentUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf53pinf7xcW2xHdCHVtIfKeCeR82LgkmrlS9s-muZwYGSEiVyDWvZVbawtFkb0NUXOqSBRp1yKv1KpNk-GI3KoZZJlOCkIM159a4Ep1TjqFrgcHNmoiDmMMd844OJucHGHa1sgeoqpWB1ivT=s0",
+        "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf53pinf7xcW2xHdCHVtIfKeCeR82LgkmrlS9s-muZwYGSEiVyDWvZVbawtFkb0NUXOqSBRp1yKv1KpNk-GI3KoZZJlOCkIM159a4Ep1TjqFrgcHNmoiDmMMd844OJucHGHa1sgeoqpWB1ivT=s300",
+        "creditText": "Hasan Basri Alan",
+        "uploadDate": "2026-03-25"
+      },
+      {
+        "@type": "ImageObject",
+        "contentUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf524LmznlT3WVkCfnDprqLC3uwjtpETmG43bTa9CJRAPi4uBnuch926o7Gu6_4D4c75YdQhIckHVMwHDM_7hym6KKmeer9Nbl9lx4Z8X7UxnEVgA7VBo2LNxFg2vUo7J-_gmzvEA_i4JpJki=s0",
+        "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf524LmznlT3WVkCfnDprqLC3uwjtpETmG43bTa9CJRAPi4uBnuch926o7Gu6_4D4c75YdQhIckHVMwHDM_7hym6KKmeer9Nbl9lx4Z8X7UxnEVgA7VBo2LNxFg2vUo7J-_gmzvEA_i4JpJki=s300",
+        "creditText": "Marie-Gloria SAMSON",
+        "uploadDate": "2025-08-13"
+      },
+      {
+        "@type": "ImageObject",
+        "contentUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf50b91w8YeUs5CG4TCU_g18tpsYN13uGl4twYd-4YSoq97j7YH54WgduBXeO7xuHZs1N4gJaPpwyKLgNsmmyhmpfYTI42rTq7AKNtFiOrVWRxkWBBB57HeH30LIwlWKocJR4teySTVyV6Dc=s0",
+        "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf50b91w8YeUs5CG4TCU_g18tpsYN13uGl4twYd-4YSoq97j7YH54WgduBXeO7xuHZs1N4gJaPpwyKLgNsmmyhmpfYTI42rTq7AKNtFiOrVWRxkWBBB57HeH30LIwlWKocJR4teySTVyV6Dc=s300",
+        "creditText": "Talat Sethi",
+        "uploadDate": "2025-06-15"
+      },
+      {
+        "@type": "ImageObject",
+        "contentUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf50DRPyxKkwHbI65fMFG4d80lZ2EPNn87eBZBslKP7Y3puro22Dbo5a6fEMZnFTY3PXKk687uLerbxnU6JT2QK2cilRCkJ7Tycv7StewDZwzQzTWwKwhehtxP8snILfPktB43CSsa9T3R5jI=s0",
+        "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf50DRPyxKkwHbI65fMFG4d80lZ2EPNn87eBZBslKP7Y3puro22Dbo5a6fEMZnFTY3PXKk687uLerbxnU6JT2QK2cilRCkJ7Tycv7StewDZwzQzTWwKwhehtxP8snILfPktB43CSsa9T3R5jI=s300",
+        "creditText": "Kenly Mosquera",
+        "uploadDate": "2026-01-19"
+      },
+      {
+        "@type": "ImageObject",
+        "contentUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51kht4vyIc0gKUNoVWBcD1UdBktMulz0ihsIHbMlVsYrM6kuLhias5GEwRA8Se5wqK7ys_Pyp3IsQaoFcfBlalzi3QbCn5uHtQRpwNdx8Y4ML4iPxFLlLsINTnedvq2ERg2X_ie=s0",
+        "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51kht4vyIc0gKUNoVWBcD1UdBktMulz0ihsIHbMlVsYrM6kuLhias5GEwRA8Se5wqK7ys_Pyp3IsQaoFcfBlalzi3QbCn5uHtQRpwNdx8Y4ML4iPxFLlLsINTnedvq2ERg2X_ie=s300",
+        "creditText": "Veysel Baz",
+        "uploadDate": "2024-12-18"
+      },
+      {
+        "@type": "ImageObject",
+        "contentUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf52sIbG7xhAYod6WnlXGCBVmEQ4NRYNZikTfZ0B7CGryNzg7pUoZNtVDQBjlzhyMSr6Antk63BSjtgt8GlBdfhbino3tAenw4criOy2LGxDpPvckx0ozt9-fHiwqWIQWefAXqnnuF667jCqX=s0",
+        "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf52sIbG7xhAYod6WnlXGCBVmEQ4NRYNZikTfZ0B7CGryNzg7pUoZNtVDQBjlzhyMSr6Antk63BSjtgt8GlBdfhbino3tAenw4criOy2LGxDpPvckx0ozt9-fHiwqWIQWefAXqnnuF667jCqX=s300",
+        "creditText": "Marie-Gloria SAMSON",
+        "uploadDate": "2025-08-12"
+      },
+      {
+        "@type": "ImageObject",
+        "contentUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf53kXL7Ch5FvxE9p8TfpZWox0eBfpcs8AVinNxvvPIMrOmsJYXlDJ5H4XdeDsSl-nj098ZIT9hxjlc5xnXknu6Pb4fbFuUzpiviprwgnyvCXgW5svzJY7yHPOHVIfK1xoqrDo9VhmRRuL8hL=s0",
+        "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf53kXL7Ch5FvxE9p8TfpZWox0eBfpcs8AVinNxvvPIMrOmsJYXlDJ5H4XdeDsSl-nj098ZIT9hxjlc5xnXknu6Pb4fbFuUzpiviprwgnyvCXgW5svzJY7yHPOHVIfK1xoqrDo9VhmRRuL8hL=s300",
+        "creditText": "Eric Samson",
+        "uploadDate": "2025-08-12"
+      },
+      {
+        "@type": "ImageObject",
+        "contentUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51aOSkoEoBXe-GN0eR73PfntFVnluaq_lCfMxKcwDIG1Etqd_nCawCHEdv4fMr1MMpjBAfH9p3YF4LYxhCVTtsFvTpoK7Io9LgbVgLbv4D59gi-_rPv04uacPNpqbqjF6sOqWZ75bwn-CQ=s0",
+        "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51aOSkoEoBXe-GN0eR73PfntFVnluaq_lCfMxKcwDIG1Etqd_nCawCHEdv4fMr1MMpjBAfH9p3YF4LYxhCVTtsFvTpoK7Io9LgbVgLbv4D59gi-_rPv04uacPNpqbqjF6sOqWZ75bwn-CQ=s300",
+        "creditText": "Michelle Cuvos",
+        "uploadDate": "2025-09-22"
+      },
+      {
+        "@type": "ImageObject",
+        "contentUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51Kemi2ZQZSmV_gP8jC3kcdHnOgO6McdicAX-8qc8LgIryTf-AIkZOoNnMNEjmslkXrM67Sr_fycsdZN_1xvcP5OviwubBfqJXKKKBPeYN3enWbOMzkQBx9ntB2cqNm0w-5baUz6NjNyLmn=s0",
+        "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51Kemi2ZQZSmV_gP8jC3kcdHnOgO6McdicAX-8qc8LgIryTf-AIkZOoNnMNEjmslkXrM67Sr_fycsdZN_1xvcP5OviwubBfqJXKKKBPeYN3enWbOMzkQBx9ntB2cqNm0w-5baUz6NjNyLmn=s300",
+        "creditText": "Silvia Mery Pacaje Laura de Velasquez",
+        "uploadDate": "2025-09-02"
+      },
+      {
+        "@type": "ImageObject",
+        "contentUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51oXWk7qTR4xw5IIoE3Hd_nF4WWAsrX0wr3ZcgsN_qAkW-lf7HWs5j2pXsDauvm18DTrEV_8rWMpH1-ClBoW94ErpnbxgFnxCw_1SkjASPPSHNpsZgwz9Fk7ZG_2rejQ2z687ZHy5KRU9w=s0",
+        "thumbnailUrl": "https://lh3.googleusercontent.com/gpms-cs-s/ABJJf51oXWk7qTR4xw5IIoE3Hd_nF4WWAsrX0wr3ZcgsN_qAkW-lf7HWs5j2pXsDauvm18DTrEV_8rWMpH1-ClBoW94ErpnbxgFnxCw_1SkjASPPSHNpsZgwz9Fk7ZG_2rejQ2z687ZHy5KRU9w=s300",
+        "creditText": "Jose Jorge Garcia",
+        "uploadDate": "2025-12-29"
+      }
+    ]
+  },
+  "BreadcrumbList": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Patient reviews",
+        "item": "https://vivid.clinic/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Book a consultation",
+        "item": "https://vivid.clinic/consultation/"
+      }
+    ]
+  }
+}
