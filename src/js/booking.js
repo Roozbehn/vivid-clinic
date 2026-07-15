@@ -163,11 +163,11 @@
         '<legend class="step-h" tabindex="-1">' + esc(T('step2_legend', 'How can we reach you?')) + '</legend>' +
         '<p class="step-sub">' + esc(T('step2_sub', 'A coordinator will use these details only to respond to your request.')) + '</p>' +
         '<div class="bk-grid">' +
-          '<div class="bk-field"><label for="bk-name">' + esc(T('label_full_name', 'Full name')) + '<span class="bk-req">*</span></label><input id="bk-name" class="bk-input" data-key="fullName" type="text" autocomplete="name" maxlength="120" aria-describedby="err-name"><div class="bk-error" id="err-name"></div></div>' +
-          '<div class="bk-field"><label for="bk-country">' + esc(T('label_country', 'Country')) + '</label><input id="bk-country" class="bk-input" data-key="country" type="text" list="bk-countries" autocomplete="country-name" maxlength="80"><datalist id="bk-countries">' + countryOpts + '</datalist></div>' +
-          '<div class="bk-field"><label for="bk-email">' + esc(T('label_email', 'Email')) + '</label><input id="bk-email" class="bk-input" data-key="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" autocapitalize="off" maxlength="200" aria-describedby="err-email"><div class="bk-error" id="err-email"></div></div>' +
-          '<div class="bk-field"><label for="bk-phone">' + esc(T('label_phone', 'Phone number')) + '</label><input id="bk-phone" class="bk-input" data-key="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40"></div>' +
-          '<div class="bk-field"><label for="bk-whatsapp">' + esc(T('label_whatsapp_number', 'WhatsApp number')) + '</label><input id="bk-whatsapp" class="bk-input" data-key="whatsapp" type="tel" inputmode="tel" maxlength="40"></div>' +
+          '<div class="bk-field"><label for="bk-name">' + esc(T('label_full_name', 'Full name')) + '<span class="bk-req">*</span></label><input id="bk-name" class="bk-input" data-key="fullName" name="name" type="text" autocomplete="name" maxlength="120" aria-describedby="err-name"><div class="bk-error" id="err-name"></div></div>' +
+          '<div class="bk-field"><label for="bk-country">' + esc(T('label_country', 'Country')) + '</label><input id="bk-country" class="bk-input" data-key="country" name="country" type="text" list="bk-countries" autocomplete="country-name" maxlength="80"><datalist id="bk-countries">' + countryOpts + '</datalist></div>' +
+          '<div class="bk-field"><label for="bk-email">' + esc(T('label_email', 'Email')) + '</label><input id="bk-email" class="bk-input" data-key="email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" autocapitalize="off" maxlength="200" aria-describedby="err-email"><div class="bk-error" id="err-email"></div></div>' +
+          '<div class="bk-field"><label for="bk-phone">' + esc(T('label_phone', 'Phone number')) + '</label><input id="bk-phone" class="bk-input" data-key="phone" name="tel" type="tel" inputmode="tel" autocomplete="tel" maxlength="40"></div>' +
+          '<div class="bk-field"><label for="bk-whatsapp">' + esc(T('label_whatsapp_number', 'WhatsApp number')) + '</label><input id="bk-whatsapp" class="bk-input" data-key="whatsapp" name="whatsapp" type="tel" inputmode="tel" maxlength="40"></div>' +
           '<div class="bk-field"><label for="bk-language">' + esc(T('label_preferred_language', 'Preferred language')) + '</label><select id="bk-language" class="bk-select" data-key="preferredLanguage">' + selectOpts(OPT.languages) + '</select></div>' +
         '</div>' +
         '<p class="bk-help" style="margin-top:-8px;margin-bottom:16px">' + esc(T('help_one_contact_method', 'Please give us at least one way to reach you — email, phone, or WhatsApp.')) + '</p>' +
@@ -193,7 +193,7 @@
       '<fieldset class="booking-step" data-step="4">' +
         '<legend class="step-h" tabindex="-1">' + esc(T('step4_legend', 'Anything else? (optional)')) + '</legend>' +
         '<p class="step-sub">' + esc(T('step4_sub', 'Keep it short — the coordinator will follow up for the rest.')) + '</p>' +
-        '<div class="bk-field"><label for="bk-message">' + esc(T('label_message', 'Your message or goal')) + '</label><textarea id="bk-message" class="bk-textarea" data-key="message" maxlength="2000" placeholder="' + esc(T('placeholder_message', 'e.g. what you would like to improve, any questions')) + '"></textarea><div class="bk-help">' + esc(T('help_message', 'Please don’t include urgent medical information here.')) + '</div></div>' +
+        '<div class="bk-field"><label for="bk-message">' + esc(T('label_message', 'Your message or goal')) + '</label><textarea id="bk-message" class="bk-textarea" data-key="message" name="message" maxlength="2000" placeholder="' + esc(T('placeholder_message', 'e.g. what you would like to improve, any questions')) + '"></textarea><div class="bk-help">' + esc(T('help_message', 'Please don’t include urgent medical information here.')) + '</div></div>' +
         '<div class="bk-field"><span class="bk-legend">' + esc(T('label_previous_treatment', 'Have you had a previous treatment in this area?')) + '</span>' + chips('previousTreatment', OPT.previousTreatmentOptions) + '</div>' +
         '<div class="compliance-note" style="margin-top:0"><strong style="font-size:14px">' + esc(T('photos_heading', 'Photos')) + '</strong><p class="bk-help" style="margin-top:6px">' + esc(T('photos_help', 'You can share photos later with the coordinator on WhatsApp if needed — there’s no photo upload here, so nothing sensitive is stored on this site.')) + '</p></div>' +
       '</fieldset>' +
@@ -232,8 +232,20 @@
 
   track('booking_start', {});
 
+  var dirty = false;
+  var submittedOk = false;
+  function onBeforeUnload(e) {
+    if (!dirty || submittedOk) return;
+    e.preventDefault();
+    e.returnValue = '';
+  }
+  window.addEventListener('beforeunload', onBeforeUnload);
+
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   /* ---------- bind inputs to state ---------- */
   form.addEventListener('input', function (e) {
+    dirty = true;
     var el = e.target;
     var key = el.getAttribute('data-key');
     if (!key) return;
@@ -241,6 +253,7 @@
     clearError(el);
   });
   form.addEventListener('change', function (e) {
+    dirty = true;
     var el = e.target;
     if (el.name && el.type === 'radio') {
       state[el.name] = el.value;
@@ -252,6 +265,22 @@
       track('booking_treatment_selected', { category: state.category, treatment: state.treatment });
     }
   });
+  function validateFieldBlur(el) {
+    var key = el.getAttribute('data-key');
+    if (state.step !== 2) return;
+    if (key === 'fullName') {
+      if (!state.fullName || state.fullName.trim().length < 2) setError('err-name', T('err_name', 'Please enter your name.'));
+      else setError('err-name', '');
+    }
+    if (key === 'email') {
+      if (state.email && !EMAIL_RE.test(state.email)) {
+        setError('err-email', T('err_email', 'Please enter a valid email, or leave it blank.'));
+      } else setError('err-email', '');
+    }
+  }
+  form.addEventListener('blur', function (e) {
+    if (e.target && e.target.getAttribute('data-key')) validateFieldBlur(e.target);
+  }, true);
 
   function onCategoryChange() {
     var cat = categoryObj(state.category);
@@ -273,7 +302,6 @@
     if (el.getAttribute) el.setAttribute('aria-invalid', 'false');
     var f = el.closest && el.closest('.bk-field'); if (f) { var er = f.querySelector('.bk-error'); if (er && er.id !== 'err-contact') er.textContent = ''; }
   }
-  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   function validateStep(n) {
     formError.textContent = '';
@@ -450,6 +478,10 @@
   }
 
   function showResult(success, noBackend, notified) {
+    if (success) {
+      submittedOk = true;
+      dirty = false;
+    }
     var wa = whatsappUrl();
     var html;
     if (success) {
@@ -476,7 +508,11 @@
     }
     app.innerHTML = html;
     var waBtn = document.getElementById('bk-wa');
-    if (waBtn) waBtn.addEventListener('click', function () { track('booking_whatsapp_fallback_click', {}); });
+    if (waBtn) waBtn.addEventListener('click', function () {
+      submittedOk = true;
+      dirty = false;
+      track('booking_whatsapp_fallback_click', {});
+    });
     var retry = document.getElementById('bk-retry');
     if (retry) retry.addEventListener('click', function () { location.reload(); });
     try { app.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
