@@ -59,7 +59,8 @@
     "skip_to_booking": "Skip to booking form",
     "brand_name": "Vivid Clinic",
     "brand_sub_home": "Reviews · Istanbul",
-    "brand_sub_consult": "Consultation · Istanbul"
+    "brand_sub_consult": "Consultation · Istanbul",
+    "language_label": "Language"
   },
   "hero": {
     "eyebrow": "Patient reviews · Istanbul, Türkiye",

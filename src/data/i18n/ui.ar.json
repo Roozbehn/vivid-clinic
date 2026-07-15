@@ -83,7 +83,8 @@
     "skip_to_booking": "الانتقال إلى نموذج الحجز",
     "brand_name": "Vivid Clinic",
     "brand_sub_home": "التقييمات · إسطنبول",
-    "brand_sub_consult": "الاستشارة · إسطنبول"
+    "brand_sub_consult": "الاستشارة · إسطنبول",
+    "language_label": "اللغة"
   },
   "hero": {
     "eyebrow": "تقييمات المرضى · إسطنبول، تركيا",

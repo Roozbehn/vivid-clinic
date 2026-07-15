@@ -83,7 +83,8 @@
     "skip_to_booking": "跳转到预约表单",
     "brand_name": "Vivid Clinic",
     "brand_sub_home": "患者评价 · 伊斯坦布尔",
-    "brand_sub_consult": "咨询预约 · 伊斯坦布尔"
+    "brand_sub_consult": "咨询预约 · 伊斯坦布尔",
+    "language_label": "语言"
   },
   "hero": {
     "eyebrow": "患者评价 · 土耳其伊斯坦布尔",

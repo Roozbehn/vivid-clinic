@@ -411,7 +411,7 @@ function renderPages(locale) {
   const bookingHref = '#book'; // both pages embed the booking flow under #book
   // `sub` is '' on home-type pages, 'consultation/' on consultation pages, so the
   // switcher jumps to the equivalent page in the chosen language.
-  const langSwitcher = (sub) => `<select class="lang-switch" aria-label="Language">
+  const langSwitcher = (sub) => `<select class="lang-switch" aria-label="${e(t('header.language_label'))}">
           <option value="/${sub}"${locale ? '' : ' selected'}>${AUTONYMS.en}</option>
           ${LOCALES.map((l) => `<option value="/${l.code}/${sub}"${locale && locale.code === l.code ? ' selected' : ''}>${AUTONYMS[l.code]}</option>`).join('\n          ')}
         </select>`;

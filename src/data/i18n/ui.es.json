@@ -90,7 +90,8 @@
     "skip_to_booking": "Ir al formulario de reserva",
     "brand_name": "Vivid Clinic",
     "brand_sub_home": "Reseñas · Estambul",
-    "brand_sub_consult": "Consulta · Estambul"
+    "brand_sub_consult": "Consulta · Estambul",
+    "language_label": "Idioma"
   },
   "hero": {
     "eyebrow": "Reseñas de pacientes · Estambul, Turquía",

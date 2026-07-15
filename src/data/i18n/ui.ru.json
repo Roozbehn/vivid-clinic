@@ -85,7 +85,8 @@
     "skip_to_booking": "Перейти к форме записи",
     "brand_name": "Vivid Clinic",
     "brand_sub_home": "Отзывы · Стамбул",
-    "brand_sub_consult": "Консультация · Стамбул"
+    "brand_sub_consult": "Консультация · Стамбул",
+    "language_label": "Язык"
   },
   "hero": {
     "eyebrow": "Отзывы пациентов · Стамбул, Турция",
