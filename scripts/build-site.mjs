@@ -1060,6 +1060,7 @@ copyFileSync(join(ROOT, 'src', 'js', 'reviews.js'), join(DIST, 'js', 'reviews.js
 copyFileSync(join(ROOT, 'src', 'js', 'booking.js'), join(DIST, 'js', 'booking.js'));
 copyFileSync(join(ROOT, 'src', 'js', 'estimate.js'), join(DIST, 'js', 'estimate.js'));
 copyFileSync(join(ROOT, 'src', 'assets', 'og-vivid-clinic-reviews.jpg'), join(DIST, 'assets', 'og-vivid-clinic-reviews.jpg'));
+copyFileSync(join(ROOT, 'src', 'assets', 'hero-atmosphere.jpg'), join(DIST, 'assets', 'hero-atmosphere.jpg'));
 
 // favicon (brand monogram)
 const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0E4B4E"/><text x="32" y="44" font-family="Georgia, 'Cormorant Garamond', serif" font-size="40" font-weight="700" fill="#FAF7F2" text-anchor="middle">V</text><circle cx="48" cy="18" r="4" fill="#B8945A"/></svg>`;
