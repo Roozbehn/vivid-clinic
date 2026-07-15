@@ -63,6 +63,14 @@ h1, h2, .display { font-family: var(--font-display); color: var(--brand-teal); f
 h3, h4, h5, h6 { font-family: var(--font-body); color: var(--brand-ink); }
 h1 { font-size: clamp(32px, 6vw, 48px); letter-spacing: -.005em; margin: 0 0 var(--space-4); }
 h2 { font-size: clamp(28px, 4.5vw, 36px); margin: 0 0 var(--space-4); }
+h1, h2 { text-wrap: balance; }
+
+/* Sticky header is ~64px; pad hash targets so content is not clipped */
+#top, #summary, #reviews, #photos, #estimate, #book, #how-it-works,
+#why, #why-book, #themes, #international, #contact, #faq {
+  scroll-margin-top: 80px;
+}
+
 h3 { font-size: clamp(20px, 3vw, 24px); font-weight: 600; margin: 0 0 var(--space-3); }
 p { margin: 0 0 var(--space-4); max-width: 70ch; }
 a { color: var(--brand-teal); text-decoration: none; }
@@ -175,7 +183,7 @@ img { max-width: 100%; height: auto; display: block; }
 .chip {
   font: inherit; font-size: 14px; font-weight: 500; padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-pill); border: 1px solid var(--neutral-200); background: var(--surface-white);
-  color: var(--brand-ink); cursor: pointer; transition: all var(--motion-base); min-height: 40px;
+  color: var(--brand-ink); cursor: pointer; transition: background var(--motion-base), border-color var(--motion-base), color var(--motion-base), box-shadow var(--motion-base); min-height: 40px;
 }
 .chip:hover { border-color: var(--brand-teal); }
 .chip[aria-pressed="true"], .chip.is-active { background: var(--brand-teal); color: var(--brand-cream); border-color: var(--brand-teal); }
@@ -367,7 +375,7 @@ fieldset.booking-step { border: 0; margin: 0; padding: 0; min-width: 0; }
 .bk-chip span {
   display: flex; align-items: center; justify-content: center; text-align: center; gap: 6px; min-height: 46px;
   padding: 10px var(--space-4); border: 1px solid var(--neutral-200); border-radius: var(--radius-md);
-  font-size: 14px; font-weight: 500; color: var(--brand-ink); background: var(--surface-white); transition: all var(--motion-base); cursor: pointer;
+  font-size: 14px; font-weight: 500; color: var(--brand-ink); background: var(--surface-white); transition: background var(--motion-base), border-color var(--motion-base), color var(--motion-base), box-shadow var(--motion-base); cursor: pointer;
 }
 .bk-chip input:hover + span { border-color: var(--brand-teal); }
 .bk-chip input:checked + span { background: var(--brand-teal); border-color: var(--brand-teal); color: var(--brand-cream); }
@@ -438,7 +446,7 @@ fieldset.booking-step { border: 0; margin: 0; padding: 0; min-width: 0; }
 .est-name { display: block; font-weight: 600; font-size: 15px; color: var(--brand-ink); }
 .est-desc { display: block; font-size: 12px; color: var(--neutral-700); margin-top: 2px; }
 .est-price { font-size: 14px; color: var(--brand-teal); font-weight: 600; white-space: nowrap; }
-.est-add { font: inherit; font-size: 13px; font-weight: 600; padding: 8px 16px; min-height: 40px; border: 1.5px solid var(--brand-teal); border-radius: var(--radius-md); background: transparent; color: var(--brand-teal); cursor: pointer; transition: all var(--motion-base); white-space: nowrap; }
+.est-add { font: inherit; font-size: 13px; font-weight: 600; padding: 8px 16px; min-height: 44px; border: 1.5px solid var(--brand-teal); border-radius: var(--radius-md); background: transparent; color: var(--brand-teal); cursor: pointer; transition: background var(--motion-base), border-color var(--motion-base), color var(--motion-base); white-space: nowrap; }
 .est-add:hover { background: rgba(14,75,78,.08); }
 .est-row.is-selected .est-add { background: var(--brand-teal); color: var(--brand-cream); }
 .est-add:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
