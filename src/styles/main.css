@@ -168,7 +168,10 @@ img { max-width: 100%; height: auto; display: block; }
   gap: var(--space-5);
 }
 /* Score lockup moves out of hero — hide if still nested until markup moves */
-.hero .score-lockup { display: none; }
+.hero .score-lockup,
+.hero .rating-badge {
+  display: none;
+}
 .hero-cta-row { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
 .trust-note { display: inline-flex; align-items: center; gap: var(--space-2); margin-top: var(--space-5); font-size: 14px; color: var(--neutral-700); }
 .trust-note .g { font-weight: 700; }
