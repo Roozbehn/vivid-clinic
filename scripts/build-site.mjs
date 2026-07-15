@@ -430,32 +430,29 @@ function renderPages(locale) {
           ${stars(Math.round(summary.averageRating), 'stars--lg')}
           <div class="count">${e(tf('hero.rating_based_on', { count: summary.totalReviewCount.toLocaleString('en-GB') }))}</div>
           <div class="src"><span class="gmark" aria-hidden="true" style="font-weight:700">G</span> ${e(t('hero.rating_source'))}</div>
-        </div>` : `
-        <div class="rating-badge">
-          ${ico.shield}
-          <p class="rb-title">${e(t('hero.empty_badge_title'))}</p>
-          <p style="font-size:14px;color:var(--neutral-700);margin:8px 0 0">${e(t('hero.empty_badge_body'))}</p>
-          <div style="margin-top:16px"><a class="btn btn--primary" href="${e(gmaps)}" target="_blank" rel="noopener nofollow" data-track="google_profile_click">${ico.external}${e(t('common.view_on_google'))}</a></div>
-        </div>`;
+        </div>` : '';
 
   const heroSection = `
   <section class="hero" id="top">
     <div class="wrap">
-      <div>
-        <p class="eyebrow">${e(t('hero.eyebrow'))}</p>
-        <h1>${e(t('hero.h1'))}</h1>
-        <p class="lead">${e(t('hero.lead'))}</p>
-        <p style="font-size:15px;color:var(--neutral-700);margin-top:8px">${e(t('hero.definition'))}</p>
-        <div class="hero-cta-row">
-          <a class="btn btn--primary" href="#book" data-track="consultation_click">${ico.calendar}${e(t('common.book_free_consultation'))}</a>
-          <a class="btn btn--whatsapp" href="${e(waUrl)}" target="_blank" rel="noopener" data-track="whatsapp_click">${ico.whatsapp}${e(t('common.contact_on_whatsapp'))}</a>
-          <a class="btn btn--secondary" href="${e(gmaps)}" target="_blank" rel="noopener nofollow" data-track="google_profile_click">${ico.external}${e(t('common.view_on_google'))}</a>
-        </div>
-        <p class="trust-note"><span class="g">G</span> ${e(t('hero.trust_note'))}</p>
+      <p class="hero-brand">${e(t('header.brand_name'))}</p>
+      <p class="eyebrow">${e(t('hero.eyebrow'))}</p>
+      <h1>${e(t('hero.h1'))}</h1>
+      <p class="lead">${e(t('hero.lead'))}</p>
+      <p class="hero-definition">${e(t('hero.definition'))}</p>
+      <div class="hero-cta-row">
+        <a class="btn btn--primary" href="#book" data-track="consultation_click">${ico.calendar}${e(t('common.book_free_consultation'))}</a>
+        <a class="btn btn--ghost-tint" href="${e(waUrl)}" target="_blank" rel="noopener" data-track="whatsapp_click">${ico.whatsapp}${e(t('common.contact_on_whatsapp'))}</a>
       </div>
+      <p class="trust-note"><span class="g">G</span> ${e(t('hero.trust_note'))}</p>
+    </div>
+  </section>
+  ${hasReviews ? `
+  <section class="section score-beat" id="score" aria-label="${e(t('summary.eyebrow'))}">
+    <div class="wrap wrap--narrow">
       ${ratingBadge}
     </div>
-  </section>`;
+  </section>` : ''}`;
 
   const distLabel = (star) => tf(star === 1 ? 'summary.dist_label_singular' : 'summary.dist_label_plural', { n: star });
   const distRows = [5, 4, 3, 2, 1].map((star) => {
