@@ -78,7 +78,7 @@
     var photo = safePhoto(r.reviewerPhotoUrl);
     var html = '<article class="review-card" tabindex="0">';
     html += '<div class="rc-head"><div class="rc-avatar" aria-hidden="true">' + escapeHtml(initials(r.reviewerName)) +
-      (photo ? '<img src="' + escapeHtml(photo) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">' : '') + '</div>';
+      (photo ? '<img src="' + escapeHtml(photo) + '" alt="" width="44" height="44" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">' : '') + '</div>';
     html += '<div><div class="rc-name">' + escapeHtml(r.reviewerName) + '</div>';
     html += '<div class="rc-date">' + escapeHtml(r.relativeDate || '') + '</div></div>';
     if (r.isFeatured) html += '<span class="featured-flag" style="margin-left:auto">' + escapeHtml(T('reviews_ui', 'card_featured_flag', 'Featured')) + '</span>';

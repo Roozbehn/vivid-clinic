@@ -306,7 +306,7 @@ function renderPages(locale) {
     const loc = reviewI18n ? reviewLoc(reviewI18n, r) : null;
     const photo = safePhoto(r.reviewerPhotoUrl);
     let h = `<article class="review-card" tabindex="0">`;
-    h += `<div class="rc-head"><div class="rc-avatar" aria-hidden="true">${e(initials(r.reviewerName))}${photo ? `<img src="${e(photo)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</div>`;
+    h += `<div class="rc-head"><div class="rc-avatar" aria-hidden="true">${e(initials(r.reviewerName))}${photo ? `<img src="${e(photo)}" alt="" width="44" height="44" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</div>`;
     h += `<div><div class="rc-name">${e(r.reviewerName)}</div><div class="rc-date">${e(r.relativeDate || '')}</div></div>`;
     if (r.isFeatured) h += `<span class="featured-flag" style="margin-left:auto">${e(t('reviews_ui.card_featured_flag'))}</span>`;
     h += `</div><div>${stars(r.rating, 'stars--sm')}</div>`;
@@ -587,7 +587,7 @@ function renderPages(locale) {
       <h2 id="photos-h">${e(t('gallery.heading'))}</h2>
       <p class="lead" style="margin-bottom:32px">${e(t('gallery.lead'))}</p>
       <div class="pg-grid">
-        ${galleryItems.map((m) => `<a class="pg-item" href="${e(m.photoUrl)}" target="_blank" rel="noopener nofollow" data-track="google_photo_click"><img src="${e(m.gridUrl)}" alt="${fmt(e(t('gallery.photo_alt')), { uploader: e(m.uploader || t('gallery.uploader_fallback_alt')) })}" loading="lazy" referrerpolicy="no-referrer"><span class="pg-cap">${e(m.uploader || t('gallery.uploader_fallback_caption'))}${m.createdAt ? ' · ' + e(photoDate(m.createdAt)) : ''}</span></a>`).join('\n        ')}
+        ${galleryItems.map((m) => `<a class="pg-item" href="${e(m.photoUrl)}" target="_blank" rel="noopener nofollow" data-track="google_photo_click"><img src="${e(m.gridUrl)}" alt="${fmt(e(t('gallery.photo_alt')), { uploader: e(m.uploader || t('gallery.uploader_fallback_alt')) })}" width="${m.width || 400}" height="${m.height || 500}" loading="lazy" referrerpolicy="no-referrer"><span class="pg-cap">${e(m.uploader || t('gallery.uploader_fallback_caption'))}${m.createdAt ? ' · ' + e(photoDate(m.createdAt)) : ''}</span></a>`).join('\n        ')}
       </div>
       <p style="text-align:center;margin-top:32px"><a class="btn btn--secondary" href="${e(gmaps)}" target="_blank" rel="noopener nofollow" data-track="google_profile_click">${ico.external}${e(t('gallery.see_all_on_google'))}</a></p>
     </div>
