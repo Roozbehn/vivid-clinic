@@ -800,5 +800,10 @@
     "website_name": "Vivid Clinic Erfahrungen",
     "webapp_name": "Vivid Clinic Behandlungskosten-Schätzer",
     "webapp_description": "Kostenloses Planungstool mit unverbindlichen Startpreisen für Behandlungen in der Vivid Clinic, Istanbul. Nur Schätzungen – keine Online-Zahlung; der endgültige Preis wird nach einer medizinischen Beratung bestätigt."
+  },
+  "trust_rail": {
+    "aria": "Sprachen und Fachgebiete der Klinik",
+    "languages_label": "Sprachen",
+    "specialties_label": "Fachgebiete"
   }
 }

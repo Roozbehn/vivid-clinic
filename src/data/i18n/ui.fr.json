@@ -804,5 +804,10 @@
     "website_name": "Avis Vivid Clinic",
     "webapp_name": "Estimateur de coût des traitements Vivid Clinic",
     "webapp_description": "Outil de planification gratuit affichant les prix de départ indicatifs des traitements chez Vivid Clinic, à Istanbul. Estimations uniquement — aucun paiement en ligne ; le prix final est confirmé après une consultation médicale."
+  },
+  "trust_rail": {
+    "aria": "Langues et spécialités de la clinique",
+    "languages_label": "Langues",
+    "specialties_label": "Spécialités"
   }
 }

@@ -798,5 +798,10 @@
     "website_name": "Vivid Clinic Yorumları",
     "webapp_name": "Vivid Clinic Tedavi Maliyeti Tahmin Aracı",
     "webapp_description": "Vivid Clinic İstanbul'daki tedaviler için tahmini başlangıç fiyatlarını gösteren ücretsiz planlama aracı. Yalnızca tahmindir — online ödeme alınmaz; kesin fiyat tıbbi konsültasyon sonrasında netleşir."
+  },
+  "trust_rail": {
+    "aria": "Kliniğin dilleri ve uzmanlık alanları",
+    "languages_label": "Diller",
+    "specialties_label": "Uzmanlıklar"
   }
 }

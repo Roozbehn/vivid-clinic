@@ -800,5 +800,10 @@
     "website_name": "ביקורות Vivid Clinic",
     "webapp_name": "מחשבון עלויות הטיפולים של Vivid Clinic",
     "webapp_description": "כלי תכנון חינמי המציג מחירי פתיחה אינדיקטיביים לטיפולים ב-Vivid Clinic, איסטנבול. הערכות בלבד — ללא תשלום באינטרנט; המחיר הסופי נקבע לאחר ייעוץ רפואי."
+  },
+  "trust_rail": {
+    "aria": "שפות והתמחויות של המרפאה",
+    "languages_label": "שפות",
+    "specialties_label": "התמחויות"
   }
 }

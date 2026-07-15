@@ -795,5 +795,10 @@
     "website_name": "Recensioni Vivid Clinic",
     "webapp_name": "Strumento di stima dei costi dei trattamenti Vivid Clinic",
     "webapp_description": "Strumento di pianificazione gratuito che mostra i prezzi di partenza indicativi per i trattamenti presso Vivid Clinic, Istanbul. Solo stime — nessun pagamento online; il prezzo finale viene confermato dopo una consulenza medica."
+  },
+  "trust_rail": {
+    "aria": "Lingue e specializzazioni della clinica",
+    "languages_label": "Lingue",
+    "specialties_label": "Specializzazioni"
   }
 }

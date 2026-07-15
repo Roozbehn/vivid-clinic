@@ -454,6 +454,22 @@ function renderPages(locale) {
     </div>
   </section>` : ''}`;
 
+  const langs = Array.isArray(c.languagesSpoken) ? c.languagesSpoken : [];
+  const specs = Array.isArray(c.specialties) ? c.specialties : [];
+  const trustRail = `
+  <aside class="trust-rail" aria-label="${e(t('trust_rail.aria'))}">
+    <div class="wrap wrap--narrow">
+      <div class="trust-rail__row">
+        <span class="trust-rail__label">${e(t('trust_rail.languages_label'))}</span>
+        <span class="trust-rail__values">${e(langs.join(' · '))}</span>
+      </div>
+      <div class="trust-rail__row">
+        <span class="trust-rail__label">${e(t('trust_rail.specialties_label'))}</span>
+        <span class="trust-rail__values">${e(specs.join(' · '))}</span>
+      </div>
+    </div>
+  </aside>`;
+
   const distLabel = (star) => tf(star === 1 ? 'summary.dist_label_singular' : 'summary.dist_label_plural', { n: star });
   const distRows = [5, 4, 3, 2, 1].map((star) => {
     const n = summary.ratingDistribution[star] || 0;
@@ -896,6 +912,7 @@ ${htmlTag}
   </header>
   <main>
     ${heroSection}
+    ${trustRail}
     ${summarySection}
     ${reviewsSection}
     ${photosSection}

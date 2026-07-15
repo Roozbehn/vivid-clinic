@@ -798,5 +798,10 @@
     "website_name": "تقييمات عيادة Vivid Clinic",
     "webapp_name": "حاسبة تقدير تكلفة العلاج في Vivid Clinic",
     "webapp_description": "أداة تخطيط مجانية تعرض أسعار بداية استرشادية لعلاجات Vivid Clinic في إسطنبول. تقديرات فقط — لا دفع إلكتروني؛ يُؤكَّد السعر النهائي بعد استشارة طبية."
+  },
+  "trust_rail": {
+    "aria": "لغات العيادة والتخصصات",
+    "languages_label": "اللغات",
+    "specialties_label": "التخصصات"
   }
 }

@@ -798,5 +798,10 @@
     "website_name": "Vivid Clinic患者评价",
     "webapp_name": "Vivid Clinic治疗费用估算工具",
     "webapp_description": "免费规划工具，展示伊斯坦布尔Vivid Clinic各项治疗的参考起始价。仅为估算——无在线付款；最终价格在医疗咨询后确认。"
+  },
+  "trust_rail": {
+    "aria": "诊所语言与专科",
+    "languages_label": "语言",
+    "specialties_label": "专科"
   }
 }

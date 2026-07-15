@@ -802,5 +802,10 @@
     "website_name": "Vivid Clinic Ervaringen",
     "webapp_name": "Vivid Clinic Prijsindicatietool voor behandelingen",
     "webapp_description": "Gratis planningstool met indicatieve vanafprijzen voor behandelingen bij Vivid Clinic, Istanbul. Uitsluitend indicaties — geen online betaling; de definitieve prijs wordt bevestigd na een medisch consult."
+  },
+  "trust_rail": {
+    "aria": "Talen en specialismen van de kliniek",
+    "languages_label": "Talen",
+    "specialties_label": "Specialismen"
   }
 }
