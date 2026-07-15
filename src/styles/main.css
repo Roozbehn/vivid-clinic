@@ -295,10 +295,11 @@ img { max-width: 100%; height: auto; display: block; }
 .empty-state .es-actions { display: inline-flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center; margin-top: var(--space-5); }
 
 /* ---- Why-choose / feature grid ---- */
-.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
 @media (max-width: 860px) { .feature-grid { grid-template-columns: 1fr; } }
 .feature {
-  background: var(--surface-white); border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-sm);
+  background: transparent; border-radius: 0; padding: var(--space-5) 0; box-shadow: none;
+  border-bottom: 1px solid var(--neutral-200);
 }
 .feature .fi { width: 28px; height: 28px; color: var(--brand-teal); margin-bottom: var(--space-3); }
 .feature h3 { font-size: 18px; margin-bottom: var(--space-2); }
@@ -322,8 +323,8 @@ img { max-width: 100%; height: auto; display: block; }
 /* ---- FAQ ---- */
 .faq { max-width: 800px; margin: 0 auto; }
 .faq details {
-  background: var(--surface-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);
-  margin-bottom: var(--space-3); border: 1px solid var(--neutral-200); overflow: hidden;
+  background: transparent; border-radius: 0; box-shadow: none;
+  margin-bottom: 0; border: 0; border-bottom: 1px solid var(--neutral-200); overflow: hidden;
 }
 .faq summary {
   cursor: pointer; padding: var(--space-5); font-weight: 600; font-size: 16px; color: var(--brand-ink);
@@ -469,7 +470,10 @@ fieldset.booking-step { border: 0; margin: 0; padding: 0; min-width: 0; }
 .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-5); counter-reset: stp; }
 @media (max-width: 860px) { .steps-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 520px) { .steps-grid { grid-template-columns: 1fr; } }
-.stp { background: var(--surface-white); border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-sm); }
+.stp {
+  background: transparent; box-shadow: none; border-radius: 0; padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--neutral-200);
+}
 .stp .n { width: 36px; height: 36px; border-radius: var(--radius-pill); background: var(--brand-teal); color: var(--brand-cream); display: grid; place-items: center; font-weight: 600; margin-bottom: var(--space-3); }
 .stp h3 { font-size: 17px; margin-bottom: 6px; }
 .stp p { font-size: 14px; color: var(--neutral-700); margin: 0; }
