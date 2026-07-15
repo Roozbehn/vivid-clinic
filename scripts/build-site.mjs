@@ -587,7 +587,11 @@ function renderPages(locale) {
       <h2 id="photos-h">${e(t('gallery.heading'))}</h2>
       <p class="lead" style="margin-bottom:32px">${e(t('gallery.lead'))}</p>
       <div class="pg-grid">
-        ${galleryItems.map((m) => `<a class="pg-item" href="${e(m.photoUrl)}" target="_blank" rel="noopener nofollow" data-track="google_photo_click"><img src="${e(m.gridUrl)}" alt="${fmt(e(t('gallery.photo_alt')), { uploader: e(m.uploader || t('gallery.uploader_fallback_alt')) })}" width="${m.width || 400}" height="${m.height || 500}" loading="lazy" referrerpolicy="no-referrer"><span class="pg-cap">${e(m.uploader || t('gallery.uploader_fallback_caption'))}${m.createdAt ? ' · ' + e(photoDate(m.createdAt)) : ''}</span></a>`).join('\n        ')}
+        ${galleryItems.map((m) => {
+          const gw = Number(m.width) > 0 ? Math.round(Number(m.width)) : 400;
+          const gh = Number(m.height) > 0 ? Math.round(Number(m.height)) : 500;
+          return `<a class="pg-item" href="${e(m.photoUrl)}" target="_blank" rel="noopener nofollow" data-track="google_photo_click"><img src="${e(m.gridUrl)}" alt="${fmt(e(t('gallery.photo_alt')), { uploader: e(m.uploader || t('gallery.uploader_fallback_alt')) })}" width="${gw}" height="${gh}" loading="lazy" referrerpolicy="no-referrer"><span class="pg-cap">${e(m.uploader || t('gallery.uploader_fallback_caption'))}${m.createdAt ? ' · ' + e(photoDate(m.createdAt)) : ''}</span></a>`;
+        }).join('\n        ')}
       </div>
       <p style="text-align:center;margin-top:32px"><a class="btn btn--secondary" href="${e(gmaps)}" target="_blank" rel="noopener nofollow" data-track="google_profile_click">${ico.external}${e(t('gallery.see_all_on_google'))}</a></p>
     </div>
