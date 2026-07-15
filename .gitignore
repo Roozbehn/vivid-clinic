@@ -15,3 +15,6 @@ preview-demo.html
 .DS_Store
 node_modules/
 npm-debug.log*
+
+# Git worktrees
+.worktrees/
