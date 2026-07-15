@@ -28,6 +28,47 @@
 
   var state = { rating: 'all', language: 'all', sort: 'featured', query: '', shown: INITIAL };
 
+  /* ---------- URL sync helpers (keep in sync with scripts/lib-review-url.mjs) ---------- */
+  function parseReviewParams(search) {
+    var p = new URLSearchParams(typeof search === 'string' ? String(search).replace(/^\?/, '') : '');
+    var rating = p.get('rating');
+    var language = p.get('language');
+    var sort = p.get('sort');
+    var q = p.get('q') || '';
+    var allowedRating = { all: 1, '5': 1, '4': 1, '3': 1 };
+    var allowedSort = { featured: 1, newest: 1, detailed: 1, highest: 1 };
+    return {
+      rating: allowedRating[rating] ? rating : 'all',
+      language: language && /^[a-z]{2}$/.test(language) ? language : 'all',
+      sort: allowedSort[sort] ? sort : 'featured',
+      query: q.slice(0, 120)
+    };
+  }
+  function serializeReviewParams(s) {
+    var p = new URLSearchParams();
+    if (s.rating && s.rating !== 'all') p.set('rating', s.rating);
+    if (s.language && s.language !== 'all') p.set('language', s.language);
+    if (s.sort && s.sort !== 'featured') p.set('sort', s.sort);
+    if (s.query) p.set('q', s.query);
+    var qs = p.toString();
+    return qs ? '?' + qs : '';
+  }
+  function writeUrl() {
+    var qs = serializeReviewParams(state);
+    var path = window.location.pathname + qs + window.location.hash;
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', path);
+    }
+  }
+  function syncChips(selector, value) {
+    var chips = root.querySelectorAll(selector);
+    Array.prototype.forEach.call(chips, function (chip) {
+      var on = chip.getAttribute('data-value') === value;
+      chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+      chip.classList.toggle('is-active', on);
+    });
+  }
+
   /* ---------- i18n (English fallback when no blob is present) ---------- */
   var I18N = window.__I18N || null;
   function T(group, key, fb) {
@@ -168,6 +209,7 @@
         state[key] = chip.getAttribute('data-value');
         state.shown = INITIAL;
         render();
+        writeUrl();
         track(evtName, { value: state[key] });
       });
     });
@@ -185,10 +227,22 @@
         state.query = searchInput.value.trim();
         state.shown = INITIAL;
         render();
+        writeUrl();
         if (state.query) track('review_search_used', { length: state.query.length });
       }, 200);
     });
   }
+
+  /* hydrate filters from URL before first render */
+  var parsed = parseReviewParams(window.location.search);
+  state.rating = parsed.rating;
+  state.language = parsed.language;
+  state.sort = parsed.sort;
+  state.query = parsed.query;
+  if (searchInput && state.query) searchInput.value = state.query;
+  syncChips('[data-filter="rating"]', state.rating);
+  syncChips('[data-filter="sort"]', state.sort);
+  syncChips('[data-filter="language"]', state.language);
 
   if (loadMoreBtn) {
     loadMoreBtn.addEventListener('click', function () {
