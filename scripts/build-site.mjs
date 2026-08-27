@@ -113,11 +113,37 @@ const REVIEW_I18N = new Map(LOCALES.map((l) => {
   const p = join(I18N_DIR, `reviews.${l.code}.json`);
   return [l.code, existsSync(p) ? (readJson(p).items || null) : null];
 }));
-const reviewSrcHash = (r) =>
-  createHash('sha1').update((r.originalText || '') + ' ' + (r.ownerReply || '')).digest('hex').slice(0, 12);
+const shortHash = (...parts) => createHash('sha1').update(parts.join(' ')).digest('hex').slice(0, 12);
+
+/* Review text and owner reply are keyed SEPARATELY. They change independently:
+   the clinic answering a two-year-old review does not change a word of that
+   review, so it must not throw away a good translation of it. (The original
+   single `src` hash covered both, which meant one round of replies would have
+   silently un-translated every localized page.)
+
+   Catalogs generated before the split carry only `src` = hash(text + ' ' + reply)
+   and are still honoured — see the legacy branch. New catalogs should emit
+   `srcText` and `srcReply`. */
+const reviewTextHash = (r) => shortHash(r.originalText || '');
+const reviewReplyHash = (r) => shortHash(r.ownerReply || '');
+const legacyHash = (r) => shortHash(r.originalText || '', r.ownerReply || '');
+const legacyHashNoReply = (r) => shortHash(r.originalText || '', '');
+
 const reviewLoc = (items, r) => {
   const rt = items ? items[r.id] : null;
-  return rt && rt.src === reviewSrcHash(r) ? rt : null;
+  if (!rt) return null;
+
+  const textOk = rt.srcText
+    ? rt.srcText === reviewTextHash(r)
+    // Legacy: the entry is valid if the review TEXT is unchanged, whether or not
+    // a reply has been added since the catalog was generated.
+    : (rt.src === legacyHash(r) || rt.src === legacyHashNoReply(r));
+  if (!textOk) return null;
+
+  const replyOk = rt.srcReply ? rt.srcReply === reviewReplyHash(r) : rt.src === legacyHash(r);
+  // A stale reply translation must never be shown next to a different reply —
+  // drop it and the card falls back to the reply exactly as written on Google.
+  return replyOk ? rt : { ...rt, reply: '' };
 };
 const lookup = (obj, path) => path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj);
 // {token} interpolation — tokens with no provided value are left intact (harness catches leaks).
@@ -142,6 +168,15 @@ function initials(name) {
 }
 // Only Google's CDN may appear in an avatar <img> — anything else renders as initials.
 const safePhoto = (u) => (typeof u === 'string' && /^https:\/\/[a-z0-9.-]*googleusercontent\.com\//i.test(u)) ? u : '';
+
+/* Self-hosted Google Business Profile photo → absolute site path.
+   Only files the media importer wrote under src/assets/gbp/ are accepted, and
+   only if they actually exist on disk — a path in the JSON that no longer has
+   a file behind it must drop out of the gallery, not ship as a broken image. */
+const safeLocalPhoto = (p) => {
+  if (typeof p !== 'string' || !/^assets\/gbp\/[A-Za-z0-9._-]+\.(jpe?g|png|webp)$/i.test(p)) return '';
+  return existsSync(join(ROOT, 'src', p)) ? `/${p}` : '';
+};
 
 /* ---------------- icons (inline, lucide-style) ---------------- */
 const ico = {
@@ -204,9 +239,22 @@ const organizationLd = {
 
 /* Patient photos (customer uploads from the Google listing) — used by both the
    gallery section and the ImageGallery JSON-LD, so computed once up here. */
+/* Google's media/customers URLs are short-lived signed URLs that start
+   returning 403 within weeks, so the gallery renders ONLY the self-hosted
+   copies the importer downloaded into src/assets/gbp/. An item without a
+   local file on disk is dropped rather than hot-linked. */
 const galleryItems = (googleMedia.items || [])
-  .filter((m) => safePhoto(m.photoUrl) && safePhoto(m.thumbnailUrl))
-  .map((m) => ({ ...m, gridUrl: m.thumbnailUrl.replace(/=s\d+(-[a-z]+)*$/i, '=s640') }));
+  .map((m) => {
+    const fullUrl = safeLocalPhoto(m.file);
+    if (!fullUrl) return null;
+    return { ...m, fullUrl, gridUrl: safeLocalPhoto(m.grid) || fullUrl };
+  })
+  .filter(Boolean);
+
+const galleryMissing = (googleMedia.items || []).length - galleryItems.length;
+if (galleryMissing > 0) {
+  console.warn(`  ! ${galleryMissing} listing photo(s) have no local file in src/assets/gbp/ — run \`npm run import:media\` to re-download them.`);
+}
 
 // WebApplication — the estimate tool, described strictly as a FREE planning aid
 // (no Offer/price markup: medical pricing is estimate-only, confirmed after consultation).
@@ -232,8 +280,9 @@ const galleryLd = galleryItems.length ? {
   about: { '@id': `${SITE_URL}/#clinic` },
   image: galleryItems.map((m) => ({
     '@type': 'ImageObject',
-    contentUrl: m.photoUrl,
-    thumbnailUrl: m.thumbnailUrl,
+    // Canonical, permanent URLs on our own origin (Google's expire).
+    contentUrl: `${SITE_URL}${m.fullUrl}`,
+    thumbnailUrl: `${SITE_URL}${m.gridUrl}`,
     creditText: m.uploader || 'Google user',
     ...(m.createdAt ? { uploadDate: m.createdAt.slice(0, 10) } : {})
   }))
@@ -493,13 +542,23 @@ function renderPages(locale) {
         </div>
         <div>
           ${distRows}
-          <table class="sr-only">
-            <caption>${e(tf('summary.sr_table_caption', { count: summary.totalReviewCount, avg: summary.averageRating }))}</caption>
-            <thead><tr><th scope="col">${e(t('summary.sr_th_rating'))}</th><th scope="col">${e(t('summary.sr_th_count'))}</th></tr></thead>
-            <tbody>
-              ${[5, 4, 3, 2, 1].map((star) => `<tr><th scope="row">${e(distLabel(star))}</th><td>${summary.ratingDistribution[star] || 0}</td></tr>`).join('\n              ')}
-            </tbody>
-          </table>
+          <!-- Text alternative to the distribution bars, for screen readers.
+               The .sr-only class MUST sit on this wrapper div, never on the
+               <table>: CSS table sizing ignores width:1px (min-content wins), so
+               an .sr-only table computes ~538px wide and, being absolutely
+               positioned, drags the document's scroll width with it — 186px of
+               horizontal scroll on a 375px viewport, on every locale. A block
+               wrapper honours the 1px box and clips the table inside it, while
+               the table keeps display:table and its full semantics. -->
+          <div class="sr-only">
+            <table>
+              <caption>${e(tf('summary.sr_table_caption', { count: summary.totalReviewCount, avg: summary.averageRating }))}</caption>
+              <thead><tr><th scope="col">${e(t('summary.sr_th_rating'))}</th><th scope="col">${e(t('summary.sr_th_count'))}</th></tr></thead>
+              <tbody>
+                ${[5, 4, 3, 2, 1].map((star) => `<tr><th scope="row">${e(distLabel(star))}</th><td>${summary.ratingDistribution[star] || 0}</td></tr>`).join('\n                ')}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -603,7 +662,7 @@ function renderPages(locale) {
         ${galleryItems.map((m) => {
           const gw = Number(m.width) > 0 ? Math.round(Number(m.width)) : 400;
           const gh = Number(m.height) > 0 ? Math.round(Number(m.height)) : 500;
-          return `<a class="pg-item" href="${e(m.photoUrl)}" target="_blank" rel="noopener nofollow" data-track="google_photo_click"><img src="${e(m.gridUrl)}" alt="${fmt(e(t('gallery.photo_alt')), { uploader: e(m.uploader || t('gallery.uploader_fallback_alt')) })}" width="${gw}" height="${gh}" loading="lazy" referrerpolicy="no-referrer"><span class="pg-cap">${e(m.uploader || t('gallery.uploader_fallback_caption'))}${m.createdAt ? ' · ' + e(photoDate(m.createdAt)) : ''}</span></a>`;
+          return `<a class="pg-item" href="${e(m.fullUrl)}" target="_blank" rel="noopener" data-track="google_photo_click"><img src="${e(m.gridUrl)}" alt="${fmt(e(t('gallery.photo_alt')), { uploader: e(m.uploader || t('gallery.uploader_fallback_alt')) })}" width="${gw}" height="${gh}" loading="lazy" decoding="async"><span class="pg-cap">${e(m.uploader || t('gallery.uploader_fallback_caption'))}${m.createdAt ? ' · ' + e(photoDate(m.createdAt)) : ''}</span></a>`;
         }).join('\n        ')}
       </div>
       <p style="text-align:center;margin-top:32px"><a class="btn btn--secondary" href="${e(gmaps)}" target="_blank" rel="noopener nofollow" data-track="google_profile_click">${ico.external}${e(t('gallery.see_all_on_google'))}</a></p>
@@ -756,13 +815,18 @@ function renderPages(locale) {
       <div class="price-guide">
         <h3 id="price-h">${e(t('price_table.heading'))}</h3>
         <p style="font-size:15px;color:var(--neutral-700)">${tf('price_table.intro', { last_reviewed: locPricing.lastUpdatedLabel ? tf('price_table.intro_last_reviewed_fragment', { date: e(locPricing.lastUpdatedLabel) }) : '' })}</p>
-        <table class="price-table">
-          <caption class="sr-only">${e(t('price_table.sr_caption'))}</caption>
-          <thead><tr><th scope="col">${e(t('price_table.th_treatment'))}</th><th scope="col">${e(t('price_table.th_price'))}</th></tr></thead>
-          <tbody>
-            ${priceRows.map((s) => `<tr><th scope="row">${e(s.name)}</th><td>${tf('price_table.cell_from_price', { price: bdi(s.fromPrice.toLocaleString('en-GB')) })}</td></tr>`).join('\n            ')}
-          </tbody>
-        </table>
+        <!-- A table cannot shrink below its min-content width, so on a 320px
+             screen this one is ~315px inside a 272px column and pushes the whole
+             page sideways. The scroll container absorbs that instead. -->
+        <div class="table-scroll" tabindex="0" role="region" aria-labelledby="price-h">
+          <table class="price-table">
+            <caption class="sr-only">${e(t('price_table.sr_caption'))}</caption>
+            <thead><tr><th scope="col">${e(t('price_table.th_treatment'))}</th><th scope="col">${e(t('price_table.th_price'))}</th></tr></thead>
+            <tbody>
+              ${priceRows.map((s) => `<tr><th scope="row">${e(s.name)}</th><td>${tf('price_table.cell_from_price', { price: bdi(s.fromPrice.toLocaleString('en-GB')) })}</td></tr>`).join('\n              ')}
+            </tbody>
+          </table>
+        </div>
       </div>` : '';
 
   const estimateSection = `
@@ -1075,6 +1139,17 @@ copyFileSync(join(ROOT, 'src', 'js', 'booking.js'), join(DIST, 'js', 'booking.js
 copyFileSync(join(ROOT, 'src', 'js', 'estimate.js'), join(DIST, 'js', 'estimate.js'));
 copyFileSync(join(ROOT, 'src', 'assets', 'og-vivid-clinic-reviews.jpg'), join(DIST, 'assets', 'og-vivid-clinic-reviews.jpg'));
 copyFileSync(join(ROOT, 'src', 'assets', 'hero-atmosphere.jpg'), join(DIST, 'assets', 'hero-atmosphere.jpg'));
+
+// Self-hosted Google listing photos → dist/assets/gbp/. Copy only what the
+// gallery actually references, so a pruned photo cannot linger in a deploy.
+if (galleryItems.length) {
+  mkdirSync(join(DIST, 'assets', 'gbp'), { recursive: true });
+  const wanted = new Set(galleryItems.flatMap((m) => [m.fullUrl, m.gridUrl].map((u) => u.replace(/^\/assets\/gbp\//, ''))));
+  for (const name of wanted) {
+    copyFileSync(join(ROOT, 'src', 'assets', 'gbp', name), join(DIST, 'assets', 'gbp', name));
+  }
+  console.log(`  Copied ${wanted.size} listing photo file(s) → dist/assets/gbp/`);
+}
 
 // favicon (brand monogram)
 const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0E4B4E"/><text x="32" y="44" font-family="Georgia, 'Cormorant Garamond', serif" font-size="40" font-weight="700" fill="#FAF7F2" text-anchor="middle">V</text><circle cx="48" cy="18" r="4" fill="#B8945A"/></svg>`;

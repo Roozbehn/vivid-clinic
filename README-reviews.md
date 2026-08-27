@@ -89,6 +89,32 @@ translations, hints language, derives theme tags, de-dupes by `reviewId`, and wr
 
 Live listing (verification / "View on Google"): `https://maps.google.com/?cid=13820382962229413624`.
 
+### Patient photos — self-hosted, never hot-linked
+
+`npm run import:media` pulls customer photos from the GBP `media/customers` endpoint into
+`src/data/google-media.json` **and downloads the image bytes** into `src/assets/gbp/`
+(a `-640.jpg` grid copy and a `1600px` full copy per photo). The site renders only those
+local files, from `/assets/gbp/…`.
+
+> **Why:** the API hands back short-lived *signed* URLs
+> (`lh3.googleusercontent.com/gpms-cs-s/…`). They expire within weeks and then return
+> **HTTP 403**, which silently breaks every gallery image on the deployed site — exactly
+> what happened between the 9 July 2026 import and 27 August 2026. The `photoUrl` /
+> `thumbnailUrl` fields are kept for provenance only and **must never be rendered**.
+> (Reviewer avatar URLs, `…/a-/ALV-…`, are a different, stable form and are still
+> hot-linked.)
+
+Notes:
+
+- Filenames are `<mediaId>-<sha256-prefix>.jpg`, so changed bytes produce a new filename
+  and no stale copy can be cached.
+- Re-importing prunes local files no longer on the listing, and `build-site.mjs` drops any
+  item whose local file is missing (warning printed) rather than shipping a broken image.
+- Downloads retry with backoff on Google's HTTP 429 — without it, throttled photos would
+  quietly disappear from the gallery.
+- **New photos on the listing do not appear until someone re-runs `npm run import:media`
+  and redeploys.** The existing gallery keeps working regardless.
+
 ---
 
 ## ✅ When approval arrives — checklist

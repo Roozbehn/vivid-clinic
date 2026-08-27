@@ -42,6 +42,20 @@
 
   --maxw: 1200px;
   --motion-base: 250ms cubic-bezier(.4,0,.2,1);
+
+  /* Focus indicators — WCAG 2.1 SC 1.4.11 requires 3:1 against the adjacent
+     surface. --brand-gold (#B8945A) is only 2.65:1 on cream and 2.83:1 on white,
+     so it fails as a ring on light surfaces; it does pass (3.48:1) on teal.
+     Hence two tokens: a darkened gold for light grounds (3.6:1 on cream,
+     3.85:1 on white) and cream for elements sitting on a teal tint (9.2:1). */
+  --focus-ring: #A07C42;
+  --focus-ring-on-tint: var(--brand-cream);
+
+  /* Minimum comfortable touch target (WCAG 2.5.5 / iOS HIG). */
+  --tap-min: 44px;
+  /* Any focusable TEXT-ENTRY field must be >=16px or iOS Safari zooms the
+     viewport on focus. Radio/checkbox proxies are exempt — they never zoom. */
+  --field-font: 16px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -113,7 +127,10 @@ img { max-width: 100%; height: auto; display: block; }
   min-height: 44px; text-decoration: none;
 }
 .btn:hover { text-decoration: none; transform: translateY(-2px); }
-.btn:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
+.btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* Buttons that sit on the teal tint need the inverse ring — the darkened gold
+   drops to 2.56:1 there, while cream gives 9.2:1. */
+.btn--on-tint:focus-visible, .btn--ghost-tint:focus-visible { outline-color: var(--focus-ring-on-tint); }
 .btn--primary { background: var(--brand-teal); color: var(--brand-cream); }
 .btn--primary:hover { background: var(--brand-teal-deep); color: var(--brand-cream); box-shadow: var(--shadow-hover); }
 .btn--secondary { background: transparent; border-color: var(--brand-teal); color: var(--brand-teal); }
@@ -131,11 +148,22 @@ img { max-width: 100%; height: auto; display: block; }
   position: sticky; top: 0; z-index: 100; background: rgba(250,247,242,.92);
   backdrop-filter: saturate(120%) blur(8px); border-bottom: 1px solid var(--neutral-200);
 }
-.site-header .wrap { display: flex; align-items: center; justify-content: space-between; min-height: 64px; gap: var(--space-4); }
-.brand-lockup { display: inline-flex; align-items: center; gap: var(--space-3); }
+/* nowrap + a shrinkable brand lockup keep this to ONE row in both the fallback
+   and the webfont state. Without it the wider fallback metrics wrap the row to
+   96px, then it snaps back to 64px when Inter loads — a 32px jump of everything
+   below, which is exactly the layout shift CLS measures. */
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; min-height: 64px; gap: var(--space-4); flex-wrap: nowrap; }
+.brand-lockup { display: inline-flex; align-items: center; gap: var(--space-3); min-width: 0; flex: 0 1 auto; }
 .brand-lockup img { height: 30px; width: auto; }
-.brand-lockup .brand-name { font-family: var(--font-display); font-size: 22px; color: var(--brand-teal); font-weight: 600; }
-.brand-lockup .brand-sub { font-size: 11px; color: var(--neutral-700); display: block; letter-spacing: .04em; }
+/* nowrap here too: in the fallback serif "Vivid Clinic" wraps to two lines,
+   which is what actually took the lockup to 78px and the header with it.
+   .brand-sub is a block child, so it still gets its own line below. */
+.brand-lockup .brand-name { font-family: var(--font-display); font-size: 22px; color: var(--brand-teal); font-weight: 600; white-space: nowrap; }
+/* nowrap is load-bearing: .brand-sub is a block child of .brand-name, so if the
+   wider fallback metrics wrap it to a second line the lockup grows and takes the
+   whole sticky header from 64px to 96px — then it snaps back when Inter loads.
+   Pinning it to one line keeps the header height identical in both font states. */
+.brand-lockup .brand-sub { font-size: 11px; color: var(--neutral-700); display: block; letter-spacing: .04em; white-space: nowrap; }
 .header-cta { display: inline-flex; gap: var(--space-3); }
 @media (max-width: 640px) { .header-cta .btn--secondary { display: none; } }
 
@@ -237,14 +265,14 @@ img { max-width: 100%; height: auto; display: block; }
 .chip {
   font: inherit; font-size: 14px; font-weight: 500; padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-pill); border: 1px solid var(--neutral-200); background: var(--surface-white);
-  color: var(--brand-ink); cursor: pointer; transition: background var(--motion-base), border-color var(--motion-base), color var(--motion-base), box-shadow var(--motion-base); min-height: 40px;
+  color: var(--brand-ink); cursor: pointer; transition: background var(--motion-base), border-color var(--motion-base), color var(--motion-base), box-shadow var(--motion-base); min-height: var(--tap-min);
 }
 .chip:hover { border-color: var(--brand-teal); }
 .chip[aria-pressed="true"], .chip.is-active { background: var(--brand-teal); color: var(--brand-cream); border-color: var(--brand-teal); }
-.chip:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
+.chip:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .search-field { position: relative; margin-left: auto; }
 .search-field input {
-  font: inherit; font-size: 15px; padding: 10px var(--space-4) 10px 38px; min-height: 40px;
+  font: inherit; font-size: var(--field-font); padding: 10px var(--space-4) 10px 38px; min-height: var(--tap-min);
   border: 1px solid var(--neutral-200); border-radius: var(--radius-md); background: var(--surface-white);
   color: var(--brand-ink); width: 240px; max-width: 60vw;
 }
@@ -357,7 +385,7 @@ img { max-width: 100%; height: auto; display: block; }
   list-style: none; display: flex; justify-content: space-between; align-items: center; gap: var(--space-4);
 }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: -2px; }
+.faq summary:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
 .faq summary .plus { transition: transform var(--motion-base); color: var(--brand-teal); font-size: 22px; line-height: 1; }
 .faq details[open] summary .plus { transform: rotate(45deg); }
 .faq .answer { padding: 0 var(--space-5) var(--space-5); color: var(--neutral-700); font-size: 15px; }
@@ -460,7 +488,7 @@ fieldset.booking-step { border: 0; margin: 0; padding: 0; min-width: 0; }
 }
 .bk-chip input:hover + span { border-color: var(--brand-teal); }
 .bk-chip input:checked + span { background: var(--brand-teal); border-color: var(--brand-teal); color: var(--brand-cream); }
-.bk-chip input:focus-visible + span { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
+.bk-chip input:focus-visible + span { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* consent checkboxes */
 .bk-consent { display: flex; gap: var(--space-3); padding: var(--space-3) 0; align-items: flex-start; }
@@ -533,7 +561,7 @@ fieldset.booking-step { border: 0; margin: 0; padding: 0; min-width: 0; }
 .est-add { font: inherit; font-size: 13px; font-weight: 600; padding: 8px 16px; min-height: 44px; border: 1.5px solid var(--brand-teal); border-radius: var(--radius-md); background: transparent; color: var(--brand-teal); cursor: pointer; transition: background var(--motion-base), border-color var(--motion-base), color var(--motion-base); white-space: nowrap; }
 .est-add:hover { background: rgba(14,75,78,.08); }
 .est-row.is-selected .est-add { background: var(--brand-teal); color: var(--brand-cream); }
-.est-add:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
+.est-add:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 .est-summary { position: sticky; top: 84px; }
 @media (max-width: 920px) { .est-summary { position: static; } }
@@ -570,7 +598,7 @@ fieldset.booking-step { border: 0; margin: 0; padding: 0; min-width: 0; }
   transition: transform var(--motion-base), box-shadow var(--motion-base);
 }
 .pg-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
-.pg-item:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
+.pg-item:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .pg-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .pg-cap {
   position: absolute; left: 0; right: 0; bottom: 0; padding: 24px 12px 10px;
@@ -586,6 +614,10 @@ fieldset.booking-step { border: 0; margin: 0; padding: 0; min-width: 0; }
 
 /* ---- Indicative price guide table ---- */
 .price-guide { margin-top: var(--space-7); max-width: 720px; }
+/* Keeps a min-content-wide table from scrolling the whole page on small screens.
+   tabindex+role make the scrollable region reachable by keyboard, per APG. */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius-lg); }
+.table-scroll:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .price-guide h3 { font-family: var(--font-display); color: var(--brand-teal); font-size: 24px; font-weight: 600; }
 .price-table { width: 100%; border-collapse: collapse; background: var(--surface-white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
 .price-table th, .price-table td { text-align: left; padding: 12px var(--space-5); font-size: 15px; border-bottom: 1px solid var(--neutral-200); }
@@ -622,9 +654,10 @@ html:lang(zh) p, html:lang(zh) li, html:lang(zh) dd, html:lang(zh) .lead { line-
 
 /* ---- language switcher ---- */
 .lang-switch {
-  font: inherit; font-size: 14px; color: var(--brand-teal);
+  font: inherit; font-size: var(--field-font); color: var(--brand-teal);
   background: var(--surface-white); border: 1px solid var(--neutral-200);
-  border-radius: 999px; padding: 8px 14px; cursor: pointer; max-width: 140px;
+  border-radius: 999px; padding: 8px 14px; cursor: pointer; max-width: 150px;
+  min-height: var(--tap-min);
 }
 .lang-switch:focus { outline: none; border-color: var(--brand-teal); box-shadow: 0 0 0 3px rgba(14,75,78,.12); }
 .lang-links {
@@ -634,15 +667,31 @@ html:lang(zh) p, html:lang(zh) li, html:lang(zh) dd, html:lang(zh) .lead { line-
 .lang-links a { font-size: 13px; color: rgba(250,247,242,.7); text-decoration: none; }
 .lang-links a:hover { color: #fff; text-decoration: underline; }
 .lang-links a[aria-current] { color: #fff; font-weight: 600; }
-@media (max-width: 640px) { .lang-switch { max-width: 92px; padding: 8px 8px; font-size: 13px; } }
+@media (max-width: 640px) { .lang-switch { max-width: 104px; padding: 8px 6px; font-size: var(--field-font); } }
 @media (max-width: 640px) {
   .header-cta { gap: var(--space-2); }
   .header-cta .btn { padding: var(--space-3) var(--space-4); font-size: 15px; }
   .brand-lockup .brand-name { font-size: 19px; }
 }
 @media (max-width: 640px) { .site-header .wrap { gap: var(--space-2); } }
-@media (max-width: 400px) { .lang-switch { max-width: 76px; } }
+@media (max-width: 400px) { .lang-switch { max-width: 88px; } }
+/* Very narrow phones (320–360px): with flex-wrap:nowrap the header has no second
+   row to spill into, so shed the strapline and tighten the wordmark rather than
+   let the row overflow or the brand name get clipped mid-word. */
 @media (max-width: 400px) { .header-cta .btn { padding: var(--space-3) var(--space-3); } }
+/* Must come AFTER the 400px rule above — same specificity, so source order
+   decides which padding wins on a 320–360px screen. */
+@media (max-width: 360px) {
+  .brand-lockup .brand-sub { display: none; }
+  /* Sub is hidden here, so .brand-name has no block child and can safely
+     ellipsis rather than push the row wide. */
+  .brand-lockup .brand-name { font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .brand-lockup { gap: var(--space-2); }
+  .brand-lockup img { height: 26px; }
+  .lang-switch { max-width: 72px; padding: 8px 4px; }
+  .header-cta .btn { padding: var(--space-3) var(--space-2); font-size: 14px; }
+  .site-header .wrap { gap: 6px; }
+}
 
 /* ---- auto-translated review overlay ---- */
 .translation-note { font-size: 13px; color: var(--neutral-700); margin: 6px 0 0; }
