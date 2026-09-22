@@ -1,31 +1,53 @@
-// Verified brand + contact facts, ported from the repo root's
-// `src/data/clinic.json` (sourced from the live vividclinic.net
-// MedicalOrganization/Place schema). Do not invent or alter these values —
-// update only from that authoritative file.
-export const clinic = {
-  name: "Vivid Clinic",
-  tagline: "Premium aesthetics. Quietly delivered. Istanbul.",
-  descriptor: "Istanbul's Premier Aesthetic and Cosmetic Surgery Center",
-  businessSite: "https://vividclinic.net",
-  reviewSite: "https://vivid.clinic",
+import clinicData from "@/data/generated/clinic.json";
+
+// Typed view over the repo's verified brand + contact facts
+// (../src/data/clinic.json — sourced from the live vividclinic.net
+// MedicalOrganization/Place schema; see that file's `_note_facts`). Do not
+// invent or alter these values — they flow in from the generated copy at
+// build time (see scripts/sync-data.mjs), so updating the repo-root file is
+// the only way to change them.
+interface ClinicData {
+  name: string;
+  tagline: string;
+  descriptor: string;
+  businessSite: string;
+  reviewSite: string;
   contact: {
-    phonePrimaryHref: "tel:+905457493565",
-    phonePrimaryDisplay: "+90 545 749 3565",
-    whatsappUrl: "https://api.whatsapp.com/send/?phone=905457423565",
-    whatsappPrefill:
-      "Hello Vivid Clinic, I read your patient reviews and would like a free consultation.",
-    consultationUrl: "https://vividclinic.net/surgery-price-calculator/",
+    phonePrimaryHref: string;
+    phonePrimary: string;
+    whatsappUrl: string;
+    whatsappPrefill: string;
+    consultationUrl: string;
+  };
+  googleBusinessProfile: { mapsUrl: string };
+  brand: {
+    teal: string;
+    tealDeep: string;
+    gold: string;
+    cream: string;
+    ink: string;
+    fontDisplay: string;
+    fontBody: string;
+  };
+}
+
+const raw = clinicData as unknown as ClinicData;
+
+export const clinic = {
+  name: raw.name,
+  tagline: raw.tagline,
+  descriptor: raw.descriptor,
+  businessSite: raw.businessSite,
+  reviewSite: raw.reviewSite,
+  contact: {
+    phonePrimaryHref: raw.contact.phonePrimaryHref,
+    phonePrimaryDisplay: raw.contact.phonePrimary,
+    whatsappUrl: raw.contact.whatsappUrl,
+    whatsappPrefill: raw.contact.whatsappPrefill,
+    consultationUrl: raw.contact.consultationUrl,
   },
   googleBusinessProfile: {
-    mapsUrl: "https://maps.google.com/?cid=13820382962229413624",
+    mapsUrl: raw.googleBusinessProfile.mapsUrl,
   },
-  brand: {
-    teal: "#0E4B4E",
-    tealDeep: "#073538",
-    gold: "#B8945A",
-    cream: "#FAF7F2",
-    ink: "#1F2937",
-    fontDisplay: "Cormorant Garamond",
-    fontBody: "Inter",
-  },
+  brand: raw.brand,
 } as const;

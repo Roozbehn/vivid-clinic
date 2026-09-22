@@ -41,23 +41,43 @@ folder is additive until it's ready to replace the production build.
 - Hero section rebuilt in the new visual language, with the real 5.0 / 159 /
   98% stats and the real WhatsApp deep link + prefill text from
   `src/data/clinic.json`.
+- **Score/rating summary section** (`src/components/sections/score-summary-section.tsx`) —
+  the real average rating and full 5★–1★ distribution bars, computed from
+  `src/lib/reviews.ts`'s `reviewsSummary` (sourced from the repo's real
+  `google-reviews.json`), with a "View on Google" link out to the GBP.
+- **Full searchable/sortable review grid** (`src/components/sections/reviews-section.tsx`,
+  `src/components/ui/review-grid.tsx`, `src/components/ui/review-card.tsx`) —
+  all reviews that have written text (155 of the 159), each rendered
+  verbatim (translated reviews show the translation with a "Translated from
+  X by Google" label and never replace the original; owner replies from
+  Vivid Clinic are shown inline). Client-side search-by-name/text, sort by
+  newest/highest/lowest, and "Show more" pagination (12 at a time) so all
+  results stay reachable without a heavy initial payload. The medical
+  disclaimer is repeated in this section's footer too.
+- **Data-sync pipeline** (`web/scripts/sync-data.mjs`, wired into `predev`/
+  `prebuild`) — copies the repo-root `src/data/{google-reviews.json,
+  clinic.json}` into a gitignored `web/src/data/generated/` before every dev
+  server start and build, so `web/` always reads the same single
+  source-of-truth data as the static site instead of a duplicated copy that
+  could drift. `src/lib/clinic.ts` and `src/lib/reviews.ts` both load from
+  this generated folder.
 - `next build` (static export to `web/out/`) passes clean: TypeScript
   typecheck, ESLint (0 errors, 2 pre-existing-pattern warnings noted below),
-  and static generation all succeed.
+  and static generation all succeed. Visually verified at desktop (1440px)
+  and mobile (390px) widths, including the search/filter interaction on the
+  review grid.
 
 ## What's NOT done yet (this was a large ask — see the PR for the full list)
 
-The current root site has far more surface area than the hero + testimonials
-shown here: score/rating breakdown, the full searchable/filterable review
-grid (159 reviews, load-more), "why Vivid", treatment theme chips, patient
-photo gallery, price-estimate calculator, booking form (backed by
-`functions/api/booking.js`), FAQ, CTA band, "how it works", international-
-patient info — and the site's 13-locale (incl. RTL) i18n layer. None of that
-is ported into `web/` yet. Porting it all, plus re-verifying the Lighthouse
-100/100/100 + JSON-LD/sitemap/indexing behavior the static site currently
-has, is realistically its own multi-session project. This migration should
-be treated as in progress, not complete — please don't point the production
-domain at `web/out/` yet.
+The current root site has more surface area than what's above: "why Vivid",
+treatment theme chips, patient photo gallery, price-estimate calculator,
+booking form (backed by `functions/api/booking.js`), FAQ, CTA band, "how it
+works", international-patient info — and the site's 13-locale (incl. RTL)
+i18n layer. None of that is ported into `web/` yet. Porting it all, plus
+re-verifying the Lighthouse 100/100/100 + JSON-LD/sitemap/indexing behavior
+the static site currently has, is realistically its own multi-session
+project. This migration should be treated as in progress, not complete —
+please don't point the production domain at `web/out/` yet.
 
 ## Known sandbox-only artifact
 

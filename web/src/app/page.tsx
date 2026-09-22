@@ -1,5 +1,7 @@
 import { HeroSection } from "@/components/sections/hero-section";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
+import { ScoreSummarySection } from "@/components/sections/score-summary-section";
+import { ReviewsSection } from "@/components/sections/reviews-section";
 import { clinic } from "@/lib/clinic";
 
 const jsonLd = {
@@ -31,13 +33,12 @@ export default function Home() {
       <main id="main" className="flex flex-1 flex-col">
         <HeroSection />
         <TestimonialsSection />
+        <ScoreSummarySection />
+        <ReviewsSection />
         {/*
-          The remaining sections from the current static site (score
-          breakdown, full review grid with search/filter, "why Vivid",
-          treatment themes, patient photo gallery, price estimator, booking
-          form, FAQ, CTA band, international-patient info) still need to be
-          ported into this React/shadcn app — see the PR description for
-          status and the migration plan.
+          Still to port from the current static site: "why Vivid", treatment
+          themes, patient photo gallery, price estimator, booking form, FAQ,
+          CTA band, international-patient info. See web/MIGRATION-STATUS.md.
         */}
       </main>
     </>
