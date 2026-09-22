@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# synced from ../src/data by scripts/sync-data.mjs — never edit directly,
+# never commit (the repo-root src/data/*.json is the source of truth)
+/src/data/generated/
