@@ -1,8 +1,11 @@
 import { MessageSquareQuote } from "lucide-react";
 
-import { reviewThemes } from "@/lib/themes";
+import { getReviewThemes } from "@/lib/themes";
+import type { Dictionary } from "@/lib/i18n/dictionary";
+import { fmt } from "@/lib/i18n/format";
 
-export function ThemesSection() {
+export function ThemesSection({ dict }: { dict: Dictionary }) {
+  const reviewThemes = getReviewThemes(dict);
   if (reviewThemes.length === 0) return null;
 
   return (
@@ -10,17 +13,16 @@ export function ThemesSection() {
       <div className="mx-auto max-w-5xl px-6">
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <span className="rounded-full border border-border px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
-            Review themes
+            {dict.themes.eyebrow}
           </span>
           <h2
             id="themes-h"
             className="mt-5 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"
           >
-            What patients mention most
+            {dict.themes.heading}
           </h2>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            These themes are drawn from the words patients actually used in
-            their Google reviews.
+            {dict.themes.lead}
           </p>
         </div>
 
@@ -39,9 +41,12 @@ export function ThemesSection() {
                   {theme.label}
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  {theme.count === 1
-                    ? "1 review mentions this"
-                    : `${theme.count} reviews mention this`}
+                  {fmt(
+                    theme.count === 1
+                      ? dict.themes.count_singular
+                      : dict.themes.count_plural,
+                    { count: theme.count },
+                  )}
                 </div>
               </div>
             </div>

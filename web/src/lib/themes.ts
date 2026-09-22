@@ -1,20 +1,23 @@
 import { allReviews } from "@/lib/reviews";
+import type { Dictionary } from "@/lib/i18n/dictionary";
 
-// Same theme labels and aggregation the static site uses (scripts/lib.mjs —
+// Same theme keys and aggregation the static site uses (scripts/lib.mjs —
 // THEME_LABELS / computeThemes): each review was tagged at import time by
 // keyword-matching its real text (see README-reviews.md), and this just
 // counts how many reviews carry each tag. Nothing here is invented — it's a
 // deterministic rollup of the same `tags` field already in the real dataset.
-const THEME_LABELS: Record<string, string> = {
-  communication: "Clear communication",
-  staff: "Friendly staff",
-  cleanliness: "Modern, clean clinic",
-  doctor: "Confidence in the doctors",
-  coordination: "Travel & hotel coordination",
-  followup: "Post-op follow-up",
-  results: "Happy with results",
-  value: "Value for money",
-};
+// Labels come from the dictionary (themes.label_<key>) so they're real,
+// translated copy rather than hardcoded English.
+const THEME_KEYS = [
+  "communication",
+  "staff",
+  "cleanliness",
+  "doctor",
+  "coordination",
+  "followup",
+  "results",
+  "value",
+] as const;
 
 export interface ReviewTheme {
   key: string;
@@ -22,7 +25,12 @@ export interface ReviewTheme {
   count: number;
 }
 
-function computeThemes(): ReviewTheme[] {
+function themeLabel(dict: Dictionary, key: string): string {
+  const labels = dict.themes as unknown as Record<string, string>;
+  return labels[`label_${key}`] ?? key;
+}
+
+export function getReviewThemes(dict: Dictionary): ReviewTheme[] {
   const counts = new Map<string, number>();
   for (const review of allReviews) {
     for (const tag of review.tags ?? []) {
@@ -32,7 +40,7 @@ function computeThemes(): ReviewTheme[] {
   return Array.from(counts.entries())
     .filter(([, count]) => count > 0)
     .sort((a, b) => b[1] - a[1])
-    .map(([key, count]) => ({ key, label: THEME_LABELS[key] ?? key, count }));
+    .map(([key, count]) => ({ key, label: themeLabel(dict, key), count }));
 }
 
-export const reviewThemes: ReviewTheme[] = computeThemes();
+export { THEME_KEYS };

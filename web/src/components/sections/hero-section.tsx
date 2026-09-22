@@ -1,6 +1,10 @@
 import { clinic } from "@/lib/clinic";
+import { reviewsSummary } from "@/lib/reviews";
+import type { Dictionary } from "@/lib/i18n/dictionary";
 
-export function HeroSection() {
+export function HeroSection({ dict }: { dict: Dictionary }) {
+  const { totalReviewCount, averageRating, fiveStarPercentage } = reviewsSummary;
+
   return (
     <section
       id="top"
@@ -8,18 +12,15 @@ export function HeroSection() {
     >
       <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
         <span className="rounded-full border border-border bg-card px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
-          {clinic.descriptor}
+          {dict.hero.eyebrow}
         </span>
 
         <h1 className="mt-6 font-[family-name:var(--font-display)] text-5xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-6xl md:text-7xl">
-          Real reviews from real
-          <span className="italic text-primary"> Vivid Clinic </span>
-          patients
+          {dict.hero.h1}
         </h1>
 
         <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-muted-foreground">
-          {clinic.tagline} 159 verified Google reviews, a 5.0 average, and
-          patients who came back to say so.
+          {dict.hero.lead}
         </p>
 
         <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row">
@@ -31,13 +32,13 @@ export function HeroSection() {
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-md)] transition-shadow hover:shadow-[var(--shadow-hover)]"
           >
-            Free consultation on WhatsApp
+            {dict.common.contact_on_whatsapp}
           </a>
           <a
             href="#testimonials"
             className="inline-flex items-center justify-center rounded-full border border-border px-7 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
           >
-            Read patient reviews
+            {dict.common.read_patient_reviews}
           </a>
         </div>
 
@@ -45,23 +46,21 @@ export function HeroSection() {
           <div className="flex flex-col items-center">
             <dt className="sr-only">Average rating</dt>
             <dd className="font-[family-name:var(--font-display)] text-3xl font-semibold text-primary">
-              5.0
+              {averageRating.toFixed(1)}
             </dd>
             <dd className="mt-1 text-xs text-muted-foreground">Avg. rating</dd>
           </div>
           <div className="flex flex-col items-center border-x border-border">
             <dt className="sr-only">Total Google reviews</dt>
             <dd className="font-[family-name:var(--font-display)] text-3xl font-semibold text-primary">
-              159
+              {totalReviewCount}
             </dd>
-            <dd className="mt-1 text-xs text-muted-foreground">
-              Google reviews
-            </dd>
+            <dd className="mt-1 text-xs text-muted-foreground">Google reviews</dd>
           </div>
           <div className="flex flex-col items-center">
             <dt className="sr-only">Percentage five-star</dt>
             <dd className="font-[family-name:var(--font-display)] text-3xl font-semibold text-primary">
-              98%
+              {Math.round(fiveStarPercentage)}%
             </dd>
             <dd className="mt-1 text-xs text-muted-foreground">Are 5★</dd>
           </div>

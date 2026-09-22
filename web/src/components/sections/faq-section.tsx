@@ -1,19 +1,22 @@
-import { faqEntries } from "@/lib/faq";
+import { getFaqEntries } from "@/lib/faq";
 import { FaqItem } from "@/components/ui/faq-item";
+import type { Dictionary } from "@/lib/i18n/dictionary";
 
-export function FaqSection() {
+export function FaqSection({ dict }: { dict: Dictionary }) {
+  const faqEntries = getFaqEntries(dict);
+
   return (
     <section id="faq" aria-labelledby="faq-h" className="bg-secondary/50 py-20 sm:py-28">
       <div className="mx-auto max-w-3xl px-6">
         <div className="mx-auto mb-10 text-center">
           <span className="rounded-full border border-border px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
-            Questions &amp; answers
+            {dict.faq.eyebrow}
           </span>
           <h2
             id="faq-h"
             className="mt-5 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"
           >
-            Frequently asked questions
+            {dict.faq.heading_main}
           </h2>
         </div>
 

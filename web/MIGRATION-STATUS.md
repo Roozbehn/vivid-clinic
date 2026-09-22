@@ -142,23 +142,82 @@ folder is additive until it's ready to replace the production build.
     and footer), and the homepage CTA band + footer's "Free consultation &
     estimate" link now point at this internal route instead of
     `vividclinic.net`.
+- **13-locale i18n layer — Phase A (homepage + shared layout).** Full port
+  of the static site's locale architecture and real translation catalogs,
+  matching the 13 locales `scripts/build-site.mjs` ships (ar, bg, de, es,
+  fa, fr, he, it, nl, ru, tr, uk, zh) plus unprefixed English as the
+  default:
+  - `src/lib/i18n/locales.ts` — ported `LOCALES`/`AUTONYMS` config
+    (hreflang, htmlLang, `dir`, OG locale) and `localeHref()`/`isRtl()`
+    helpers.
+  - `src/lib/i18n/dictionary.ts` — a typed `Dictionary` interface (the
+    subset of the real catalog wired up so far) + `getDictionary(locale)`,
+    statically importing `src/data/i18n/source.en.json` (the single
+    source of truth English now draws from too, instead of duplicating
+    English strings in component code) and all 13 `ui.<code>.json` packs,
+    deep-merged over English so a partial or stale translation never
+    renders blank.
+  - `src/lib/i18n/format.ts` — `fmt()`, the same `{token}` interpolation
+    the static site's `tf()` helper uses.
+  - `src/lib/i18n/alternates.ts` — builds the Metadata API's
+    `alternates.languages` map (all 14 variants + x-default) from the same
+    locale config, mirroring `hreflangBlock()`.
+  - **Routing**: real Next.js "multiple root layouts" split — English
+    lives at `app/(en)/` with no URL prefix (its own root layout, fonts,
+    `<html lang="en">`), the 13 translated locales live at
+    `app/(intl)/[locale]/` (own root layout, `generateStaticParams()` over
+    the 13 codes, `<html lang dir="rtl"|"ltr">` per locale). A static
+    export has no middleware/rewrites to vary `<html>` per request, which
+    is why this needs two root layouts rather than one.
+  - **Localized**: header, footer (incl. the language switcher —
+    `src/components/ui/language-switcher.tsx`, autonyms in each language's
+    own script, always links to the target locale's homepage since
+    subpages aren't localized yet), hero, score summary, review grid +
+    review cards (translation/owner-reply labels, per-review "Review on
+    Google" link, locale-aware date formatting), photo gallery, "Why Vivid
+    Clinic", review themes, CTA band, FAQ.
+  - **Deliberately left English-only on every locale**: the bonus
+    testimonials-columns section (built from real English review excerpts
+    that can't be translated without fabricating copy — not part of the
+    original static site) and, for now, the `/consultation/` page and its
+    estimate/booking/how-it-works tools (see Phase B below). Translated
+    homepages' CTA/footer/header consultation links point out to the real,
+    live `vividclinic.net` flow instead of a dead in-page anchor or a
+    404, via a `hasInlineTools` prop each affected component takes.
+  - `web/scripts/sync-data.mjs` also copies the full `src/data/i18n/`
+    catalog (27 files: `source.en.json` + 13 `ui.*.json` + 13
+    `reviews.*.json`) into `web/src/data/generated/i18n/`.
 - `next build` (static export to `web/out/`) passes clean: TypeScript
   typecheck, ESLint (0 errors, 2 pre-existing-pattern warnings noted below),
-  and static generation all succeed for both `/` and `/consultation/`.
-  Visually verified at desktop (1440px) and mobile (390px) widths, including
-  the review grid's search/filter, the FAQ accordions, the estimate
-  calculator's live selection/total/bundle-discount, and the booking form.
+  and static generation all succeed — 18 pages: `/`, `/consultation/`, and
+  the 13 `/<locale>/` homepages. Visually verified at desktop width,
+  including an RTL locale (Arabic and Persian both render `dir="rtl"` with
+  correctly mirrored layout), the language switcher dropdown, a review
+  card's real "Translated from X" label on an actually-translated review,
+  and the English homepage's newly-added estimate/booking/how-it-works
+  sections.
 
 ## What's NOT done yet
 
-The static site's 13-locale (incl. RTL) i18n layer is the only major piece
-left unported — everything else from the original static site now has a
-React/Tailwind/shadcn-conventions equivalent in `web/`. Also not yet done:
-re-verifying the Lighthouse 100/100/100 + sitemap/indexing behavior the
-static site currently has, and deciding whether the booking form should
-become a multi-step wizard again (currently single-step, see above). This
-migration should be treated as in progress, not complete — please don't
-point the production domain at `web/out/` yet.
+**i18n Phase B** (deferred to keep Phase A a reviewable unit): localizing
+`/consultation/` itself and its estimate calculator / booking form / "how
+it works" / "why book" / international-patients / booking-FAQ sections;
+consuming the per-review translation overlay in `src/data/i18n/reviews.<code>.json`
+(currently only each review's own real `translatedText`/`originalLanguage`
+fields from the Google API are shown — the static site's additional
+locale-specific review-text overlay isn't wired up yet); a sitemap covering
+the locale routes; and the review grid's "Highest rated"/"Lowest rated"
+sort-option labels, which have no equivalent in the real catalog (the
+static site's sort semantics are Featured/Newest/Most-detailed) and so
+still render in English on every locale — needs a decision on whether to
+add English-only labels there or remap the sort UI to match the original's
+three real options.
+
+Beyond i18n: re-verifying the Lighthouse 100/100/100 + sitemap/indexing
+behavior the static site currently has, and deciding whether the booking
+form should become a multi-step wizard again (currently single-step, see
+above). This migration should be treated as in progress, not complete —
+please don't point the production domain at `web/out/` yet.
 
 ## Known sandbox-only artifact
 

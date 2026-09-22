@@ -1,12 +1,37 @@
-import Link from "next/link";
-import { Phone } from "lucide-react";
+import { Phone, Sparkles } from "lucide-react";
 
 import { clinic } from "@/lib/clinic";
+import type { Dictionary } from "@/lib/i18n/dictionary";
+import { fmt } from "@/lib/i18n/format";
 
-export function CtaSection() {
+// Real copy, ported from source.en.json's "cta_band" + "common" keys.
+// `hasInlineTools`: true on the English homepage, where the estimate
+// calculator (#estimate) and booking form (#book) are embedded on the same
+// page (matching the static site's real homepage, which also embeds both) —
+// the primary buttons then scroll to them in-page. Translated locale
+// homepages don't have those tools wired up yet (see MIGRATION-STATUS.md),
+// so there `hasInlineTools` is false and the same buttons link out to the
+// real, live vividclinic.net consultation flow instead of a dead anchor.
+export function CtaSection({
+  dict,
+  hasInlineTools,
+}: {
+  dict: Dictionary;
+  hasInlineTools: boolean;
+}) {
   const whatsappHref = `${clinic.contact.whatsappUrl}&text=${encodeURIComponent(
     clinic.contact.whatsappPrefill,
   )}`;
+  const bookHref = hasInlineTools ? "#book" : clinic.contact.consultationUrl;
+  const estimateHref = hasInlineTools ? "#estimate" : clinic.contact.consultationUrl;
+  const externalProps = hasInlineTools
+    ? {}
+    : { target: "_blank" as const, rel: "noopener noreferrer" };
+
+  const visitNote = dict.cta_band.visit_note ?? "";
+  const [visitBefore, visitAfter] = visitNote.includes("{site_link}")
+    ? visitNote.split("{site_link}")
+    : [visitNote, ""];
 
   return (
     <section
@@ -16,50 +41,62 @@ export function CtaSection() {
     >
       <div className="mx-auto max-w-3xl px-6 text-center">
         <span className="rounded-full border border-primary-foreground/30 px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary-foreground/80">
-          Speak with the clinic
+          {dict.cta_band.eyebrow}
         </span>
         <h2
           id="cta-h"
           className="mt-5 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-primary-foreground sm:text-5xl"
         >
-          Ready to speak with Vivid Clinic?
+          {dict.cta_band.heading}
         </h2>
         <p className="mt-4 text-base leading-relaxed text-primary-foreground/80">
-          Tell the team what you&rsquo;re considering. Initial consultations
-          are free, and international patients are welcome to ask questions
-          before travelling.
+          {dict.cta_band.lead}
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Link
-            href="/consultation/"
+          <a
+            href={bookHref}
+            {...externalProps}
             className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-7 py-3 text-sm font-medium text-primary shadow-[var(--shadow-md)] transition-shadow hover:shadow-[var(--shadow-hover)]"
           >
-            Book a Free Consultation
-          </Link>
+            {dict.common.book_free_consultation}
+          </a>
+          <a
+            href={estimateHref}
+            {...externalProps}
+            className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-7 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/10"
+          >
+            <Sparkles className="h-4 w-4" aria-hidden="true" />
+            {dict.cta_band.btn_estimate ?? dict.common.start_consultation}
+          </a>
           <a
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-full border border-primary-foreground/30 px-7 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/10"
           >
-            Chat with Us on WhatsApp
+            {dict.cta_band.btn_whatsapp}
           </a>
           <a
             href={clinic.contact.phonePrimaryHref}
             className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-7 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/10"
           >
             <Phone className="h-4 w-4" aria-hidden="true" />
-            Call {clinic.contact.phonePrimaryDisplay}
+            {fmt(dict.cta_band.btn_call, { phone: clinic.contact.phonePrimaryDisplay })}
           </a>
         </div>
 
         <p className="mt-6 text-sm text-primary-foreground/70">
-          Or see the full price estimate and booking form on the{" "}
-          <Link href="/consultation/" className="underline underline-offset-4">
-            consultation page
-          </Link>
-          .
+          {visitBefore}
+          <a
+            href={clinic.businessSite}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4"
+          >
+            {dict.cta_band.visit_link_text}
+          </a>
+          {visitAfter}
         </p>
       </div>
     </section>

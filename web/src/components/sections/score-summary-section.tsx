@@ -1,9 +1,11 @@
 import { reviewsSummary } from "@/lib/reviews";
 import { clinic } from "@/lib/clinic";
+import type { Dictionary } from "@/lib/i18n/dictionary";
+import { fmt } from "@/lib/i18n/format";
 
 const STARS = ["5", "4", "3", "2", "1"] as const;
 
-export function ScoreSummarySection() {
+export function ScoreSummarySection({ dict }: { dict: Dictionary }) {
   const { totalReviewCount, averageRating, ratingDistribution } = reviewsSummary;
 
   return (
@@ -15,7 +17,7 @@ export function ScoreSummarySection() {
       <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-10 px-6 md:grid-cols-[320px_1fr]">
         <div className="text-center md:text-left">
           <h2 id="score-h" className="sr-only">
-            Rating summary
+            {dict.summary.heading}
           </h2>
           <div className="font-[family-name:var(--font-display)] text-7xl font-semibold text-primary">
             {averageRating.toFixed(1)}
@@ -27,7 +29,7 @@ export function ScoreSummarySection() {
             {"★".repeat(Math.round(averageRating))}
           </div>
           <p className="mt-3 text-sm text-muted-foreground">
-            Based on {totalReviewCount} Google reviews
+            {fmt(dict.hero.rating_based_on, { count: totalReviewCount })}
           </p>
           <a
             href={clinic.googleBusinessProfile.mapsUrl}
@@ -35,7 +37,7 @@ export function ScoreSummarySection() {
             rel="noopener noreferrer"
             className="mt-2 inline-block text-sm font-medium text-primary underline underline-offset-4"
           >
-            View on Google →
+            {dict.common.view_on_google} →
           </a>
         </div>
 

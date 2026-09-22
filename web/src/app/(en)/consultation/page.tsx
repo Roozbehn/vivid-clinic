@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { SiteHeader } from "@/components/layout/site-header";
+import { SiteFooter } from "@/components/layout/site-footer";
 import { ConsultationHeroSection } from "@/components/sections/consultation-hero-section";
 import { EstimateSection } from "@/components/sections/estimate-section";
 import { BookingSection } from "@/components/sections/booking-section";
@@ -9,6 +11,11 @@ import { InternationalSection } from "@/components/sections/international-sectio
 import { BookingFaqSection } from "@/components/sections/booking-faq-section";
 import { clinic } from "@/lib/clinic";
 import { bookingFaqEntries } from "@/lib/booking-faq";
+import { getDictionary } from "@/lib/i18n/dictionary";
+import { DEFAULT_LOCALE } from "@/lib/i18n/locales";
+import { localeAlternates } from "@/lib/i18n/alternates";
+
+const dict = getDictionary(DEFAULT_LOCALE);
 
 const TITLE = "Book a Consultation at Vivid Clinic | Istanbul";
 const DESCRIPTION =
@@ -18,7 +25,7 @@ const PAGE_URL = "https://vivid.clinic/consultation/";
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: PAGE_URL },
+  alternates: { canonical: PAGE_URL, languages: localeAlternates("/consultation/") },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
@@ -74,15 +81,17 @@ export default function ConsultationPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <SiteHeader locale={DEFAULT_LOCALE} dict={dict} variant="consultation" />
       <main id="main" className="flex flex-1 flex-col">
         <ConsultationHeroSection />
         <EstimateSection />
         <BookingSection />
         <HowItWorksSection />
-        <WhyBookSection />
+        <WhyBookSection dict={dict} />
         <InternationalSection />
         <BookingFaqSection />
       </main>
+      <SiteFooter locale={DEFAULT_LOCALE} dict={dict} hasInlineTools />
     </>
   );
 }
