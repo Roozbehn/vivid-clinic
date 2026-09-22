@@ -55,9 +55,10 @@ export default function Home() {
         <CtaSection />
         <FaqSection />
         {/*
-          Still to port from the current static site: price estimator,
-          booking form (+ Cloudflare Function), "how it works", "why book
-          with us", international-patient info, and the i18n layer.
+          Price estimator, booking form, "how it works", "why book with
+          us", and international-patient info now live on /consultation/
+          (mirroring the static site's separate consultation page). Still
+          to port: the static site's 13-locale (incl. RTL) i18n layer.
           See web/MIGRATION-STATUS.md.
         */}
       </main>

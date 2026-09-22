@@ -15,6 +15,7 @@ interface ClinicData {
   contact: {
     phonePrimaryHref: string;
     phonePrimary: string;
+    whatsappNumber: string;
     whatsappUrl: string;
     whatsappPrefill: string;
     whatsappDisplay: string;
@@ -55,6 +56,7 @@ export const clinic = {
   contact: {
     phonePrimaryHref: raw.contact.phonePrimaryHref,
     phonePrimaryDisplay: raw.contact.phonePrimary,
+    whatsappNumber: raw.contact.whatsappNumber,
     whatsappUrl: raw.contact.whatsappUrl,
     whatsappPrefill: raw.contact.whatsappPrefill,
     whatsappDisplay: raw.contact.whatsappDisplay,

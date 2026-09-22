@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { reviewsSummary } from "@/lib/reviews";
 import { clinic } from "@/lib/clinic";
 
@@ -59,14 +61,12 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a
-                  href={clinic.contact.consultationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/consultation/"
                   className="hover:text-primary-foreground"
                 >
                   Free consultation &amp; estimate
-                </a>
+                </Link>
               </li>
               <li>
                 <a

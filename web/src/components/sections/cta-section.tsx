@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Phone } from "lucide-react";
 
 import { clinic } from "@/lib/clinic";
@@ -30,14 +31,12 @@ export function CtaSection() {
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <a
-            href={clinic.contact.consultationUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/consultation/"
             className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-7 py-3 text-sm font-medium text-primary shadow-[var(--shadow-md)] transition-shadow hover:shadow-[var(--shadow-hover)]"
           >
             Book a Free Consultation
-          </a>
+          </Link>
           <a
             href={whatsappHref}
             target="_blank"
@@ -56,16 +55,11 @@ export function CtaSection() {
         </div>
 
         <p className="mt-6 text-sm text-primary-foreground/70">
-          Or visit{" "}
-          <a
-            href={clinic.businessSite}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-4"
-          >
-            vividclinic.net
-          </a>{" "}
-          to send a consultation request.
+          Or see the full price estimate and booking form on the{" "}
+          <Link href="/consultation/" className="underline underline-offset-4">
+            consultation page
+          </Link>
+          .
         </p>
       </div>
     </section>

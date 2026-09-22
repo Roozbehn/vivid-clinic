@@ -91,29 +91,74 @@ folder is additive until it's ready to replace the production build.
 - **FAQ section** (`src/components/sections/faq-section.tsx`, `src/lib/faq.ts`)
   — the static site's 6 review-authenticity FAQs, ported verbatim, with the
   dynamic "the page currently shows N reviews…" sentence computed from the
-  real summary stats rather than hardcoded. (The site's other 6
-  booking/estimate FAQs are deferred until the booking flow and estimate
-  tool they describe actually exist in this app — see below.) Also added to
-  the page's FAQPage JSON-LD for SEO parity.
+  real summary stats rather than hardcoded. Also added to the page's
+  FAQPage JSON-LD for SEO parity.
+- **New `/consultation/` route** (`src/app/consultation/page.tsx`), mirroring
+  the static site's separate consultation page, with its own
+  MedicalClinic/WebPage/BreadcrumbList/FAQPage JSON-LD:
+  - **Consultation hero** (`src/components/sections/consultation-hero-section.tsx`)
+    — real copy from `consult_hero`, with quick links into the estimate
+    tool, the booking form, and WhatsApp.
+  - **Price-estimate calculator** (`src/components/ui/estimate-tool.tsx`,
+    `src/components/sections/estimate-section.tsx`, `src/lib/estimate-pricing.ts`)
+    — a faithful React port of the static site's `src/js/estimate.js`:
+    category filter chips + search over the real 66-service/13-category
+    price list (`src/data/estimate-pricing.json`, synced through the same
+    data pipeline as the reviews), per-service add/remove, a live summary
+    with the best-matching real bundle-discount logic, and a "Send estimate
+    on WhatsApp" share using the real prefill message template. Session-only
+    state, no localStorage — same as the original.
+  - **Booking form** (`src/components/ui/booking-form.tsx`,
+    `src/components/sections/booking-section.tsx`, `src/lib/booking-options.ts`)
+    — collects the same fields and validation as the static site's 5-step
+    wizard (`src/js/booking.js`), but as a **single-step form** rather than
+    a wizard — a deliberate scope simplification to manage the size of this
+    migration; the multi-step UX is a candidate for a future pass. All
+    treatment/category/timeline/language/etc. option lists are the repo's
+    real `booking-options.json`, not invented. There is no backend in this
+    static export, so on submit the form goes straight to the *original
+    site's own designed fallback behavior*: `src/js/booking.js` already
+    falls back to a prefilled WhatsApp message whenever its POST to
+    `/api/booking` fails, so building this version as WhatsApp-only (no
+    fetch attempted at all) is a faithful reimplementation of existing
+    behavior, not a deviation from it.
+  - **"How it works"** (`src/components/sections/how-it-works-section.tsx`)
+    — the real 4-step explanation, ported verbatim.
+  - **"Why book with Vivid Clinic"** (`src/components/sections/why-book-section.tsx`)
+    — reuses the same real `FEATURES` list as the homepage's "Why Vivid
+    Clinic" section (now extracted to `src/lib/features.ts` +
+    `src/components/ui/feature-grid.tsx` so both sections share one source
+    of truth), exactly as `scripts/build-site.mjs` reuses the same
+    `features` array for both sections on the static site.
+  - **International-patients section** (`src/components/sections/international-section.tsx`)
+    — real copy from `international`.
+  - **Booking/estimate FAQ section** (`src/components/sections/booking-faq-section.tsx`,
+    `src/lib/booking-faq.ts`) — the site's other 6 FAQs, ported verbatim;
+    the "will I receive an exact price" answer's price examples (hair
+    transplant, rhinoplasty, breast implants, gastric sleeve) are computed
+    from the real price list via `fromPriceFor()`, not hardcoded.
+  - Header now links to `/consultation/` (replacing the external "View on
+    Google" link, which is still reachable from the score-summary section
+    and footer), and the homepage CTA band + footer's "Free consultation &
+    estimate" link now point at this internal route instead of
+    `vividclinic.net`.
 - `next build` (static export to `web/out/`) passes clean: TypeScript
   typecheck, ESLint (0 errors, 2 pre-existing-pattern warnings noted below),
-  and static generation all succeed. Visually verified at desktop (1440px)
-  and mobile (390px) widths, including the search/filter interaction on the
-  review grid and the FAQ accordion.
+  and static generation all succeed for both `/` and `/consultation/`.
+  Visually verified at desktop (1440px) and mobile (390px) widths, including
+  the review grid's search/filter, the FAQ accordions, the estimate
+  calculator's live selection/total/bundle-discount, and the booking form.
 
-## What's NOT done yet (this was a large ask — see the PR for the full list)
+## What's NOT done yet
 
-Remaining: price-estimate calculator, booking form (backed by
-`functions/api/booking.js`), "how it works", "why book with us" (a
-consultation-page repeat of the why-Vivid features), international-patient
-info, the 6 booking/estimate FAQs, and the site's 13-locale (incl. RTL) i18n
-layer. All of those live on the static site's separate `/consultation/` page
-and/or depend on the estimate/booking tools, so they're a bigger, riskier
-chunk than what's above — deliberately left for a dedicated pass. Porting
-them, plus re-verifying the Lighthouse 100/100/100 + sitemap/indexing
-behavior the static site currently has, is realistically its own
-multi-session project. This migration should be treated as in progress, not
-complete — please don't point the production domain at `web/out/` yet.
+The static site's 13-locale (incl. RTL) i18n layer is the only major piece
+left unported — everything else from the original static site now has a
+React/Tailwind/shadcn-conventions equivalent in `web/`. Also not yet done:
+re-verifying the Lighthouse 100/100/100 + sitemap/indexing behavior the
+static site currently has, and deciding whether the booking form should
+become a multi-step wizard again (currently single-step, see above). This
+migration should be treated as in progress, not complete — please don't
+point the production domain at `web/out/` yet.
 
 ## Known sandbox-only artifact
 
