@@ -3,30 +3,32 @@ import { Phone, Sparkles } from "lucide-react";
 import { clinic } from "@/lib/clinic";
 import type { Dictionary } from "@/lib/i18n/dictionary";
 import { fmt } from "@/lib/i18n/format";
+import { localeHref } from "@/lib/i18n/locales";
 
 // Real copy, ported from source.en.json's "cta_band" + "common" keys.
 // `hasInlineTools`: true on the English homepage, where the estimate
 // calculator (#estimate) and booking form (#book) are embedded on the same
 // page (matching the static site's real homepage, which also embeds both) —
 // the primary buttons then scroll to them in-page. Translated locale
-// homepages don't have those tools wired up yet (see MIGRATION-STATUS.md),
-// so there `hasInlineTools` is false and the same buttons link out to the
-// real, live vividclinic.net consultation flow instead of a dead anchor.
+// homepages don't embed those tools (see MIGRATION-STATUS.md), so there
+// `hasInlineTools` is false and the same buttons link to that locale's own
+// /consultation/ page instead — which does embed them (Phase B) — rather
+// than a dead anchor.
 export function CtaSection({
   dict,
+  locale,
   hasInlineTools,
 }: {
   dict: Dictionary;
+  locale: string;
   hasInlineTools: boolean;
 }) {
   const whatsappHref = `${clinic.contact.whatsappUrl}&text=${encodeURIComponent(
     clinic.contact.whatsappPrefill,
   )}`;
-  const bookHref = hasInlineTools ? "#book" : clinic.contact.consultationUrl;
-  const estimateHref = hasInlineTools ? "#estimate" : clinic.contact.consultationUrl;
-  const externalProps = hasInlineTools
-    ? {}
-    : { target: "_blank" as const, rel: "noopener noreferrer" };
+  const consultationHref = `${localeHref(locale)}/consultation/`;
+  const bookHref = hasInlineTools ? "#book" : `${consultationHref}#book`;
+  const estimateHref = hasInlineTools ? "#estimate" : `${consultationHref}#estimate`;
 
   const visitNote = dict.cta_band.visit_note ?? "";
   const [visitBefore, visitAfter] = visitNote.includes("{site_link}")
@@ -56,14 +58,12 @@ export function CtaSection({
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a
             href={bookHref}
-            {...externalProps}
             className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-7 py-3 text-sm font-medium text-primary shadow-[var(--shadow-md)] transition-shadow hover:shadow-[var(--shadow-hover)]"
           >
             {dict.common.book_free_consultation}
           </a>
           <a
             href={estimateHref}
-            {...externalProps}
             className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-7 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/10"
           >
             <Sparkles className="h-4 w-4" aria-hidden="true" />

@@ -4,7 +4,7 @@ import { reviewsSummary } from "@/lib/reviews";
 import { clinic } from "@/lib/clinic";
 import type { Dictionary } from "@/lib/i18n/dictionary";
 import { fmt } from "@/lib/i18n/format";
-import { DEFAULT_LOCALE } from "@/lib/i18n/locales";
+import { localeHref } from "@/lib/i18n/locales";
 
 function formatSocialLabel(url: string): string {
   return url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
@@ -28,9 +28,10 @@ function formatUpdatedDate(iso: string, locale: string): string {
   }
 }
 
-// hasInlineTools: see cta-section.tsx — true on both English pages (home and
-// /consultation/ both embed the real estimate/booking sections), false on
-// translated locale homepages until those tools are localized too.
+// hasInlineTools: see cta-section.tsx — true wherever the estimate/booking
+// sections are actually embedded on the page: the English homepage and every
+// locale's /consultation/ page (all now localized, Phase B). False on the
+// translated locale homepages, which don't embed those tools.
 export function SiteFooter({
   locale,
   dict,
@@ -44,7 +45,6 @@ export function SiteFooter({
   const lastUpdated = reviewsSummary.latestReviewDate
     ? formatUpdatedDate(reviewsSummary.latestReviewDate, locale)
     : null;
-  const isEnglish = locale === DEFAULT_LOCALE;
 
   return (
     <footer className="bg-primary text-primary-foreground">
@@ -89,24 +89,14 @@ export function SiteFooter({
                   </a>
                 </li>
               )}
-              {isEnglish ? (
-                <li>
-                  <Link href="/consultation/" className="hover:text-primary-foreground">
-                    {dict.footer.link_consultation}
-                  </Link>
-                </li>
-              ) : (
-                <li>
-                  <a
-                    href={clinic.contact.consultationUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-primary-foreground"
-                  >
-                    {dict.footer.link_consultation}
-                  </a>
-                </li>
-              )}
+              <li>
+                <Link
+                  href={`${localeHref(locale)}/consultation/`}
+                  className="hover:text-primary-foreground"
+                >
+                  {dict.footer.link_consultation}
+                </Link>
+              </li>
               <li>
                 <a
                   href={clinic.contact.galleryUrl}

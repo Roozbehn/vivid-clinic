@@ -66,12 +66,12 @@ export default function Home() {
         <ScoreSummarySection dict={dict} />
         <ReviewsSection dict={dict} locale={DEFAULT_LOCALE} />
         <PhotosSection dict={dict} locale={DEFAULT_LOCALE} />
-        <EstimateSection />
-        <BookingSection />
-        <HowItWorksSection />
+        <EstimateSection dict={dict} />
+        <BookingSection dict={dict} locale={DEFAULT_LOCALE} />
+        <HowItWorksSection dict={dict} />
         <WhySection dict={dict} />
         <ThemesSection dict={dict} />
-        <CtaSection dict={dict} hasInlineTools />
+        <CtaSection dict={dict} locale={DEFAULT_LOCALE} hasInlineTools />
         <FaqSection dict={dict} />
       </main>
       <SiteFooter locale={DEFAULT_LOCALE} dict={dict} hasInlineTools />

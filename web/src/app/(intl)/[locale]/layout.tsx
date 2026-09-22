@@ -4,8 +4,6 @@ import { notFound } from "next/navigation";
 import localFont from "next/font/local";
 import "../../globals.css";
 
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { LOCALE_CODES, isRtl, localeConfig } from "@/lib/i18n/locales";
 import { localeAlternates } from "@/lib/i18n/alternates";
@@ -69,6 +67,12 @@ export async function generateMetadata({
 // is a second Next.js "root layout" rather than a shared one: a static
 // export has no middleware/rewrites to vary <html lang>/dir> per request,
 // so each locale group needs its own <html>/<body>).
+//
+// SiteHeader/SiteFooter are rendered by each page (not here), matching
+// app/(en)/layout.tsx: the header's brand-subtitle text and the footer's
+// hasInlineTools both differ between "/<locale>/" and "/<locale>/consultation/"
+// (variant "home" vs "consultation"), which a shared layout can't express
+// without client-side pathname reads.
 export default async function LocaleRootLayout({
   children,
   params,
@@ -80,7 +84,6 @@ export default async function LocaleRootLayout({
   const config = localeConfig(locale);
   if (!config) notFound();
 
-  const dict = getDictionary(locale);
   const dir = isRtl(locale) ? "rtl" : "ltr";
 
   return (
@@ -96,9 +99,7 @@ export default async function LocaleRootLayout({
         >
           Skip to main content
         </a>
-        <SiteHeader locale={locale} dict={dict} variant="home" />
         {children}
-        <SiteFooter locale={locale} dict={dict} hasInlineTools={false} />
       </body>
     </html>
   );

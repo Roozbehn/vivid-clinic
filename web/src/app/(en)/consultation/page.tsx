@@ -10,12 +10,13 @@ import { WhyBookSection } from "@/components/sections/why-book-section";
 import { InternationalSection } from "@/components/sections/international-section";
 import { BookingFaqSection } from "@/components/sections/booking-faq-section";
 import { clinic } from "@/lib/clinic";
-import { bookingFaqEntries } from "@/lib/booking-faq";
+import { getBookingFaqEntries } from "@/lib/booking-faq";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { DEFAULT_LOCALE } from "@/lib/i18n/locales";
 import { localeAlternates } from "@/lib/i18n/alternates";
 
 const dict = getDictionary(DEFAULT_LOCALE);
+const bookingFaqEntries = getBookingFaqEntries(dict, DEFAULT_LOCALE);
 
 const TITLE = "Book a Consultation at Vivid Clinic | Istanbul";
 const DESCRIPTION =
@@ -83,13 +84,13 @@ export default function ConsultationPage() {
       />
       <SiteHeader locale={DEFAULT_LOCALE} dict={dict} variant="consultation" />
       <main id="main" className="flex flex-1 flex-col">
-        <ConsultationHeroSection />
-        <EstimateSection />
-        <BookingSection />
-        <HowItWorksSection />
+        <ConsultationHeroSection dict={dict} locale={DEFAULT_LOCALE} />
+        <EstimateSection dict={dict} />
+        <BookingSection dict={dict} locale={DEFAULT_LOCALE} />
+        <HowItWorksSection dict={dict} />
         <WhyBookSection dict={dict} />
-        <InternationalSection />
-        <BookingFaqSection />
+        <InternationalSection dict={dict} />
+        <BookingFaqSection dict={dict} locale={DEFAULT_LOCALE} />
       </main>
       <SiteFooter locale={DEFAULT_LOCALE} dict={dict} hasInlineTools />
     </>

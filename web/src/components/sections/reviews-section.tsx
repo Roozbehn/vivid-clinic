@@ -1,8 +1,10 @@
 import { reviewsWithText } from "@/lib/reviews";
+import { withReviewLocalization } from "@/lib/review-i18n";
 import { ReviewGrid } from "@/components/ui/review-grid";
 import type { Dictionary } from "@/lib/i18n/dictionary";
 
 export function ReviewsSection({ dict, locale }: { dict: Dictionary; locale: string }) {
+  const reviews = withReviewLocalization(reviewsWithText, locale);
   return (
     <section id="reviews" aria-labelledby="reviews-h" className="py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-6">
@@ -18,7 +20,7 @@ export function ReviewsSection({ dict, locale }: { dict: Dictionary; locale: str
           </p>
         </div>
 
-        <ReviewGrid reviews={reviewsWithText} dict={dict} locale={locale} />
+        <ReviewGrid reviews={reviews} dict={dict} locale={locale} />
 
         <p className="mt-10 text-center text-xs text-muted-foreground">
           {dict.common.medical_disclaimer}

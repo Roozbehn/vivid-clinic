@@ -53,7 +53,9 @@ folder is additive until it's ready to replace the production build.
   Vivid Clinic are shown inline). Client-side search-by-name/text, sort by
   newest/highest/lowest, and "Show more" pagination (12 at a time) so all
   results stay reachable without a heavy initial payload. The medical
-  disclaimer is repeated in this section's footer too.
+  disclaimer is repeated in this section's footer too. (Sort options were
+  originally an invented "newest/highest/lowest" — fixed in Phase B below
+  to match the real site's Featured/Newest/Most-detailed chips.)
 - **Data-sync pipeline** (`web/scripts/sync-data.mjs`, wired into `predev`/
   `prebuild`) — copies the repo-root `src/data/{google-reviews.json,
   clinic.json, google-media.json}` into a gitignored `web/src/data/generated/`
@@ -83,11 +85,11 @@ folder is additive until it's ready to replace the production build.
   dataset — the exact same aggregation logic as `scripts/lib.mjs`'s
   `computeThemes`, just re-implemented in TypeScript.
 - **CTA band** (`src/components/sections/cta-section.tsx`) — WhatsApp, call,
-  and consultation links, all real. Note: it links out to
-  `vividclinic.net`'s consultation page for now rather than an in-page
-  `#book`/`#estimate` anchor, since the booking form and estimate calculator
-  don't exist in this app yet (see below) — switch those links to internal
-  anchors once those sections are built.
+  and consultation links, all real. `hasInlineTools` picks in-page
+  `#book`/`#estimate` anchors when the tools are embedded on the same page,
+  or that locale's own `/consultation/#book`/`#estimate` otherwise (updated
+  in Phase B once every locale had a real `/consultation/` page to link to
+  — see below).
 - **FAQ section** (`src/components/sections/faq-section.tsx`, `src/lib/faq.ts`)
   — the static site's 6 review-authenticity FAQs, ported verbatim, with the
   dynamic "the page currently shows N reviews…" sentence computed from the
@@ -176,48 +178,109 @@ folder is additive until it's ready to replace the production build.
     review cards (translation/owner-reply labels, per-review "Review on
     Google" link, locale-aware date formatting), photo gallery, "Why Vivid
     Clinic", review themes, CTA band, FAQ.
-  - **Deliberately left English-only on every locale**: the bonus
-    testimonials-columns section (built from real English review excerpts
-    that can't be translated without fabricating copy — not part of the
-    original static site) and, for now, the `/consultation/` page and its
-    estimate/booking/how-it-works tools (see Phase B below). Translated
-    homepages' CTA/footer/header consultation links point out to the real,
-    live `vividclinic.net` flow instead of a dead in-page anchor or a
-    404, via a `hasInlineTools` prop each affected component takes.
+  - Translated homepages' CTA/footer/header consultation links pointed out
+    to the real, live `vividclinic.net` flow in Phase A (no localized
+    `/consultation/` existed yet) — **superseded in Phase B below**, now
+    that every locale has its own real `/consultation/` page.
   - `web/scripts/sync-data.mjs` also copies the full `src/data/i18n/`
     catalog (27 files: `source.en.json` + 13 `ui.*.json` + 13
     `reviews.*.json`) into `web/src/data/generated/i18n/`.
+
+- **13-locale i18n layer — Phase B (consultation page, review-text overlay,
+  sitemap).**
+  - **`/consultation/` fully localized in all 13 locales**
+    (`app/(intl)/[locale]/consultation/page.tsx`, mirroring
+    `app/(en)/consultation/page.tsx` section for section): consultation
+    hero, price-estimate calculator (`estimate-tool.tsx` — every filter
+    chip, search placeholder, count text, Add/Added button, summary aside,
+    bundle-discount line, WhatsApp share text, and disclaimer now dictionary-
+    driven via `js_estimate`, plus the real per-locale treatment/bundle
+    names, descriptions, and category labels via `getLocalizedPricing()`),
+    booking form (`booking-form.tsx` — every legend/label/placeholder/help/
+    error/summary/WhatsApp-line/success string now dictionary-driven via
+    `js_booking`, using `getLocalizedBookingOptions()` for the real
+    category/treatment/timeline/language/etc. option labels), "how it
+    works", "why book", international-patients, and booking FAQ (price
+    examples still computed from the real price list, joined with `، ` on
+    the Persian page to match the static site's own locale-aware joiner).
+  - **Consultation hero's buttons realigned** to the real site's actual
+    3-button pattern (`common.start_consultation` → `#book`,
+    `common.contact_on_whatsapp` → WhatsApp, `common.read_patient_reviews`
+    → the locale's homepage), replacing the bespoke English-only buttons
+    ("Get an estimate" / "Go straight to the form" / "WhatsApp instead")
+    this section previously shipped with — those weren't real site copy.
+  - **Estimate-tool → booking-form handoff**: "Continue to consultation"
+    now dispatches the same `vivid:prefill-booking` custom event
+    `src/js/estimate.js` does, carrying the selected treatments' booking
+    category (via the same `CATMAP`) and a real prefilled message
+    (`js_estimate.booking_prefill_message`) into the booking form's first
+    step — not just a scroll-to-anchor as before.
+  - **Internal consultation links generalized to every locale**: now that
+    `/consultation/` is real everywhere, `site-header.tsx`, `site-footer.tsx`,
+    and `cta-section.tsx` link to `${localeHref(locale)}/consultation/`
+    unconditionally (previously only English linked internally; translated
+    locales linked out to `vividclinic.net`). `cta-section.tsx`'s
+    `hasInlineTools=false` path (translated homepages, which still don't
+    embed the tools inline) now points its book/estimate buttons at that
+    locale's own `/consultation/#book`/`#estimate` instead of the external
+    site.
+  - **Per-review translation overlay wired up**
+    (`src/lib/review-i18n.ts`) — a faithful port of
+    `scripts/build-site.mjs`'s `reviewLoc()`/`shortHash()`: each
+    `reviews.<code>.json` pack's per-review translation is validated
+    against a hash of the review's current source text (and, in newer
+    catalog entries, its reply) before being shown, so a stale translation
+    generated against different source text is silently dropped rather
+    than shown next to a mismatched review — same cache-invalidation
+    contract as the static site. `review-card.tsx` shows the localized
+    text as the main body with a "Show original"/"Hide original" toggle
+    revealing the verbatim source (and original reply) underneath,
+    matching the static site's real UX and `reviews_ui.card_show_original`/
+    `card_hide_original`/`card_auto_translated*` copy; this is separate
+    from (and composes with) each review's own Google-provided
+    `translatedText`, which is unaffected.
+  - **Review grid sort options fixed**: replaced the invented "Highest
+    rated"/"Lowest rated" (no equivalent in the real catalog, and not
+    part of the real site's UI) with the real site's actual three visible
+    sort chips — Featured (default: featured first, then newest), Newest,
+    Most detailed (longest original review text first) — using the real
+    `chip_sort_featured`/`chip_sort_newest`/`chip_sort_detailed` catalog
+    keys, and including each review's localized text in the search index
+    alongside its original/Google-translated text.
+  - **Sitemap + robots** (`app/sitemap.ts`, `app/robots.ts`) — a faithful
+    port of `scripts/build-site.mjs`'s `sitemap.xml`/`robots.txt`: `/` and
+    the 13 `/<locale>/` home routes (priority 1.0/0.8, only listed once
+    real reviews are imported, matching the static site's noindex-while-
+    empty behavior) plus `/consultation/` and the 13
+    `/<locale>/consultation/` routes (priority 0.9/0.7, always listed),
+    each with the same 15-way `<xhtml:link>` alternate block
+    (`lib/i18n/alternates.ts`, now also used for `/consultation/`) Google's
+    multilingual sitemap format expects. `robots.txt` always allows
+    crawling and references the sitemap.
 - `next build` (static export to `web/out/`) passes clean: TypeScript
-  typecheck, ESLint (0 errors, 2 pre-existing-pattern warnings noted below),
-  and static generation all succeed — 18 pages: `/`, `/consultation/`, and
-  the 13 `/<locale>/` homepages. Visually verified at desktop width,
-  including an RTL locale (Arabic and Persian both render `dir="rtl"` with
-  correctly mirrored layout), the language switcher dropdown, a review
-  card's real "Translated from X" label on an actually-translated review,
-  and the English homepage's newly-added estimate/booking/how-it-works
-  sections.
+  typecheck, ESLint (0 errors, 1 pre-existing-pattern warning unrelated to
+  this migration), and static generation all succeed — 33 pages: `/`,
+  `/consultation/`, `/sitemap.xml`, `/robots.txt`, and both a homepage and
+  a `/consultation/` page for each of the 13 locales. Visually verified at
+  desktop width, including an RTL locale (`fa`, `dir="rtl"`, fully
+  localized estimate tool and booking form), a locale homepage's real
+  Featured/Newest/Most-detailed sort chips (Featured selected by default),
+  and a translated review card's "Show original"/"Hide original" toggle.
+  `sitemap.xml` verified to contain 28 URLs (14 home + 14 consultation)
+  with absolute, correctly-prioritized entries and 15 alternates each.
 
 ## What's NOT done yet
 
-**i18n Phase B** (deferred to keep Phase A a reviewable unit): localizing
-`/consultation/` itself and its estimate calculator / booking form / "how
-it works" / "why book" / international-patients / booking-FAQ sections;
-consuming the per-review translation overlay in `src/data/i18n/reviews.<code>.json`
-(currently only each review's own real `translatedText`/`originalLanguage`
-fields from the Google API are shown — the static site's additional
-locale-specific review-text overlay isn't wired up yet); a sitemap covering
-the locale routes; and the review grid's "Highest rated"/"Lowest rated"
-sort-option labels, which have no equivalent in the real catalog (the
-static site's sort semantics are Featured/Newest/Most-detailed) and so
-still render in English on every locale — needs a decision on whether to
-add English-only labels there or remap the sort UI to match the original's
-three real options.
+Re-verifying the Lighthouse 100/100/100 behavior the static site currently
+has; deciding whether the booking form should become a multi-step wizard
+again (currently single-step, a deliberate Phase A scope simplification —
+see above); and the bonus testimonials-columns section (built from real
+English review excerpts that can't be translated without fabricating copy
+— not part of the original static site) stays English-only by design, on
+every locale including English's own homepage variant.
 
-Beyond i18n: re-verifying the Lighthouse 100/100/100 + sitemap/indexing
-behavior the static site currently has, and deciding whether the booking
-form should become a multi-step wizard again (currently single-step, see
-above). This migration should be treated as in progress, not complete —
-please don't point the production domain at `web/out/` yet.
+This migration should be treated as in progress, not complete — please
+don't point the production domain at `web/out/` yet.
 
 ## Known sandbox-only artifact
 

@@ -4,10 +4,9 @@ import { DEFAULT_LOCALE, LOCALES, localeHref } from "@/lib/i18n/locales";
 // page path (e.g. "/" or "/consultation/"), covering all 14 locale variants
 // plus x-default — mirroring the static site's hreflangBlock() in
 // scripts/build-site.mjs, which emits the same set of <link rel="alternate">
-// tags on every page. Only English currently serves subpages other than the
-// homepage (translated locales redirect visitors to the real, live
-// vividclinic.net flow for anything not yet localized — see
-// MIGRATION-STATUS.md), so `path` should stay "/" for locale pages.
+// tags on every page. Both "/" and "/consultation/" now exist in every
+// locale (Phase A + Phase B — see MIGRATION-STATUS.md), so `path` can be
+// either.
 export function localeAlternates(path: string): Record<string, string> {
   const languages: Record<string, string> = {
     [DEFAULT_LOCALE]: `${localeHref(DEFAULT_LOCALE)}${path}`,

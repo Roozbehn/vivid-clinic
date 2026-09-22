@@ -1,4 +1,8 @@
-import type { GoogleReview } from "@/lib/reviews";
+"use client";
+
+import { useState } from "react";
+
+import type { LocalizedReview } from "@/lib/review-i18n";
 import type { Dictionary } from "@/lib/i18n/dictionary";
 import { fmt } from "@/lib/i18n/format";
 import { clinic } from "@/lib/clinic";
@@ -18,7 +22,7 @@ function Stars({ rating, dict }: { rating: number; dict: Dictionary }) {
   );
 }
 
-function formatReviewDate(review: GoogleReview, locale: string): string {
+function formatReviewDate(review: LocalizedReview, locale: string): string {
   if (locale === "en" && review.relativeDate) return review.relativeDate;
   try {
     return new Date(review.publishedAt).toLocaleDateString(locale);
@@ -27,21 +31,44 @@ function formatReviewDate(review: GoogleReview, locale: string): string {
   }
 }
 
+// Faithful port of scripts/build-site.mjs's reviewCard() text logic: when
+// this locale has a valid, non-stale translation of the review (localized*
+// fields, from lib/review-i18n.ts's per-review overlay), that translation is
+// shown as the main body with a "Show original" toggle revealing the
+// verbatim source text (and, if the reply wasn't itself translated, the
+// original reply too) — the original is always one tap away and always
+// authoritative, matching dict.reviews_ui.translation_note. Otherwise this
+// falls back to the review exactly as stored: original text plus Google's
+// own translatedText chip when present.
 export function ReviewCard({
   review,
   dict,
   locale,
 }: {
-  review: GoogleReview;
+  review: LocalizedReview;
   dict: Dictionary;
   locale: string;
 }) {
+  const [showOriginal, setShowOriginal] = useState(false);
   const languageName = dict.language_names[review.originalLanguage] ?? "";
+
+  const hasLocalization = review.localizedText != null && !!review.originalText;
+  const isTranslatedLocalization = hasLocalization && review.localizedTranslated;
+
   const translationLabel = review.translatedText
     ? languageName
       ? fmt(dict.reviews_ui.card_translated_from, { language: languageName })
       : dict.reviews_ui.card_translated_by_google
     : null;
+
+  const autoTranslatedLabel = languageName
+    ? fmt(dict.reviews_ui.card_auto_translated, { language: languageName })
+    : dict.reviews_ui.card_auto_translated_generic;
+
+  const displayedReply =
+    isTranslatedLocalization && review.localizedReply
+      ? review.localizedReply
+      : review.ownerReply;
 
   return (
     <article className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-sm)]">
@@ -68,25 +95,59 @@ export function ReviewCard({
         <Stars rating={review.rating} dict={dict} />
       </div>
 
-      {review.originalText && (
-        <p className="text-sm leading-relaxed text-foreground">{review.originalText}</p>
-      )}
-
-      {review.translatedText && (
-        <div className="rounded-xl bg-secondary/40 p-3">
-          <p className="mb-1 text-xs italic text-muted-foreground">{translationLabel}</p>
-          <p className="text-sm leading-relaxed text-foreground">{review.translatedText}</p>
+      {isTranslatedLocalization ? (
+        <div>
+          <p className="text-sm leading-relaxed text-foreground">{review.localizedText}</p>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <span className="text-xs italic text-muted-foreground">{autoTranslatedLabel}</span>
+            <button
+              type="button"
+              onClick={() => setShowOriginal((v) => !v)}
+              aria-expanded={showOriginal}
+              className="text-xs font-medium text-primary underline underline-offset-4"
+            >
+              {showOriginal ? dict.reviews_ui.card_hide_original : dict.reviews_ui.card_show_original}
+            </button>
+          </div>
+          {showOriginal && (
+            <div dir="auto" className="mt-3 border-t border-border pt-3">
+              <p className="text-sm leading-relaxed text-foreground">{review.originalText}</p>
+              {review.ownerReply && (
+                <div className="mt-3 rounded-xl bg-secondary/60 p-4">
+                  <p className="mb-1 text-xs font-medium uppercase tracking-wide text-primary">
+                    {dict.reviews_ui.card_owner_reply_label}
+                  </p>
+                  <p className="text-sm leading-relaxed text-secondary-foreground">
+                    {review.ownerReply}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
+      ) : hasLocalization ? (
+        // Source review is already in this page's language — shown as-is.
+        <p className="text-sm leading-relaxed text-foreground">{review.localizedText}</p>
+      ) : (
+        <>
+          {review.originalText && (
+            <p className="text-sm leading-relaxed text-foreground">{review.originalText}</p>
+          )}
+          {review.translatedText && (
+            <div className="rounded-xl bg-secondary/40 p-3">
+              <p className="mb-1 text-xs italic text-muted-foreground">{translationLabel}</p>
+              <p className="text-sm leading-relaxed text-foreground">{review.translatedText}</p>
+            </div>
+          )}
+        </>
       )}
 
-      {review.ownerReply && (
+      {displayedReply && (
         <div className="rounded-xl bg-secondary/60 p-4">
           <p className="mb-1 text-xs font-medium uppercase tracking-wide text-primary">
             {dict.reviews_ui.card_owner_reply_label}
           </p>
-          <p className="text-sm leading-relaxed text-secondary-foreground">
-            {review.ownerReply}
-          </p>
+          <p className="text-sm leading-relaxed text-secondary-foreground">{displayedReply}</p>
         </div>
       )}
 

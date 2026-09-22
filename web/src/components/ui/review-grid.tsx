@@ -2,26 +2,36 @@
 
 import { useMemo, useState } from "react";
 
-import type { GoogleReview } from "@/lib/reviews";
+import type { LocalizedReview } from "@/lib/review-i18n";
 import { ReviewCard } from "@/components/ui/review-card";
 import type { Dictionary } from "@/lib/i18n/dictionary";
 import { fmt } from "@/lib/i18n/format";
 
-type SortOrder = "newest" | "highest" | "lowest";
+// Sort semantics/labels match the real site's visible sort chips exactly
+// (scripts/build-site.mjs's reviewsControls + src/js/reviews.js's
+// applyFilters): Featured (featured first, then newest — the default),
+// Newest, and Most detailed (longest original review text first). The
+// static site also recognizes a hidden `?sort=highest` URL param with no
+// visible label of its own, so it's intentionally not offered here.
+type SortOrder = "featured" | "newest" | "detailed";
 
 const PAGE_SIZE = 12;
+
+function detailScore(r: LocalizedReview): number {
+  return (r.originalText || "").length;
+}
 
 export function ReviewGrid({
   reviews,
   dict,
   locale,
 }: {
-  reviews: GoogleReview[];
+  reviews: LocalizedReview[];
   dict: Dictionary;
   locale: string;
 }) {
   const [query, setQuery] = useState("");
-  const [sort, setSort] = useState<SortOrder>("newest");
+  const [sort, setSort] = useState<SortOrder>("featured");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const filtered = useMemo(() => {
@@ -29,22 +39,30 @@ export function ReviewGrid({
     let result = reviews;
     if (q) {
       result = result.filter((r) => {
-        const text = (r.translatedText || r.originalText || "").toLowerCase();
-        return (
-          r.reviewerName.toLowerCase().includes(q) || text.includes(q)
-        );
+        const text = (
+          (r.originalText || "") +
+          " " +
+          (r.translatedText || "") +
+          " " +
+          (r.localizedText || "")
+        ).toLowerCase();
+        return r.reviewerName.toLowerCase().includes(q) || text.includes(q);
       });
     }
 
     const sorted = [...result];
-    if (sort === "highest") {
-      sorted.sort((a, b) => b.rating - a.rating);
-    } else if (sort === "lowest") {
-      sorted.sort((a, b) => a.rating - b.rating);
-    } else {
+    if (sort === "newest") {
       sorted.sort(
         (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
       );
+    } else if (sort === "detailed") {
+      sorted.sort((a, b) => detailScore(b) - detailScore(a));
+    } else {
+      // featured: featured first, then newest.
+      sorted.sort((a, b) => {
+        if (!!b.isFeatured !== !!a.isFeatured) return b.isFeatured ? 1 : -1;
+        return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+      });
     }
     return sorted;
   }, [reviews, query, sort]);
@@ -83,9 +101,9 @@ export function ReviewGrid({
             onChange={(e) => setSort(e.target.value as SortOrder)}
             className="rounded-full border border-border bg-card px-4 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           >
+            <option value="featured">{dict.reviews_ui.chip_sort_featured}</option>
             <option value="newest">{dict.reviews_ui.chip_sort_newest}</option>
-            <option value="highest">Highest rated</option>
-            <option value="lowest">Lowest rated</option>
+            <option value="detailed">{dict.reviews_ui.chip_sort_detailed}</option>
           </select>
         </div>
       </div>

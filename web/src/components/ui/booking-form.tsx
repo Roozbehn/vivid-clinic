@@ -1,21 +1,17 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { MessageCircle } from "lucide-react";
 
 import { clinic } from "@/lib/clinic";
+import type { LocalizedBookingOptions } from "@/lib/booking-options";
+import type { Dictionary } from "@/lib/i18n/dictionary";
+import { fmt } from "@/lib/i18n/format";
+import { localeHref } from "@/lib/i18n/locales";
 import {
-  consultationTypeOptions,
-  contactMethodOptions,
-  countryOptions,
-  languageOptions,
-  previousTreatmentOptions,
-  timeRangeOptions,
-  timelineOptions,
-  transferOptions,
-  travelOptions,
-  treatmentCategories,
-} from "@/lib/booking-options";
+  PREFILL_BOOKING_EVENT,
+  type PrefillBookingDetail,
+} from "@/components/ui/estimate-tool";
 
 // Simplified, faithful port of src/js/booking.js: the original site runs this
 // as a 5-step wizard, but every field here collects the same data with the
@@ -26,7 +22,9 @@ import {
 // mirrors src/js/booking.js's own behavior, which falls back to WhatsApp
 // whenever its POST to /api/booking fails. Session-only state — nothing is
 // persisted or sent anywhere except the WhatsApp deep link the visitor opens
-// themselves.
+// themselves. Every string is drawn from the dictionary's "js_booking" and
+// "common" catalog groups, and option labels from the locale-aware
+// booking-options.ts (getLocalizedBookingOptions).
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function labelFor(list: { value: string; label: string }[], value: string) {
@@ -124,7 +122,16 @@ const inputClass =
   "w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring";
 const labelClass = "mb-1.5 block text-sm font-medium text-foreground";
 
-export function BookingForm() {
+export function BookingForm({
+  dict,
+  options,
+  locale,
+}: {
+  dict: Dictionary;
+  options: LocalizedBookingOptions;
+  locale: string;
+}) {
+  const t = dict.js_booking;
   const [state, setState] = useState<FormState>(INITIAL_STATE);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -133,69 +140,86 @@ export function BookingForm() {
     setState((prev) => ({ ...prev, [key]: value }));
   }
 
+  // Carries a selection made in the estimate tool into this form's first
+  // step, matching src/js/estimate.js's continueToBooking() + src/js/
+  // booking.js's own listener for the same "vivid:prefill-booking" event.
+  useEffect(() => {
+    function onPrefill(e: Event) {
+      const detail = (e as CustomEvent<PrefillBookingDetail>).detail;
+      if (!detail) return;
+      setState((prev) => ({
+        ...prev,
+        category: detail.category || prev.category,
+        treatment: detail.treatment || prev.treatment,
+        message: detail.message || prev.message,
+      }));
+    }
+    document.addEventListener(PREFILL_BOOKING_EVENT, onPrefill);
+    return () => document.removeEventListener(PREFILL_BOOKING_EVENT, onPrefill);
+  }, []);
+
   const treatments = useMemo(
     () =>
-      treatmentCategories.find((c) => c.value === state.category)
-        ?.treatments ?? [],
-    [state.category],
+      options.categories.find((c) => c.value === state.category)?.treatments ?? [],
+    [options.categories, state.category],
   );
 
   const whatsappHref = useMemo(() => {
-    const lines = ["Hello Vivid Clinic, I would like to request a consultation."];
-    const catLabel = labelFor(treatmentCategories, state.category);
-    const treatLabel = state.treatment
-      ? labelFor(treatments, state.treatment)
-      : "";
+    const lines = [t.wa_line_greeting];
+    const catLabel = labelFor(options.categories, state.category);
+    const treatLabel = state.treatment ? labelFor(treatments, state.treatment) : "";
     if (state.category) {
       lines.push(
-        treatLabel
-          ? `• Treatment: ${catLabel} – ${treatLabel}`
-          : `• Treatment: ${catLabel}`,
+        fmt(t.wa_line_treatment, {
+          category: catLabel,
+          treatment: treatLabel || catLabel,
+        }),
       );
     }
     if (state.timeline) {
-      lines.push(`• Timeline: ${labelFor(timelineOptions, state.timeline)}`);
+      lines.push(fmt(t.wa_line_timeline, { timeline: labelFor(options.timelines, state.timeline) }));
     }
-    if (state.fullName) lines.push(`• Name: ${state.fullName}`);
-    if (state.country) lines.push(`• Country: ${state.country}`);
+    if (state.fullName) lines.push(fmt(t.wa_line_name, { name: state.fullName }));
+    if (state.country) lines.push(fmt(t.wa_line_country, { country: state.country }));
     if (state.preferredContactMethod) {
       lines.push(
-        `• Preferred contact: ${labelFor(contactMethodOptions, state.preferredContactMethod)}`,
+        fmt(t.wa_line_preferred_contact, {
+          method: labelFor(options.contactMethods, state.preferredContactMethod),
+        }),
       );
     }
-    lines.push("(Sent from vivid.clinic)");
+    lines.push(t.wa_line_sent_from);
     return `https://api.whatsapp.com/send/?phone=${encodeURIComponent(
       clinic.contact.whatsappNumber,
     )}&text=${encodeURIComponent(lines.join("\n"))}`;
-  }, [state, treatments]);
+  }, [state, treatments, options, t]);
 
   function validate(): boolean {
     const next: Record<string, string> = {};
-    if (!state.category) next.category = "Please choose a treatment area.";
-    if (!state.treatment) next.treatment = "Please choose a treatment.";
-    if (!state.timeline) next.timeline = "Please choose a timeline.";
+    if (!state.category) next.category = t.err_category;
+    if (!state.treatment) next.treatment = t.err_treatment;
+    if (!state.timeline) next.timeline = t.err_timeline;
     if (!state.fullName || state.fullName.trim().length < 2) {
-      next.fullName = "Please enter your name.";
+      next.fullName = t.err_name;
     }
     if (state.email && !EMAIL_RE.test(state.email)) {
-      next.email = "Please enter a valid email, or leave it blank.";
+      next.email = t.err_email;
     }
     if (!state.email && !state.phone && !state.whatsapp) {
-      next.contact =
-        "Please give us at least one way to reach you — email, phone, or WhatsApp.";
+      next.contact = t.help_one_contact_method;
     }
     if (!state.preferredContactMethod) {
-      next.preferredContactMethod = "Please choose a preferred contact method.";
+      next.preferredContactMethod = t.err_contact_method;
     }
     if (!state.consultationType) {
-      next.consultationType = "Please choose a consultation type.";
+      next.consultationType = t.err_consultation_type;
     }
     if (
       !state.contactConsent ||
       !state.medicalDisclaimerAccepted ||
       !state.privacyAccepted
     ) {
-      next.consent = "Please confirm the three required consents to continue.";
+      next.consent = t.err_consent;
     }
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -211,12 +235,10 @@ export function BookingForm() {
     return (
       <div className="rounded-2xl border border-border bg-card p-8 text-center shadow-[var(--shadow-sm)]">
         <h3 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-foreground">
-          Thank you, {state.fullName || "there"}.
+          {t.success_heading}
         </h3>
         <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Vivid Clinic will review your request and guide you through the
-          next step. Tip: tap &ldquo;Continue on WhatsApp&rdquo; below so the
-          coordinator sees your request right away.
+          {t.success_sub_unnotified}
         </p>
         <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <a
@@ -226,19 +248,22 @@ export function BookingForm() {
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-hover)]"
           >
             <MessageCircle className="h-4 w-4" aria-hidden="true" />
-            Continue on WhatsApp
+            {t.btn_continue_whatsapp}
           </a>
-          <button
-            type="button"
-            onClick={() => {
-              setState(INITIAL_STATE);
-              setErrors({});
-              setSubmitted(false);
-            }}
-            className="text-sm font-medium text-muted-foreground underline underline-offset-4 hover:text-foreground"
+          <a
+            href={clinic.businessSite}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-full border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
           >
-            Submit another request
-          </button>
+            {t.btn_visit_site}
+          </a>
+          <a
+            href={`${localeHref(locale)}/`}
+            className="inline-flex items-center justify-center rounded-full border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
+          >
+            {t.btn_back_to_reviews}
+          </a>
         </div>
       </div>
     );
@@ -253,23 +278,20 @@ export function BookingForm() {
       {/* honeypot */}
       <div className="hidden" aria-hidden="true">
         <label>
-          Company
+          {t.honeypot_label}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
 
       <fieldset className="flex flex-col gap-4">
         <legend className="font-[family-name:var(--font-display)] text-lg font-semibold text-foreground">
-          What are you interested in?
+          {t.step1_legend}
         </legend>
-        <p className="-mt-2 text-sm text-muted-foreground">
-          This helps us route you to the right specialist. You can change
-          details later with the coordinator.
-        </p>
+        <p className="-mt-2 text-sm text-muted-foreground">{t.step1_sub}</p>
 
         <div>
           <label htmlFor="bk-category" className={labelClass}>
-            Treatment area <span className="text-primary">*</span>
+            {t.label_treatment_area} <span className="text-primary">*</span>
           </label>
           <select
             id="bk-category"
@@ -280,8 +302,8 @@ export function BookingForm() {
               set("treatment", "");
             }}
           >
-            <option value="">Select a treatment area…</option>
-            {treatmentCategories.map((c) => (
+            <option value="">{t.placeholder_select_area}</option>
+            {options.categories.map((c) => (
               <option key={c.value} value={c.value}>
                 {c.label}
               </option>
@@ -294,7 +316,7 @@ export function BookingForm() {
 
         <div>
           <label htmlFor="bk-treatment" className={labelClass}>
-            Treatment <span className="text-primary">*</span>
+            {t.label_treatment} <span className="text-primary">*</span>
           </label>
           <select
             id="bk-treatment"
@@ -304,13 +326,11 @@ export function BookingForm() {
             onChange={(e) => set("treatment", e.target.value)}
           >
             <option value="">
-              {state.category
-                ? "Select a treatment…"
-                : "Choose a treatment area first…"}
+              {state.category ? t.placeholder_select_treatment : t.placeholder_choose_area_first}
             </option>
-            {treatments.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
+            {treatments.map((tr) => (
+              <option key={tr.value} value={tr.value}>
+                {tr.label}
               </option>
             ))}
           </select>
@@ -321,11 +341,11 @@ export function BookingForm() {
 
         <div>
           <span className={labelClass}>
-            Timeline <span className="text-primary">*</span>
+            {t.label_timeline} <span className="text-primary">*</span>
           </span>
           <ChipGroup
             name="timeline"
-            options={timelineOptions}
+            options={options.timelines}
             value={state.timeline}
             onChange={(v) => set("timeline", v)}
           />
@@ -337,17 +357,14 @@ export function BookingForm() {
 
       <fieldset className="flex flex-col gap-4 border-t border-border pt-8">
         <legend className="font-[family-name:var(--font-display)] text-lg font-semibold text-foreground">
-          How can we reach you?
+          {t.step2_legend}
         </legend>
-        <p className="-mt-2 text-sm text-muted-foreground">
-          A coordinator will use these details only to respond to your
-          request.
-        </p>
+        <p className="-mt-2 text-sm text-muted-foreground">{t.step2_sub}</p>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="bk-name" className={labelClass}>
-              Full name <span className="text-primary">*</span>
+              {t.label_full_name} <span className="text-primary">*</span>
             </label>
             <input
               id="bk-name"
@@ -365,7 +382,7 @@ export function BookingForm() {
 
           <div>
             <label htmlFor="bk-country" className={labelClass}>
-              Country
+              {t.label_country}
             </label>
             <input
               id="bk-country"
@@ -378,7 +395,7 @@ export function BookingForm() {
               onChange={(e) => set("country", e.target.value)}
             />
             <datalist id="bk-countries">
-              {countryOptions.map((c) => (
+              {options.countries.map((c) => (
                 <option key={c} value={c} />
               ))}
             </datalist>
@@ -386,7 +403,7 @@ export function BookingForm() {
 
           <div>
             <label htmlFor="bk-email" className={labelClass}>
-              Email
+              {t.label_email}
             </label>
             <input
               id="bk-email"
@@ -407,7 +424,7 @@ export function BookingForm() {
 
           <div>
             <label htmlFor="bk-phone" className={labelClass}>
-              Phone number
+              {t.label_phone}
             </label>
             <input
               id="bk-phone"
@@ -423,7 +440,7 @@ export function BookingForm() {
 
           <div>
             <label htmlFor="bk-whatsapp" className={labelClass}>
-              WhatsApp number
+              {t.label_whatsapp_number}
             </label>
             <input
               id="bk-whatsapp"
@@ -438,7 +455,7 @@ export function BookingForm() {
 
           <div>
             <label htmlFor="bk-language" className={labelClass}>
-              Preferred language
+              {t.label_preferred_language}
             </label>
             <select
               id="bk-language"
@@ -446,8 +463,8 @@ export function BookingForm() {
               value={state.preferredLanguage}
               onChange={(e) => set("preferredLanguage", e.target.value)}
             >
-              <option value="">Select…</option>
-              {languageOptions.map((l) => (
+              <option value="">{t.placeholder_select_default}</option>
+              {options.languages.map((l) => (
                 <option key={l.value} value={l.value}>
                   {l.label}
                 </option>
@@ -456,21 +473,18 @@ export function BookingForm() {
           </div>
         </div>
 
-        <p className="-mb-1 text-sm text-muted-foreground">
-          Please give us at least one way to reach you — email, phone, or
-          WhatsApp.
-        </p>
+        <p className="-mb-1 text-sm text-muted-foreground">{t.help_one_contact_method}</p>
         {errors.contact && (
           <p className="text-sm text-destructive">{errors.contact}</p>
         )}
 
         <div>
           <span className={labelClass}>
-            Preferred contact method <span className="text-primary">*</span>
+            {t.label_preferred_contact_method} <span className="text-primary">*</span>
           </span>
           <ChipGroup
             name="preferredContactMethod"
-            options={contactMethodOptions}
+            options={options.contactMethods}
             value={state.preferredContactMethod}
             onChange={(v) => set("preferredContactMethod", v)}
           />
@@ -483,13 +497,13 @@ export function BookingForm() {
 
         <div>
           <label htmlFor="bk-besttime" className={labelClass}>
-            Best time to contact you
+            {t.label_best_time}
           </label>
           <input
             id="bk-besttime"
             type="text"
             maxLength={120}
-            placeholder="e.g. weekday afternoons, my local time"
+            placeholder={t.placeholder_best_time}
             className={inputClass}
             value={state.bestTimeToContact}
             onChange={(e) => set("bestTimeToContact", e.target.value)}
@@ -499,21 +513,17 @@ export function BookingForm() {
 
       <fieldset className="flex flex-col gap-4 border-t border-border pt-8">
         <legend className="font-[family-name:var(--font-display)] text-lg font-semibold text-foreground">
-          Consultation &amp; travel
+          {t.step3_legend}
         </legend>
-        <p className="-mt-2 text-sm text-muted-foreground">
-          Tell us how you would like to talk. Nothing here is final — it just
-          helps us prepare.
-        </p>
+        <p className="-mt-2 text-sm text-muted-foreground">{t.step3_sub}</p>
 
         <div>
           <span className={labelClass}>
-            How would you like your consultation?{" "}
-            <span className="text-primary">*</span>
+            {t.label_consultation_type} <span className="text-primary">*</span>
           </span>
           <ChipGroup
             name="consultationType"
-            options={consultationTypeOptions}
+            options={options.consultationTypes}
             value={state.consultationType}
             onChange={(v) => set("consultationType", v)}
           />
@@ -527,7 +537,7 @@ export function BookingForm() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="bk-date" className={labelClass}>
-              Preferred date
+              {t.label_preferred_date}
             </label>
             <input
               id="bk-date"
@@ -538,10 +548,10 @@ export function BookingForm() {
             />
           </div>
           <div>
-            <span className={labelClass}>Preferred time</span>
+            <span className={labelClass}>{t.label_preferred_time}</span>
             <ChipGroup
               name="preferredTimeRange"
-              options={timeRangeOptions}
+              options={options.timeRanges}
               value={state.preferredTimeRange}
               onChange={(v) => set("preferredTimeRange", v)}
             />
@@ -549,86 +559,68 @@ export function BookingForm() {
         </div>
 
         <div>
-          <span className={labelClass}>
-            Are you planning to travel to Istanbul?
-          </span>
+          <span className={labelClass}>{t.label_traveling}</span>
           <ChipGroup
             name="travelingToIstanbul"
-            options={travelOptions}
+            options={options.travelOptions}
             value={state.travelingToIstanbul}
             onChange={(v) => set("travelingToIstanbul", v)}
           />
         </div>
 
         <div>
-          <span className={labelClass}>
-            Would you like help with travel coordination (transfers,
-            accommodation)?
-          </span>
+          <span className={labelClass}>{t.label_transfer_support}</span>
           <ChipGroup
             name="needsTransferHotelSupport"
-            options={transferOptions}
+            options={options.transferOptions}
             value={state.needsTransferHotelSupport}
             onChange={(v) => set("needsTransferHotelSupport", v)}
           />
-          <p className="mt-1.5 text-xs text-muted-foreground">
-            The coordinator can answer travel-coordination questions — this
-            is not a guaranteed service quote.
-          </p>
+          <p className="mt-1.5 text-xs text-muted-foreground">{t.help_transfer_support}</p>
         </div>
       </fieldset>
 
       <fieldset className="flex flex-col gap-4 border-t border-border pt-8">
         <legend className="font-[family-name:var(--font-display)] text-lg font-semibold text-foreground">
-          Anything else? (optional)
+          {t.step4_legend}
         </legend>
-        <p className="-mt-2 text-sm text-muted-foreground">
-          Keep it short — the coordinator will follow up for the rest.
-        </p>
+        <p className="-mt-2 text-sm text-muted-foreground">{t.step4_sub}</p>
 
         <div>
           <label htmlFor="bk-message" className={labelClass}>
-            Your message or goal
+            {t.label_message}
           </label>
           <textarea
             id="bk-message"
             maxLength={2000}
             rows={4}
-            placeholder="e.g. what you would like to improve, any questions"
+            placeholder={t.placeholder_message}
             className={inputClass}
             value={state.message}
             onChange={(e) => set("message", e.target.value)}
           />
-          <p className="mt-1.5 text-xs text-muted-foreground">
-            Please don&rsquo;t include urgent medical information here.
-          </p>
+          <p className="mt-1.5 text-xs text-muted-foreground">{t.help_message}</p>
         </div>
 
         <div>
-          <span className={labelClass}>
-            Have you had a previous treatment in this area?
-          </span>
+          <span className={labelClass}>{t.label_previous_treatment}</span>
           <ChipGroup
             name="previousTreatment"
-            options={previousTreatmentOptions}
+            options={options.previousTreatmentOptions}
             value={state.previousTreatment}
             onChange={(v) => set("previousTreatment", v)}
           />
         </div>
 
         <div className="rounded-xl border border-border bg-background p-4">
-          <p className="text-sm font-semibold text-foreground">Photos</p>
-          <p className="mt-1.5 text-sm text-muted-foreground">
-            You can share photos later with the coordinator on WhatsApp if
-            needed — there&rsquo;s no photo upload here, so nothing sensitive
-            is stored on this site.
-          </p>
+          <p className="text-sm font-semibold text-foreground">{t.photos_heading}</p>
+          <p className="mt-1.5 text-sm text-muted-foreground">{t.photos_help}</p>
         </div>
       </fieldset>
 
       <fieldset className="flex flex-col gap-3 border-t border-border pt-8">
         <legend className="font-[family-name:var(--font-display)] text-lg font-semibold text-foreground">
-          Review &amp; confirm
+          {t.step5_legend}
         </legend>
 
         <label className="flex items-start gap-2.5 text-sm text-foreground">
@@ -639,8 +631,7 @@ export function BookingForm() {
             onChange={(e) => set("contactConsent", e.target.checked)}
           />
           <span>
-            I consent to Vivid Clinic contacting me about my consultation
-            request. <span className="text-primary">*</span>
+            {t.consent_contact} <span className="text-primary">*</span>
           </span>
         </label>
 
@@ -654,9 +645,7 @@ export function BookingForm() {
             }
           />
           <span>
-            I understand this form is not a diagnosis and does not guarantee
-            treatment suitability, results, or prices.{" "}
-            <span className="text-primary">*</span>
+            {t.consent_disclaimer} <span className="text-primary">*</span>
           </span>
         </label>
 
@@ -668,16 +657,26 @@ export function BookingForm() {
             onChange={(e) => set("privacyAccepted", e.target.checked)}
           />
           <span>
-            I have read and agree to the{" "}
-            <a
-              href={clinic.contact.privacyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary underline underline-offset-4"
-            >
-              Privacy / KVKK notice
-            </a>
-            . <span className="text-primary">*</span>
+            {fmt(t.consent_privacy, {
+              privacy_link: `<privacy>${t.consent_privacy_link_text}</privacy>`,
+            })
+              .split(/<privacy>|<\/privacy>/)
+              .map((part, i) =>
+                i === 1 ? (
+                  <a
+                    key="privacy-link"
+                    href={clinic.contact.privacyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-primary underline underline-offset-4"
+                  >
+                    {part}
+                  </a>
+                ) : (
+                  <span key={`privacy-text-${i}`}>{part}</span>
+                ),
+              )}{" "}
+            <span className="text-primary">*</span>
           </span>
         </label>
 
@@ -688,10 +687,7 @@ export function BookingForm() {
             checked={state.marketingConsent}
             onChange={(e) => set("marketingConsent", e.target.checked)}
           />
-          <span>
-            I&rsquo;d like to receive follow-up information and offers from
-            Vivid Clinic. (optional)
-          </span>
+          <span>{t.consent_marketing}</span>
         </label>
 
         {errors.consent && (
@@ -700,16 +696,14 @@ export function BookingForm() {
       </fieldset>
 
       <div role="alert" className="sr-only" aria-live="assertive">
-        {Object.keys(errors).length > 0
-          ? "Please complete the highlighted fields."
-          : ""}
+        {Object.keys(errors).length > 0 ? t.err_form : ""}
       </div>
 
       <button
         type="submit"
         className="inline-flex items-center justify-center rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-md)] transition-shadow hover:shadow-[var(--shadow-hover)]"
       >
-        Submit request
+        {t.btn_submit}
       </button>
     </form>
   );

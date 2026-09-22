@@ -1,36 +1,27 @@
-// Real copy, ported verbatim from source.en.json's "how_it_works" key.
-const STEPS = [
-  {
-    title: "Send your request",
-    body: "Share your treatment interest and how to reach you — it takes about two minutes.",
-  },
-  {
-    title: "A coordinator reviews your needs",
-    body: "A Vivid Clinic patient coordinator looks at what you're asking for and how best to help.",
-  },
-  {
-    title: "The medical team evaluates suitability",
-    body: "Where appropriate, the medical team reviews your case to understand what may be possible.",
-  },
-  {
-    title: "You receive next-step guidance",
-    body: "You get clear, no-obligation guidance on the next step — on WhatsApp, video, or in clinic.",
-  },
-] as const;
+import type { Dictionary } from "@/lib/i18n/dictionary";
 
-export function HowItWorksSection() {
+// Copy from the dictionary's "how_it_works" catalog group.
+export function HowItWorksSection({ dict }: { dict: Dictionary }) {
+  const h = dict.how_it_works;
+  const STEPS = [
+    { title: h.step1_title, body: h.step1_body },
+    { title: h.step2_title, body: h.step2_body },
+    { title: h.step3_title, body: h.step3_body },
+    { title: h.step4_title, body: h.step4_body },
+  ] as const;
+
   return (
     <section id="how-it-works" aria-labelledby="hiw-h" className="bg-card py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto mb-14 max-w-2xl text-center">
           <span className="rounded-full border border-border px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
-            How it works
+            {h.eyebrow}
           </span>
           <h2
             id="hiw-h"
             className="mt-5 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"
           >
-            How the consultation works
+            {h.heading}
           </h2>
         </div>
 

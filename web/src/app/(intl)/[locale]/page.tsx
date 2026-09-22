@@ -1,3 +1,5 @@
+import { SiteHeader } from "@/components/layout/site-header";
+import { SiteFooter } from "@/components/layout/site-footer";
 import { HeroSection } from "@/components/sections/hero-section";
 import { ScoreSummarySection } from "@/components/sections/score-summary-section";
 import { ReviewsSection } from "@/components/sections/reviews-section";
@@ -18,9 +20,9 @@ export function generateStaticParams() {
 // Translated homepage: Phase A of the i18n port (see MIGRATION-STATUS.md).
 // Deliberately narrower than the English homepage — it omits Testimonials
 // (bonus/non-original section built from real English review excerpts that
-// can't be translated without fabricating copy) and the estimate/booking/
-// how-it-works tools (not localized yet; CtaSection links out to the real,
-// live vividclinic.net consultation flow instead via hasInlineTools=false).
+// can't be translated without fabricating copy) and doesn't embed the
+// estimate/booking/how-it-works tools inline; CtaSection instead links to
+// this locale's own /consultation/ page, which does embed them (Phase B).
 export default async function LocaleHome({
   params,
 }: {
@@ -63,6 +65,7 @@ export default async function LocaleHome({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <SiteHeader locale={locale} dict={dict} variant="home" />
       <main id="main" className="flex flex-1 flex-col">
         <HeroSection dict={dict} />
         <ScoreSummarySection dict={dict} />
@@ -70,9 +73,10 @@ export default async function LocaleHome({
         <PhotosSection dict={dict} locale={locale} />
         <WhySection dict={dict} />
         <ThemesSection dict={dict} />
-        <CtaSection dict={dict} hasInlineTools={false} />
+        <CtaSection dict={dict} locale={locale} hasInlineTools={false} />
         <FaqSection dict={dict} />
       </main>
+      <SiteFooter locale={locale} dict={dict} hasInlineTools={false} />
     </>
   );
 }
