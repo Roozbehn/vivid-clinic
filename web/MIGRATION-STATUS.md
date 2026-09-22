@@ -56,28 +56,64 @@ folder is additive until it's ready to replace the production build.
   disclaimer is repeated in this section's footer too.
 - **Data-sync pipeline** (`web/scripts/sync-data.mjs`, wired into `predev`/
   `prebuild`) — copies the repo-root `src/data/{google-reviews.json,
-  clinic.json}` into a gitignored `web/src/data/generated/` before every dev
-  server start and build, so `web/` always reads the same single
-  source-of-truth data as the static site instead of a duplicated copy that
-  could drift. `src/lib/clinic.ts` and `src/lib/reviews.ts` both load from
-  this generated folder.
+  clinic.json, google-media.json}` into a gitignored `web/src/data/generated/`
+  before every dev server start and build, so `web/` always reads the same
+  single source-of-truth data as the static site instead of a duplicated copy
+  that could drift. `src/lib/clinic.ts`, `src/lib/reviews.ts` and
+  `src/lib/gallery.ts` all load from this generated folder.
+- **Site header and footer** (`src/components/layout/site-header.tsx`,
+  `site-footer.tsx`), wired into `src/app/layout.tsx` so every page gets
+  them. Real address, phone, WhatsApp, and social links from
+  `src/data/clinic.json`; footer's "reviews last updated" date is computed
+  from the real dataset, not hardcoded.
+- **Patient photo gallery** (`src/components/sections/photos-section.tsx`,
+  `src/lib/gallery.ts`) — the clinic's real, self-hosted Google Business
+  Profile photos (`src/assets/gbp/*.jpg`, copied into `web/public/gbp/` the
+  same way the fonts were self-hosted), with real uploader names and dates.
+  Per README-reviews.md's compliance note, photos are shown as standalone
+  listing uploads, never tied to a specific review.
+- **"Why Vivid Clinic" section** (`src/components/sections/why-section.tsx`)
+  — the same 6 real feature/benefit statements from the static site's i18n
+  catalog, now with `lucide-react` icons (as named in the original brief)
+  instead of inline SVG.
+- **Review themes section** (`src/components/sections/themes-section.tsx`,
+  `src/lib/themes.ts`) — real theme counts (communication, staff,
+  cleanliness, doctor, coordination, follow-up, results, value), computed
+  client-side from the `tags` field already present on every review in the
+  dataset — the exact same aggregation logic as `scripts/lib.mjs`'s
+  `computeThemes`, just re-implemented in TypeScript.
+- **CTA band** (`src/components/sections/cta-section.tsx`) — WhatsApp, call,
+  and consultation links, all real. Note: it links out to
+  `vividclinic.net`'s consultation page for now rather than an in-page
+  `#book`/`#estimate` anchor, since the booking form and estimate calculator
+  don't exist in this app yet (see below) — switch those links to internal
+  anchors once those sections are built.
+- **FAQ section** (`src/components/sections/faq-section.tsx`, `src/lib/faq.ts`)
+  — the static site's 6 review-authenticity FAQs, ported verbatim, with the
+  dynamic "the page currently shows N reviews…" sentence computed from the
+  real summary stats rather than hardcoded. (The site's other 6
+  booking/estimate FAQs are deferred until the booking flow and estimate
+  tool they describe actually exist in this app — see below.) Also added to
+  the page's FAQPage JSON-LD for SEO parity.
 - `next build` (static export to `web/out/`) passes clean: TypeScript
   typecheck, ESLint (0 errors, 2 pre-existing-pattern warnings noted below),
   and static generation all succeed. Visually verified at desktop (1440px)
   and mobile (390px) widths, including the search/filter interaction on the
-  review grid.
+  review grid and the FAQ accordion.
 
 ## What's NOT done yet (this was a large ask — see the PR for the full list)
 
-The current root site has more surface area than what's above: "why Vivid",
-treatment theme chips, patient photo gallery, price-estimate calculator,
-booking form (backed by `functions/api/booking.js`), FAQ, CTA band, "how it
-works", international-patient info — and the site's 13-locale (incl. RTL)
-i18n layer. None of that is ported into `web/` yet. Porting it all, plus
-re-verifying the Lighthouse 100/100/100 + JSON-LD/sitemap/indexing behavior
-the static site currently has, is realistically its own multi-session
-project. This migration should be treated as in progress, not complete —
-please don't point the production domain at `web/out/` yet.
+Remaining: price-estimate calculator, booking form (backed by
+`functions/api/booking.js`), "how it works", "why book with us" (a
+consultation-page repeat of the why-Vivid features), international-patient
+info, the 6 booking/estimate FAQs, and the site's 13-locale (incl. RTL) i18n
+layer. All of those live on the static site's separate `/consultation/` page
+and/or depend on the estimate/booking tools, so they're a bigger, riskier
+chunk than what's above — deliberately left for a dedicated pass. Porting
+them, plus re-verifying the Lighthouse 100/100/100 + sitemap/indexing
+behavior the static site currently has, is realistically its own
+multi-session project. This migration should be treated as in progress, not
+complete — please don't point the production domain at `web/out/` yet.
 
 ## Known sandbox-only artifact
 

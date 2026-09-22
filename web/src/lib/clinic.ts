@@ -17,9 +17,22 @@ interface ClinicData {
     phonePrimary: string;
     whatsappUrl: string;
     whatsappPrefill: string;
+    whatsappDisplay: string;
     consultationUrl: string;
+    galleryUrl: string;
+    privacyUrl: string;
+    legalUrl: string;
   };
+  address: {
+    streetAddress: string;
+    addressLocality: string;
+    addressRegion: string;
+    postalCode: string;
+    addressCountryName: string;
+  };
+  openingHoursHuman: string;
   googleBusinessProfile: { mapsUrl: string };
+  sameAs: string[];
   brand: {
     teal: string;
     tealDeep: string;
@@ -44,10 +57,17 @@ export const clinic = {
     phonePrimaryDisplay: raw.contact.phonePrimary,
     whatsappUrl: raw.contact.whatsappUrl,
     whatsappPrefill: raw.contact.whatsappPrefill,
+    whatsappDisplay: raw.contact.whatsappDisplay,
     consultationUrl: raw.contact.consultationUrl,
+    galleryUrl: raw.contact.galleryUrl,
+    privacyUrl: raw.contact.privacyUrl,
+    legalUrl: raw.contact.legalUrl,
   },
+  address: raw.address,
+  openingHoursHuman: raw.openingHoursHuman,
   googleBusinessProfile: {
     mapsUrl: raw.googleBusinessProfile.mapsUrl,
   },
+  sameAs: raw.sameAs,
   brand: raw.brand,
 } as const;

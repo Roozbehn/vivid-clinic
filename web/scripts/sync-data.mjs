@@ -13,7 +13,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoDataDir = join(__dirname, "..", "..", "src", "data");
 const outDir = join(__dirname, "..", "src", "data", "generated");
 
-const FILES = ["google-reviews.json", "clinic.json"];
+const FILES = ["google-reviews.json", "clinic.json", "google-media.json"];
 
 if (!existsSync(repoDataDir)) {
   console.error(

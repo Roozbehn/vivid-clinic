@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
+import { SiteHeader } from "@/components/layout/site-header";
+import { SiteFooter } from "@/components/layout/site-footer";
+
 // Self-hosted (not loaded from Google Fonts at request time): faster, works
 // offline, and avoids sending EU visitors' IPs to Google at page-load —
 // worth doing regardless for a clinic site with international/EU patients.
@@ -56,7 +59,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to main content
         </a>
+        <SiteHeader />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );
