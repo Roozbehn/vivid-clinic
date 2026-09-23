@@ -1,6 +1,7 @@
 import { clinic } from "@/lib/clinic";
 import { reviewsSummary } from "@/lib/reviews";
 import type { Dictionary } from "@/lib/i18n/dictionary";
+import { TubesCursorBackground } from "@/components/ui/tubes-cursor-background";
 
 export function HeroSection({ dict }: { dict: Dictionary }) {
   const { totalReviewCount, averageRating, fiveStarPercentage } = reviewsSummary;
@@ -10,7 +11,13 @@ export function HeroSection({ dict }: { dict: Dictionary }) {
       id="top"
       className="relative overflow-hidden bg-gradient-to-b from-primary/[0.06] via-background to-background px-6 pb-16 pt-24 sm:pb-24 sm:pt-32"
     >
-      <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+      {/* Decorative animated layer — sits behind everything below and never
+          affects it; see tubes-cursor-background.tsx for the reduced-motion
+          and load-failure fallbacks that keep this section's gradient as the
+          baseline look. */}
+      <TubesCursorBackground />
+
+      <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center">
         <span className="rounded-full border border-border bg-card px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
           {dict.hero.eyebrow}
         </span>
