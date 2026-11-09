@@ -1,5 +1,6 @@
 import { getBookingFaqEntries } from "@/lib/booking-faq";
 import { FaqItem } from "@/components/ui/faq-item";
+import { Reveal, RevealGroup, RevealItem } from "@/components/ui/reveal";
 import type { Dictionary } from "@/lib/i18n/dictionary";
 
 export function BookingFaqSection({
@@ -17,7 +18,7 @@ export function BookingFaqSection({
       className="bg-secondary/50 py-20 sm:py-28"
     >
       <div className="mx-auto max-w-3xl px-6">
-        <div className="mx-auto mb-10 text-center">
+        <Reveal className="mx-auto mb-10 text-center">
           <span className="rounded-full border border-border px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
             {dict.faq.eyebrow}
           </span>
@@ -27,17 +28,23 @@ export function BookingFaqSection({
           >
             {dict.faq.heading_booking}
           </h2>
-        </div>
+        </Reveal>
 
-        <div className="rounded-2xl border border-border bg-card px-6 shadow-[var(--shadow-sm)]">
+        <RevealGroup
+          className="rounded-2xl border border-border bg-card px-6 shadow-[var(--shadow-sm)]"
+          stagger={0.06}
+          amount={0.1}
+        >
           {entries.map((entry) => (
-            <FaqItem
+            <RevealItem
               key={entry.question}
-              question={entry.question}
-              answer={entry.answer}
-            />
+              duration={0.5}
+              className="border-b border-border last:border-b-0"
+            >
+              <FaqItem question={entry.question} answer={entry.answer} />
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );

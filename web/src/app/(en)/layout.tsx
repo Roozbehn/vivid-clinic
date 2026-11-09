@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "../globals.css";
 
 import { localeAlternates } from "@/lib/i18n/alternates";
+import { MotionProvider } from "@/components/ui/motion-provider";
 
 // Self-hosted (not loaded from Google Fonts at request time): faster, works
 // offline, and avoids sending EU visitors' IPs to Google at page-load —
@@ -71,7 +72,7 @@ export default function EnglishRootLayout({ children }: { children: ReactNode })
         >
           Skip to main content
         </a>
-        {children}
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
 import { Info } from "lucide-react";
 import { BookingForm } from "@/components/ui/booking-form";
+import { Reveal, RevealGroup, RevealItem } from "@/components/ui/reveal";
 import { getLocalizedBookingOptions } from "@/lib/booking-options";
 import type { Dictionary } from "@/lib/i18n/dictionary";
 
@@ -11,7 +12,7 @@ export function BookingSection({ dict, locale }: { dict: Dictionary; locale: str
   return (
     <section id="book" aria-labelledby="book-h" className="bg-card py-20 sm:py-28">
       <div className="mx-auto max-w-3xl px-6">
-        <div className="mb-10 text-center">
+        <Reveal className="mb-10 text-center">
           <span className="rounded-full border border-border px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
             {b.eyebrow}
           </span>
@@ -24,18 +25,24 @@ export function BookingSection({ dict, locale }: { dict: Dictionary; locale: str
           <p className="mt-5 text-base leading-relaxed text-muted-foreground">
             {b.lead}
           </p>
-        </div>
+        </Reveal>
 
-        <BookingForm dict={dict} options={getLocalizedBookingOptions(dict)} locale={locale} />
+        <Reveal delay={0.15} amount={0.15} scale={0.985}>
+          <BookingForm dict={dict} options={getLocalizedBookingOptions(dict)} locale={locale} />
+        </Reveal>
 
-        <div className="mx-auto mt-8 flex max-w-2xl flex-col gap-2 rounded-xl border border-border bg-background px-4 py-3 text-xs text-muted-foreground">
+        <RevealGroup
+          className="mx-auto mt-8 flex max-w-2xl flex-col gap-2 rounded-xl border border-border bg-background px-4 py-3 text-xs text-muted-foreground"
+          stagger={0.07}
+          amount={0.5}
+        >
           {COMPLIANCE_NOTES.map((note) => (
-            <div key={note} className="flex items-start gap-2">
+            <RevealItem key={note} direction="left" className="flex items-start gap-2">
               <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
               <span>{note}</span>
-            </div>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );

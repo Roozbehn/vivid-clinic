@@ -7,6 +7,7 @@ import "../../globals.css";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { LOCALE_CODES, isRtl, localeConfig } from "@/lib/i18n/locales";
 import { localeAlternates } from "@/lib/i18n/alternates";
+import { MotionProvider } from "@/components/ui/motion-provider";
 
 // Same self-hosted variable fonts as the English root layout (see
 // app/(en)/layout.tsx) — shared files under app/fonts, one directory level
@@ -99,7 +100,7 @@ export default async function LocaleRootLayout({
         >
           Skip to main content
         </a>
-        {children}
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );

@@ -1,9 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { motion } from "motion/react";
 
 import type { LocalizedReview } from "@/lib/review-i18n";
 import { ReviewCard } from "@/components/ui/review-card";
+import { Reveal, REVEAL_EASE } from "@/components/ui/reveal";
 import type { Dictionary } from "@/lib/i18n/dictionary";
 import { fmt } from "@/lib/i18n/format";
 
@@ -72,7 +74,10 @@ export function ReviewGrid({
 
   return (
     <div>
-      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <Reveal
+        delay={0.1}
+        className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+      >
         <div className="relative w-full sm:max-w-sm">
           <label htmlFor="review-search" className="sr-only">
             {dict.reviews_ui.search_label}
@@ -106,7 +111,7 @@ export function ReviewGrid({
             <option value="detailed">{dict.reviews_ui.chip_sort_detailed}</option>
           </select>
         </div>
-      </div>
+      </Reveal>
 
       <p className="mb-6 text-sm text-muted-foreground" aria-live="polite">
         {fmt(dict.reviews_ui.showing_of, { shown: visible.length, total: filtered.length })}
@@ -125,8 +130,25 @@ export function ReviewGrid({
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {visible.map((review) => (
-            <ReviewCard key={review.id} review={review} dict={dict} locale={locale} />
+          {visible.map((review, i) => (
+            // Each card reveals itself the first time it scrolls into view,
+            // with a small per-column stagger (i % 3) so a freshly loaded
+            // "page" of 12 cards cascades rather than popping in at once.
+            // (Reduced motion → opacity-only, via <MotionProvider>.)
+            <motion.div
+              key={review.id}
+              className="flex flex-col [&>*]:flex-1"
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2, margin: "0px 0px -6% 0px" }}
+              transition={{
+                duration: 0.6,
+                delay: (i % 3) * 0.08,
+                ease: REVEAL_EASE,
+              }}
+            >
+              <ReviewCard review={review} dict={dict} locale={locale} />
+            </motion.div>
           ))}
         </div>
       )}

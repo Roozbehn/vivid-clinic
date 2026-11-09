@@ -4,6 +4,8 @@ import { clinic } from "@/lib/clinic";
 import type { Dictionary } from "@/lib/i18n/dictionary";
 import { fmt } from "@/lib/i18n/format";
 import { localeHref } from "@/lib/i18n/locales";
+import { CtaGlowBackground } from "@/components/ui/cta-glow-background";
+import { Reveal, RevealGroup, RevealItem } from "@/components/ui/reveal";
 
 // Real copy, ported from source.en.json's "cta_band" + "common" keys.
 // `hasInlineTools`: true on the English homepage, where the estimate
@@ -39,54 +41,72 @@ export function CtaSection({
     <section
       id="contact"
       aria-labelledby="cta-h"
-      className="cta-band bg-primary py-20 sm:py-24"
+      className="cta-band relative overflow-hidden bg-primary py-20 sm:py-24"
     >
-      <div className="mx-auto max-w-3xl px-6 text-center">
-        <span className="rounded-full border border-primary-foreground/30 px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary-foreground/80">
-          {dict.cta_band.eyebrow}
-        </span>
-        <h2
-          id="cta-h"
-          className="mt-5 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-primary-foreground sm:text-5xl"
-        >
-          {dict.cta_band.heading}
-        </h2>
-        <p className="mt-4 text-base leading-relaxed text-primary-foreground/80">
-          {dict.cta_band.lead}
-        </p>
+      {/* Slow ambient glow behind the copy — see cta-glow-background.tsx. */}
+      <CtaGlowBackground />
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <a
+      <div className="relative z-10 mx-auto max-w-3xl px-6 text-center">
+        <Reveal blur>
+          <span className="rounded-full border border-primary-foreground/30 px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary-foreground/80">
+            {dict.cta_band.eyebrow}
+          </span>
+          <h2
+            id="cta-h"
+            className="mt-5 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-primary-foreground sm:text-5xl"
+          >
+            {dict.cta_band.heading}
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-primary-foreground/80">
+            {dict.cta_band.lead}
+          </p>
+        </Reveal>
+
+        <RevealGroup
+          className="mt-8 flex flex-wrap items-center justify-center gap-3"
+          stagger={0.08}
+          delay={0.25}
+          amount={0.6}
+        >
+          <RevealItem
+            as="a"
             href={bookHref}
+            scale={0.92}
             className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-7 py-3 text-sm font-medium text-primary shadow-[var(--shadow-md)] transition-shadow hover:shadow-[var(--shadow-hover)]"
           >
             {dict.common.book_free_consultation}
-          </a>
-          <a
+          </RevealItem>
+          <RevealItem
+            as="a"
             href={estimateHref}
+            scale={0.92}
             className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-7 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/10"
           >
             <Sparkles className="h-4 w-4" aria-hidden="true" />
             {dict.cta_band.btn_estimate ?? dict.common.start_consultation}
-          </a>
-          <a
+          </RevealItem>
+          <RevealItem
+            as="a"
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
+            scale={0.92}
             className="inline-flex items-center justify-center rounded-full border border-primary-foreground/30 px-7 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/10"
           >
             {dict.cta_band.btn_whatsapp}
-          </a>
-          <a
+          </RevealItem>
+          <RevealItem
+            as="a"
             href={clinic.contact.phonePrimaryHref}
+            scale={0.92}
             className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-7 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/10"
           >
             <Phone className="h-4 w-4" aria-hidden="true" />
             {fmt(dict.cta_band.btn_call, { phone: clinic.contact.phonePrimaryDisplay })}
-          </a>
-        </div>
+          </RevealItem>
+        </RevealGroup>
 
-        <p className="mt-6 text-sm text-primary-foreground/70">
+        <Reveal as="p" delay={0.5} amount={0.8} className="mt-6 text-sm text-primary-foreground/70">
           {visitBefore}
           <a
             href={clinic.businessSite}
@@ -97,7 +117,7 @@ export function CtaSection({
             {dict.cta_band.visit_link_text}
           </a>
           {visitAfter}
-        </p>
+        </Reveal>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import { Globe, ConciergeBell, Compass, Info } from "lucide-react";
 
 import type { Dictionary } from "@/lib/i18n/dictionary";
+import { Reveal, RevealGroup, RevealItem } from "@/components/ui/reveal";
 
 // Copy from the dictionary's "international" catalog group.
 export function InternationalSection({ dict }: { dict: Dictionary }) {
@@ -14,7 +15,7 @@ export function InternationalSection({ dict }: { dict: Dictionary }) {
   return (
     <section id="international" aria-labelledby="intl-h" className="py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mx-auto mb-10 max-w-2xl text-center">
+        <Reveal className="mx-auto mb-10 max-w-2xl text-center">
           <span className="rounded-full border border-border px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
             {i.eyebrow}
           </span>
@@ -27,13 +28,14 @@ export function InternationalSection({ dict }: { dict: Dictionary }) {
           <p className="mt-5 text-base leading-relaxed text-muted-foreground">
             {i.lead}
           </p>
-        </div>
+        </Reveal>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <RevealGroup className="grid grid-cols-1 gap-6 sm:grid-cols-3" stagger={0.1} amount={0.2}>
           {FEATURES.map(({ icon: Icon, title, body }) => (
-            <div
+            <RevealItem
               key={title}
-              className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-sm)]"
+              scale={0.97}
+              className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-hover)]"
             >
               <Icon className="h-6 w-6 text-primary" aria-hidden="true" />
               <h3 className="font-[family-name:var(--font-display)] text-lg font-semibold text-foreground">
@@ -42,14 +44,17 @@ export function InternationalSection({ dict }: { dict: Dictionary }) {
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {body}
               </p>
-            </div>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
 
-        <div className="mx-auto mt-10 flex max-w-3xl items-start gap-2 rounded-xl border border-border bg-card px-4 py-3 text-xs text-muted-foreground">
+        <Reveal
+          amount={0.8}
+          className="mx-auto mt-10 flex max-w-3xl items-start gap-2 rounded-xl border border-border bg-card px-4 py-3 text-xs text-muted-foreground"
+        >
           <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
           <span>{i.disclaimer}</span>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
