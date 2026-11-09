@@ -3,8 +3,9 @@
     "language": "German",
     "hreflang": "de",
     "generated": "2026-07-10",
-    "items": 153,
-    "translated": 150
+    "items": 156,
+    "translated": 151,
+    "updated": "2026-11-09"
   },
   "items": {
     "AbFvOqlyX4_qCfe9p4g2kW75TQ5pJ7Q5b_kLbZAs8bfC2EH9jnoG3vDPnsNmdnLq4LtmuzN9BMu-UQ": {
@@ -277,11 +278,6 @@
       "src": "32b15c80c602",
       "translated": true
     },
-    "AbFvOqlPAVNWqLlELV5Btqa4gHshXBSAhq3Uwgh7DXgSjQLQc7mzFrGwmL9Yf_G1oWypc1USEg8h": {
-      "text": "Wir sind auf Empfehlung für ein Zahnbleaching gekommen und sind mit den Ergebnissen zufrieden; es hält lange und sieht natürlich aus. Wir möchten auch Herrn Kadir danken, der uns bei der Anfahrt zur Klinik geholfen hat. Alle sind sehr freundlich und herzlich, ein sehr schöner Ort.",
-      "src": "6ef0bd7a7d5f",
-      "translated": true
-    },
     "AbFvOqmr562feYlcrQ3bLoLj-T41g9Ao-0Ttj9oM3mG0q8WR0d2HCavhwnTjSGvd4I9u98LRDSccYg": {
       "text": "Jedem, der eine Zahnästhetik machen lassen möchte, empfehle ich es blind. Bei Themen, von denen ich überhaupt keine Ahnung hatte, haben sie mir alles geduldig erklärt; selbst wenn man etwas nicht versteht, erklären sie es noch einmal von vorn – sie führen niemals eine Behandlung durch, ohne dass alles über eure Zustimmung und euer Wissen läuft. Ihr könnt hier jedem vertrauen, alles war sehr sauber, meine Zähne haben nicht einmal 10 Tage gedauert und wir haben das Endergebnis erreicht, ihr seid super.",
       "src": "08492f881fac",
@@ -340,11 +336,6 @@
     "AbFvOqlM7Af417b6joK5CUZfUJjBA6ikkL0NC--Qtuqc-hc4xQwUYVB2EXn2XJsRJ1yMuZMZ3zYx5w": {
       "text": "Eine Implantatbehandlung kam mir immer wie ein komplizierter Prozess vor, deshalb hatte ich sehr viele Fragen gestellt. Sie haben sie geduldig beantwortet, ich wurde ordentlich informiert, es wurden keine versteckten Kosten aufgeschlagen, und meine Behandlung wurde so durchgeführt, wie wir es besprochen hatten. Transparenz ist bei solchen Behandlungen ebenfalls sehr wichtig. Ich habe meine Implantate schnell und professionell setzen lassen, alles ist mehr als in Ordnung. Danke an alle.",
       "src": "8253e92594f7",
-      "translated": true
-    },
-    "AbFvOqmmH1wtZQeaB5lzVJTCaRf_61LNAHNqcBYA3CgvRv3r0eSF5En4f4hsVmkcp3_dR8LnicAm7A": {
-      "text": "Die Ärzte kümmern sich nur um ihr eigenes Fachgebiet; der Arzt der jeweiligen Abteilung kommt und übernimmt eure Behandlung, ihr lasst also niemanden an euch arbeiten, der kein Spezialist auf seinem Gebiet ist. Ein Ort, an dem ihr sowohl zufrieden sein als auch euch sehr wohlfühlen werdet. Wenn ihr darüber nachdenkt, probiert es aus, ihr werdet es nicht bereuen.",
-      "src": "dbb659b4da00",
       "translated": true
     },
     "AbFvOqlWHbEI5DO55VMKxN3m8vliZna0PBCsweWiC20JuLSPDwKVt2cp4cDN-mH7ux9yKQjt3BPs": {
@@ -773,6 +764,41 @@
       "reply": "Lieber Nasir,\n\nvielen Dank, dass Sie sich die Zeit genommen haben, Ihre Erfahrung in der Vivid Clinic zu teilen. Wir freuen uns sehr zu hören, dass Sie und Ihre Frau erfolgreiche Behandlungen hatten und mit der Betreuung zufrieden waren. Ihre Zufriedenheit ist uns sehr wichtig, und wir danken Ihnen für Ihre freundlichen Worte. Seien Sie versichert, dass wir uns weiterhin für eine exzellente Betreuung einsetzen. Sollten Sie in Zukunft irgendetwas brauchen, sind wir für Sie da.\n\nWir wünschen Ihnen beiden alles Gute!\n\nHerzliche Grüße,\nVivid Clinic Team",
       "src": "d033d206dd59",
       "translated": true
+    },
+    "AbFvOqkr5_cmssQbHInelL5nH48GCGiaS24l9stNRhmBEEi3A4iExfZ9WPo2jlDfQziMNHsobVI2": {
+      "text": "Dr. Mehdi Asadov hat mich an den Ober- und Unterlidern operiert (Ober- und Unterlidstraffung). Ich bin bereits eine Woche nach der Operation sehr zufrieden mit dem Ergebnis. Ein hervorragender Arzt!\n\nDie Klinik ist wunderschön und das gesamte Team sehr professionell. Auch die Dolmetscherin war sehr freundlich und hilfsbereit.\n\nEin ganz besonderes Dankeschön geht auch an Carol aus der Schweiz, die alles organisiert hat. Sie ist unglaublich freundlich, stets erreichbar und immer bereit zu helfen.\n\nIch habe mich rundum gut aufgehoben gefühlt und kann diese Klinik nur weiterempfehlen. Ich werde auf jeden Fall wiederkommen!",
+      "reply": "Lieber Rocco, herzlichen Dank für Ihre wunderbaren Worte! Es freut uns sehr, dass Sie schon eine Woche nach Ihrer Ober- und Unterlidstraffung so zufrieden sind – Ihr Lob geben wir gerne an Dr. Mehdi Asadov und unsere Dolmetscherin weiter. Ein besonderer Gruß geht auch an Carol in der Schweiz, die sich über Ihr Dankeschön bestimmt sehr freuen wird. Wir freuen uns schon jetzt darauf, Sie wieder bei uns begrüßen zu dürfen!\n\n— Vivid Clinic Team",
+      "srcText": "dc9245bc355a",
+      "srcReply": "9f63f22e582e",
+      "translated": false
+    },
+    "AbFvOqk60fqlhy0djoU0esMrVEZGhcW8gzqV5gHX4U0ywbwxR-t68j8aecxuQsEJS6Z-9Fox2YABXg": {
+      "text": "Ich bin für meine Operation von Sydney nach Istanbul gereist und Dr Salih und seinem wunderbaren Team so dankbar, dass sie mir die ganze Erfahrung so leicht gemacht haben. Jede einzelne Person, die sich um mich gekümmert hat, hat etwas bewirkt, und ich möchte jedem von ihnen danken.\n\nDr Salih, vielen Dank für Ihre großartige Arbeit. Ich wollte ein Ergebnis, das natürlich aussieht und zu meiner zierlichen Figur passt, und Sie haben verstanden, was ich mir erhofft hatte, ohne dass ich jedes kleine Detail erklären musste. Sie haben wirklich gezaubert! Ich habe auch sehr geschätzt, dass Sie sich die Zeit genommen haben, alle meine Fragen zu beantworten und mir zu erklären, was mich in jeder Phase meiner Genesung erwartet. Sie haben dafür gesorgt, dass ich verstehe, was ich tun soll und warum, und das hat mir geholfen, mich während der Heilung sicherer zu fühlen. Ich bin jetzt schon so glücklich mit dem, was ich sehe, und kann es kaum erwarten, das endgültige Ergebnis zu sehen.\n\nKadir, mein persönlicher Patientenkoordinator vor Ort in Istanbul, hat sich weit über das Übliche hinaus für mich eingesetzt. Er kommuniziert hervorragend, ist unglaublich effizient und professionell und dabei trotzdem so unkompliziert im Gespräch. Wann immer ich zusätzliche Hilfe brauchte, wusste ich, dass ich Kadir fragen konnte und er einen Weg finden würde, es möglich zu machen. Jemanden in einem anderen Land zu haben, auf den ich mich verlassen konnte, hat so viel ausgemacht. Danke, Kadir, dass du dafür gesorgt hast, dass vom Moment meiner Ankunft an alles so reibungslos lief.\n\nNatalie hat mich von Sydney bis nach Istanbul betreut. Sie war so lieb, fürsorglich und hat immer schnell geantwortet, wenn ich eine Frage hatte. Sie hat sich sogar extra die Mühe gemacht, mich vor meiner Operation persönlich zu besuchen. Das hat mir so viel bedeutet. Ich war nervös, und dass sie da war, hat mich ruhiger gemacht und mir noch jemanden gegeben, an den ich mich anlehnen konnte. Natalie, danke, dass ich mich schon umsorgt gefühlt habe, bevor ich überhaupt angekommen war, und dass du da warst, als ich diese zusätzliche Bestärkung brauchte.\n\nMerve, danke, dass du dich nach der Operation so gut um mich gekümmert hast. Du warst aufmerksam, effizient und so sanft in der Art, wie du mich gepflegt hast. Am meisten ist mir dein Einfühlungsvermögen aufgefallen. Als ich Schmerzen hatte und Hilfe brauchte, hast du dafür gesorgt, dass ich mich wohl und umsorgt fühlte. Ich bin so dankbar, dass du meine Krankenschwester warst.\n\nBeyza, danke, dass du mich bei meinen Lymphdrainage-Massagen betreut hast. Du bist großartig in dem, was du tust, und ich habe sehr geschätzt, wie geduldig und aufmerksam du in jeder Sitzung warst. Deine Freundlichkeit hat mir diese ersten Tage der Genesung erleichtert, und ich habe mich bei dir immer in guten Händen gefühlt.\n\nVon meinen ersten Gesprächen in Sydney bis zu meiner Genesung in Istanbul hat mir das ganze Team das Gefühl gegeben, unterstützt zu werden. Ich bin wirklich glücklich mit der Betreuung, die ich erhalten habe, und jedem Einzelnen von euch so dankbar für euren Anteil an meiner Erfahrung. Von ganzem Herzen danke! 🤍",
+      "reply": "Abby, vielen herzlichen Dank, dass Sie sich die Zeit genommen haben, eine so von Herzen kommende Bewertung zu schreiben! Den ganzen Weg von Sydney nach Istanbul auf sich zu nehmen, ist ein großer Schritt, und wir freuen uns sehr, dass Dr Salih und das Team Ihnen die gesamte Erfahrung so leicht gemacht haben. Wir sorgen dafür, dass Kadir, Natalie, Merve und Beyza Ihre lieben Worte jeweils selbst lesen – zu wissen, dass sie bei Ihrem Aufenthalt einen Unterschied gemacht haben, bedeutet ihnen unendlich viel. Es freut uns riesig, dass Sie schon jetzt so glücklich sind, und wir wünschen Ihnen für Ihre weitere Genesung alles erdenklich Gute.\n\n— Ihr Vivid Clinic Team",
+      "srcText": "b3656e2fa1d2",
+      "srcReply": "7a46fc447d73",
+      "translated": true
+    },
+    "AbFvOqmkLmrhqqJ_LQxYfVgYAEWD6kQVsYahCz9vMdOh9L1aP_uJfABsWCy8nCYvIbLOGgZSQjfeWw": {
+      "text": "Hallo,\nich bin eine 60-jährige Frau und hatte schon seit geraumer Zeit über ein Facelift nachgedacht. Da ich im Gesundheitswesen arbeite, kannte ich viele bekannte plastische Chirurgen im Iran, war aber ständig gestresst und zögerte, mich dem Eingriff zu unterziehen.\nDann lernte ich über eine liebe Freundin Frau Natalie kennen, die äußerst professionell, kompetent, freundlich und verantwortungsbewusst ist. Sie stellte mich Professor Özgür Pilancı vor, und in weniger als 72 Stunden organisierte sie meinen Operationstermin in einem der besten Krankenhäuser der Türkei.\nVom Moment meiner Ankunft an koordinierte Frau Natalie alles sehr gut und sorgte dafür, dass alles reibungslos verlief. Am 3. August hatte ich meine Facelift-Operation.\nProfessor Özgür Pilancı ist äußerst geschickt und sehr erfahren, und die Qualität seiner Arbeit ist ausgezeichnet. Meine Erholungsphase dauerte nur zwei Tage, und ich bin mit den Ergebnissen meiner Operation äußerst zufrieden.\nIch bin mir sicher, dass ich, falls ich mich in Zukunft je für einen weiteren ästhetischen Eingriff entscheide, auf jeden Fall wieder Professor Özgür Pilancı wählen werde.\nIch bin dem Professor, Frau Natalie und dem gesamten medizinischen Team sehr dankbar. 🙏🌹",
+      "reply": "Liebe F.B, vielen herzlichen Dank, dass Sie sich die Zeit genommen haben, Ihre Erfahrung so ausführlich zu teilen. Es berührt uns sehr, dass die Fürsorge und Koordination von Frau Natalie Ihnen vom allerersten Kontakt an geholfen haben, sich wohlzufühlen, und wir freuen uns sehr, dass Sie mit den Ergebnissen Ihres Facelifts bei Prof. Özgür Pilancı so glücklich sind. Es war uns eine Freude, Sie in Istanbul willkommen zu heißen, und wir wünschen Ihnen weiterhin Gesundheit und Glück. — Ihr Vivid Clinic Team",
+      "srcText": "bfae3631db11",
+      "srcReply": "9f32f2391103",
+      "translated": true
+    },
+    "AbFvOqmIzxlx9t-FHrHnV-egVVCFyFYtDvZ4WcsERnwzfzWDI0cMhNBQU3jQJuCl_6egoCBk_2oGSg": {
+      "text": "Eine großartige Klinik für fast jeden medizinischen Eingriff. Von der ersten Beratung über meine Revisionsoperation bis hin zur Nachsorge muss ich sagen, dass dies von Anfang bis Ende wirklich die beste Möglichkeit für bezahlbare chirurgische Eingriffe in einem Fünf-Sterne-Ambiente ist. Kadir und sein Team sind beeindruckend professionell. Ich empfehle sie uneingeschränkt!",
+      "reply": "Lieber Stefano, zu lesen, dass sich Ihr Weg mit uns von der ersten Beratung über Ihre Revision bis zur Nachsorge wie fünf Sterne angefühlt hat, hat uns wirklich den Tag versüßt. Kadir und das Team werden sich sehr über Ihre freundlichen Worte freuen, und Ihre uneingeschränkte Empfehlung ehrt uns sehr. Wir wünschen Ihnen weiterhin beste Gesundheit! — Ihr Vivid Clinic Team",
+      "srcText": "e4321dac7d78",
+      "srcReply": "fc9da0a2bc56",
+      "translated": true
+    },
+    "AbFvOqkX_BOZL3lNhzhvjw9XkU4QXhiyfnZox1lXEvg-1Md5jsfV5C6ELXHnNQy1d31grLSGEec-": {
+      "text": "⭐⭐⭐⭐⭐\n\nIch habe bei Prof. Dr. Özgür Pilancı ein Mommy Makeover durchführen lassen und könnte nicht zufriedener sein. Vom ersten Kontakt bis zur Nachsorge habe ich mich jederzeit bestens aufgehoben gefühlt.\n\nEin großes Dankeschön geht auch an Carol. Sie war während des gesamten Prozesses meine Ansprechpartnerin, immer erreichbar, unglaublich freundlich und hat jede meiner Fragen geduldig beantwortet. Ihre herzliche Art hat mir viel Sicherheit gegeben.\n\nProf. Dr. Özgür Pilancı ist ein äußerst kompetenter und erfahrener Chirurg. Er hat sich viel Zeit genommen, mich ausführlich beraten und ein wunderschönes Ergebnis erzielt. Das gesamte Team war professionell, aufmerksam und sehr herzlich.\n\nIch kann Prof. Dr. Özgür Pilancı und sein Team, insbesondere Carol, von Herzen weiterempfehlen. Vielen Dank für die tolle Betreuung und das großartige Ergebnis!",
+      "reply": "Liebe Meike, herzlichen Dank für diese wunderbaren Zeilen! Es freut uns sehr, dass Sie sich vom ersten Kontakt bis zur Nachsorge so gut aufgehoben gefühlt haben. Ihr Lob geben wir mit großer Freude an Prof. Dr. Özgür Pilancı und natürlich an Carol weiter, die Ihre Worte sicher sehr berühren werden. Dass Sie mit Ihrem Ergebnis so glücklich sind, ist für uns das schönste Kompliment. Alles Gute für Sie! — Vivid Clinic Team",
+      "srcText": "befdc42abf28",
+      "srcReply": "997a27bd23a2",
+      "translated": false
     }
   }
 }

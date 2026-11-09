@@ -6,7 +6,16 @@ import { TestimonialsColumn } from "@/components/ui/testimonials-columns-1";
 import { firstColumn, secondColumn, thirdColumn } from "@/lib/testimonials";
 import { clinic } from "@/lib/clinic";
 
-export function TestimonialsSection() {
+// The rating/count line comes from the live review summary (passed in by the
+// server page) so it never drifts from the imported dataset; importing the
+// review JSON here would ship the whole dataset in this client bundle.
+export function TestimonialsSection({
+  averageRating,
+  totalReviewCount,
+}: {
+  averageRating: number;
+  totalReviewCount: number;
+}) {
   return (
     <section
       id="testimonials"
@@ -34,8 +43,8 @@ export function TestimonialsSection() {
             What our patients say
           </h2>
           <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-            Real, verified reviews from Vivid Clinic patients on Google — 5.0
-            average across 159 reviews.
+            Real, verified reviews from Vivid Clinic patients on Google —{" "}
+            {averageRating.toFixed(1)} average across {totalReviewCount} reviews.
           </p>
           <a
             href={clinic.googleBusinessProfile.mapsUrl}

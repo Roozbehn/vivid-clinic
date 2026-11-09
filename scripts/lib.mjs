@@ -50,15 +50,34 @@ export function detectLanguage(text) {
   if (/[Ѐ-ӿ]/.test(t)) return { code: 'ru', label: 'Russian' };
   if (/[Ͱ-Ͽ]/.test(t)) return { code: 'el', label: 'Greek' };
   if (/[一-鿿]/.test(t)) return { code: 'zh', label: 'Chinese' };
-  // Turkish-specific letters (and common stopwords) — conservative.
-  if (/[ğıİşĞŞ]/.test(t) || /\b(ve|çok|teşekkür|doktor|klinik|harika|memnun)\b/i.test(t)) {
-    return { code: 'tr', label: 'Turkish' };
+  // Latin-script languages: score common function words per language and
+  // pick the highest. A single signal (a Turkish surgeon's name like
+  // "Pilancı", or "Klinik", which is both Turkish and German) used to decide
+  // on its own, mislabelling German and English reviews as Turkish.
+  const words = t.toLowerCase().match(/[\p{L}']+/gu) || [];
+  const scores = { en: 0, tr: 0, de: 0, fr: 0, es: 0, ro: 0 };
+  for (const w of words) {
+    for (const [code, list] of Object.entries(LATIN_STOPWORDS)) {
+      if (list.has(w)) scores[code] += 1;
+    }
   }
-  if (/\b(und|sehr|danke|klinik|arzt|empfehlen)\b/i.test(t)) return { code: 'de', label: 'German' };
-  if (/\b(très|merci|clinique|médecin|recommande)\b/i.test(t)) return { code: 'fr', label: 'French' };
-  if (/\b(muy|gracias|clínica|médico|recomiendo)\b/i.test(t)) return { code: 'es', label: 'Spanish' };
-  return { code: 'en', label: 'English' };
+  // Turkish-only letters are a weak signal (names carry them too): add a
+  // small bonus only when Turkish words are already present.
+  if (scores.tr > 0) scores.tr += Math.min(3, (t.match(/[ğıİşĞŞ]/g) || []).length * 0.25);
+  const [best, bestScore] = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
+  if (bestScore === 0) return { code: 'en', label: 'English' };
+  return { code: best, label: LATIN_LABELS[best] };
 }
+
+const LATIN_LABELS = { en: 'English', tr: 'Turkish', de: 'German', fr: 'French', es: 'Spanish', ro: 'Romanian' };
+const LATIN_STOPWORDS = Object.fromEntries(Object.entries({
+  en: 'the and i was very my with to for of is it in that this you thank thanks they we me all so recommend highly would',
+  tr: 've çok bir bu için ile da de ki gibi en her çok teşekkür ederim ederiz kesinlikle tavsiye doktor hocam harika memnun kaldım oldu olarak sonra ama herkese güzel ilgili',
+  de: 'und ich die der das mit nicht ist auch sehr war ein eine sich auf für zu dem den es danke arzt empfehlen wirklich',
+  fr: 'et je le la les des une est pour avec très merci pas que qui dans sur clinique médecin recommande mon ma',
+  es: 'y el la los las una es por con muy gracias que del en mi clínica médico recomiendo todo',
+  ro: 'și foarte pentru această acest clinică clinica mulțumită mulțumit este sunt cu în fost recomand doamna domnul care'
+}).map(([code, s]) => [code, new Set(s.split(/\s+/))]));
 
 // Theme tagging — only tags that genuinely appear in the text are attached.
 const THEME_KEYWORDS = {

@@ -13,6 +13,7 @@ import { ThemesSection } from "@/components/sections/themes-section";
 import { CtaSection } from "@/components/sections/cta-section";
 import { FaqSection } from "@/components/sections/faq-section";
 import { clinic } from "@/lib/clinic";
+import { reviewsSummary } from "@/lib/reviews";
 import { getFaqEntries } from "@/lib/faq";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { DEFAULT_LOCALE } from "@/lib/i18n/locales";
@@ -62,7 +63,10 @@ export default function Home() {
       <SiteHeader locale={DEFAULT_LOCALE} dict={dict} variant="home" />
       <main id="main" className="flex flex-1 flex-col">
         <HeroSection dict={dict} />
-        <TestimonialsSection />
+        <TestimonialsSection
+          averageRating={reviewsSummary.averageRating}
+          totalReviewCount={reviewsSummary.totalReviewCount}
+        />
         <ScoreSummarySection dict={dict} />
         <ReviewsSection dict={dict} locale={DEFAULT_LOCALE} />
         <PhotosSection dict={dict} locale={DEFAULT_LOCALE} />

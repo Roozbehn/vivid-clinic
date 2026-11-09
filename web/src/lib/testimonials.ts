@@ -1,8 +1,9 @@
 // Real Vivid Clinic patient reviews, sourced verbatim from the clinic's
 // authorized Google Business Profile API import
-// (repo root: `src/data/google-reviews.json`, 159 reviews, avg 5.0,
-// imported 2026-08-27). Per README-reviews.md compliance rules: no
-// fabricated, rewritten, or exaggerated review text — ever.
+// (repo root: `src/data/google-reviews.json` — 160 reviews, avg 5.0, as of
+// the 2026-11-09 import; all 9 entries below still exist on Google). Per
+// README-reviews.md compliance rules: no fabricated, rewritten, or
+// exaggerated review text — ever.
 //
 // `text` is an exact substring of the reviewer's original wording, trimmed
 // to a clean sentence boundary for card display — never reworded, corrected,

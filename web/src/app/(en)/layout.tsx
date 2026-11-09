@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "../globals.css";
 
 import { localeAlternates } from "@/lib/i18n/alternates";
+import { reviewsSummary } from "@/lib/reviews";
 import { MotionProvider } from "@/components/ui/motion-provider";
 
 // Self-hosted (not loaded from Google Fonts at request time): faster, works
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://vivid.clinic"),
   title: "Vivid Clinic Reviews | Real Patient Reviews in Istanbul",
   description:
-    "Real Google reviews from Vivid Clinic patients — Istanbul's premium aesthetic and cosmetic surgery center. 5.0 average across 159 verified reviews.",
+    `Real Google reviews from Vivid Clinic patients — Istanbul's premium aesthetic and cosmetic surgery center. ${reviewsSummary.averageRating.toFixed(1)} average across ${reviewsSummary.totalReviewCount} verified reviews.`,
   alternates: { canonical: "/", languages: localeAlternates("/") },
   openGraph: {
     title: "Vivid Clinic Reviews | Real Patient Reviews in Istanbul",
