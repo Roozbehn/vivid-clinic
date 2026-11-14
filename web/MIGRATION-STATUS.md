@@ -1,14 +1,18 @@
 # React/shadcn/Tailwind migration — status
 
-This `web/` app is a **new**, parallel front end for vivid.clinic, built with
-Next.js (App Router, static export), TypeScript, Tailwind CSS v4, and
-shadcn/ui conventions, per the explicit decision to migrate off the
-repo-root static HTML/CSS/JS site rather than port the new testimonials
-component into it as-is.
+This `web/` app is the front end for vivid.clinic, built with Next.js (App
+Router, static export), TypeScript, Tailwind CSS v4, and shadcn/ui
+conventions, per the explicit decision to migrate off the repo-root static
+HTML/CSS/JS site rather than port the new testimonials component into it
+as-is.
 
-**The root-level static site (`/src`, `/scripts`, `npm run build` at repo
-root) is untouched and still deploys as-is.** Nothing here changes it. This
-folder is additive until it's ready to replace the production build.
+**`web/` is production.** Its static export (`web/out/`) is what
+vivid.clinic serves, together with the booking API at
+`/functions/api/booking.js` — see [Deploying](#deploying). The root-level
+static site (`/src`, `/scripts`, `npm run build` at repo root) is no longer
+deployed. It stays in the repo because `web/` still reads its data from
+`/src/data` (reviews, clinic info, pricing, booking options, i18n
+catalogs) and the booking function imports `/src/data/booking-options.json`.
 
 ## What's done
 
@@ -117,13 +121,11 @@ folder is additive until it's ready to replace the production build.
     a wizard — a deliberate scope simplification to manage the size of this
     migration; the multi-step UX is a candidate for a future pass. All
     treatment/category/timeline/language/etc. option lists are the repo's
-    real `booking-options.json`, not invented. There is no backend in this
-    static export, so on submit the form goes straight to the *original
-    site's own designed fallback behavior*: `src/js/booking.js` already
-    falls back to a prefilled WhatsApp message whenever its POST to
-    `/api/booking` fails, so building this version as WhatsApp-only (no
-    fetch attempted at all) is a faithful reimplementation of existing
-    behavior, not a deviation from it.
+    real `booking-options.json`, not invented. On submit it POSTs the same
+    payload as `src/js/booking.js` to `/api/booking`, which validates it
+    and emails the clinic via Resend. The success screen says whether the
+    clinic was emailed. If the POST is rejected, times out, or fails, the
+    form falls back to a prefilled WhatsApp message, as the original did.
   - **"How it works"** (`src/components/sections/how-it-works-section.tsx`)
     — the real 4-step explanation, ported verbatim.
   - **"Why book with Vivid Clinic"** (`src/components/sections/why-book-section.tsx`)
@@ -279,16 +281,15 @@ English review excerpts that can't be translated without fabricating copy
 — not part of the original static site) stays English-only by design, on
 every locale including English's own homepage variant.
 
-This migration should be treated as in progress, not complete — please
-don't point the production domain at `web/out/` yet.
+These are follow-ups on a live site, not blockers: `web/` has been serving
+vivid.clinic in production since the cutover.
 
 ## Known sandbox-only artifact
 
 Reviewer avatars (`lh3.googleusercontent.com/...`) won't load when this is
 previewed from a network-restricted sandbox (this build environment
 included) — that's a local network restriction, not a code bug. They load
-normally on any host with normal internet access, exactly as they already
-do on the live root site.
+normally on any host with normal internet access, including the live site.
 
 ## Running it
 
@@ -298,3 +299,32 @@ npm install
 npm run dev      # http://localhost:3000
 npm run build    # static export to web/out/
 ```
+
+## Deploying
+
+vivid.clinic is the Cloudflare Pages project `vivid-clinic`. It is **not**
+connected to GitHub, so merging to `main` does not deploy anything —
+production only changes when someone uploads a build with Wrangler.
+
+Deploy from the **repo root**, not from `web/`. Wrangler picks up the
+`functions/` folder in the directory it runs from, so running it from
+`web/` would deploy the site without `/api/booking` and break booking
+emails.
+
+```bash
+git switch main && git pull --ff-only
+npm --prefix web ci
+npm --prefix web run build                     # writes web/out/
+npx wrangler pages deploy web/out \
+  --project-name vivid-clinic --branch main \
+  --commit-hash "$(git rev-parse HEAD)"
+```
+
+The booking function's email settings (`RESEND_API_KEY`,
+`CLINIC_NOTIFY_EMAIL`, `BOOKING_FROM_EMAIL`, `BOOKING_ALLOWED_ORIGIN`) are
+secrets on the Pages project's production environment, not in the repo.
+
+After deploying, check that `curl -X OPTIONS https://vivid.clinic/api/booking`
+returns `204`. A `404` or `405` means the function was left out. To roll
+back, promote the previous production deployment in the Cloudflare Pages
+dashboard.
