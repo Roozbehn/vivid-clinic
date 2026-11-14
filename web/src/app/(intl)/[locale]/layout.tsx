@@ -13,10 +13,9 @@ import { MotionProvider } from "@/components/ui/motion-provider";
 // app/(en)/layout.tsx) — shared files under app/fonts, one directory level
 // further up from here.
 const cormorant = localFont({
-  src: [
-    { path: "../../fonts/CormorantGaramond-Variable.woff2", style: "normal" },
-    { path: "../../fonts/CormorantGaramond-Italic-Variable.woff2", style: "italic" },
-  ],
+  // Upright only: nothing on the site sets the display font in italic, and
+  // a declared italic face is preloaded (downloaded) even when unused.
+  src: "../../fonts/CormorantGaramond-Variable.woff2",
   variable: "--font-display",
   display: "swap",
 });
