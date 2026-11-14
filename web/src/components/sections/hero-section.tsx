@@ -2,6 +2,7 @@ import { clinic } from "@/lib/clinic";
 import { reviewsSummary } from "@/lib/reviews";
 import type { Dictionary } from "@/lib/i18n/dictionary";
 import { TubesCursorBackground } from "@/components/ui/tubes-cursor-background";
+import { VividWordmark } from "@/components/ui/vivid-wordmark";
 
 export function HeroSection({ dict }: { dict: Dictionary }) {
   const { totalReviewCount, averageRating, fiveStarPercentage } = reviewsSummary;
@@ -15,13 +16,10 @@ export function HeroSection({ dict }: { dict: Dictionary }) {
           affects it; see tubes-cursor-background.tsx for the reduced-motion
           and load-failure fallbacks that keep this section's gradient as the
           baseline look. */}
-      {/* Static outlined wordmark, purely decorative, behind the canvas. */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-[-0.18em] z-0 select-none text-center font-[family-name:var(--font-display)] text-[26vw] font-medium italic leading-none tracking-[-0.04em] text-transparent [-webkit-text-stroke:1px_rgba(255,236,214,0.09)]"
-      >
-        Vivid
-      </span>
+      {/* Static outlined wordmark, purely decorative, behind the canvas.
+          Inline SVG outlines, not text, so it can never become the page's
+          Largest Contentful Paint element (see vivid-wordmark.tsx). */}
+      <VividWordmark className="pointer-events-none absolute bottom-[-7.42vw] left-1/2 z-0 w-[47.11vw] -translate-x-1/2 select-none" />
       <TubesCursorBackground />
 
       <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center">

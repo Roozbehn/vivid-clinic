@@ -14,15 +14,15 @@ import { MotionProvider } from "@/components/ui/motion-provider";
 // further up from here.
 const cormorant = localFont({
   src: [
-    { path: "../../fonts/CormorantGaramond-Variable.ttf", style: "normal" },
-    { path: "../../fonts/CormorantGaramond-Italic-Variable.ttf", style: "italic" },
+    { path: "../../fonts/CormorantGaramond-Variable.woff2", style: "normal" },
+    { path: "../../fonts/CormorantGaramond-Italic-Variable.woff2", style: "italic" },
   ],
   variable: "--font-display",
   display: "swap",
 });
 
 const inter = localFont({
-  src: "../../fonts/Inter-Variable.ttf",
+  src: "../../fonts/Inter-Variable.woff2",
   variable: "--font-inter",
   display: "swap",
 });
