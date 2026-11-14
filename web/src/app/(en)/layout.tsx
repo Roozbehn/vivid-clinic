@@ -12,6 +12,16 @@ import { MotionProvider } from "@/components/ui/motion-provider";
 // worth doing regardless for a clinic site with international/EU patients.
 // Variable fonts, sourced from google/fonts (OFL-licensed) — see the
 // OFL-*.txt files in ../fonts.
+//
+// Both WOFF2 files are subset (fontTools) to the full Basic Latin, Latin-1,
+// Latin Extended-A/B and Additional, Cyrillic, General Punctuation,
+// currency, letterlike, arrows, math, geometric shapes and misc symbols
+// blocks, plus every other character the site renders that the font has.
+// All variation axes and OpenType features (incl. tnum for the count-up
+// stats) are kept. Arabic, Persian, Hebrew and Chinese text uses system
+// fonts — neither family covers those scripts. If a new locale needs
+// another script (e.g. Greek), re-subset from the upstream google/fonts
+// file with that block added.
 const cormorant = localFont({
   // Upright only: nothing on the site sets the display font in italic, and
   // a declared italic face is preloaded (downloaded) even when unused.
