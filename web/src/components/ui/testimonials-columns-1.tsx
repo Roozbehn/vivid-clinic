@@ -36,6 +36,7 @@ export const TestimonialsColumn = ({
                 className="w-full max-w-xs rounded-3xl border border-border bg-card p-8 shadow-[var(--shadow-md)] transition-shadow hover:shadow-[var(--shadow-hover)]"
               >
                 <div
+                  role="img"
                   className="mb-3 flex gap-0.5 text-accent"
                   aria-label={`${rating} out of 5 stars`}
                 >
