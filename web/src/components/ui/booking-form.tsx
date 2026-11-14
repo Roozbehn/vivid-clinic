@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { MessageCircle } from "lucide-react";
 
 import { clinic } from "@/lib/clinic";
@@ -16,16 +16,98 @@ import {
 // Simplified, faithful port of src/js/booking.js: the original site runs this
 // as a 5-step wizard, but every field here collects the same data with the
 // same validation, just on a single page (a deliberate scope simplification
-// — see web/MIGRATION-STATUS.md). There is no backend to submit to (this is
-// a static export), so this form goes straight to the original's own
-// designed fallback: composing a WhatsApp message from the answers. That
-// mirrors src/js/booking.js's own behavior, which falls back to WhatsApp
-// whenever its POST to /api/booking fails. Session-only state — nothing is
-// persisted or sent anywhere except the WhatsApp deep link the visitor opens
-// themselves. Every string is drawn from the dictionary's "js_booking" and
+// — see web/MIGRATION-STATUS.md). Like the original, it POSTs the request to
+// /api/booking (the Cloudflare Pages Function at /functions/api/booking.js,
+// which validates it and emails the clinic), and falls back to a prefilled
+// WhatsApp message whenever that POST fails. Session-only state — nothing is
+// persisted in the browser. Every string is drawn from the dictionary's "js_booking" and
 // "common" catalog groups, and option labels from the locale-aware
 // booking-options.ts (getLocalizedBookingOptions).
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const API = "/api/booking";
+const SUBMIT_TIMEOUT_MS = 12000;
+const UTM_KEYS = ["source", "medium", "campaign", "term", "content"] as const;
+
+type SubmitResult =
+  | { ok: true; notified: boolean }
+  | { ok: false; noBackend: boolean };
+
+function readUtm(): Record<(typeof UTM_KEYS)[number], string> {
+  const params = new URLSearchParams(window.location.search);
+  return Object.fromEntries(
+    UTM_KEYS.map((k) => [k, (params.get(`utm_${k}`) ?? "").slice(0, 120)]),
+  ) as Record<(typeof UTM_KEYS)[number], string>;
+}
+
+// Same request shape as src/js/booking.js's buildPayload(), which the
+// function's validateBooking() expects.
+function buildPayload(state: FormState, honeypot: string, formStartedAt: number) {
+  const nowIso = new Date().toISOString();
+  return {
+    createdAt: nowIso,
+    source: "vivid.clinic",
+    page: "reviews-booking-landing",
+    utm: readUtm(),
+    patient: {
+      fullName: state.fullName,
+      email: state.email,
+      phone: state.phone,
+      whatsapp: state.whatsapp,
+      country: state.country,
+      preferredLanguage: state.preferredLanguage,
+      preferredContactMethod: state.preferredContactMethod,
+      bestTimeToContact: state.bestTimeToContact,
+    },
+    request: {
+      category: state.category,
+      treatment: state.treatment,
+      timeline: state.timeline,
+      consultationType: state.consultationType,
+      preferredDate: state.preferredDate,
+      preferredTimeRange: state.preferredTimeRange,
+      travelingToIstanbul: state.travelingToIstanbul,
+      needsTransferHotelSupport: state.needsTransferHotelSupport,
+      message: state.message,
+      previousTreatment: state.previousTreatment,
+    },
+    consent: {
+      contactConsent: state.contactConsent,
+      medicalDisclaimerAccepted: state.medicalDisclaimerAccepted,
+      privacyAccepted: state.privacyAccepted,
+      marketingConsent: state.marketingConsent,
+      consentTimestamp: nowIso,
+    },
+    meta: {
+      userAgent: navigator.userAgent.slice(0, 300),
+      submittedAt: nowIso,
+      honeypot,
+      formStartedAt,
+    },
+  };
+}
+
+async function submitBooking(payload: unknown): Promise<SubmitResult> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), SUBMIT_TIMEOUT_MS);
+  try {
+    const res = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+    });
+    const body = (await res.json().catch(() => null)) as
+      | { ok?: boolean; notified?: boolean }
+      | null;
+    if (res.ok && body?.ok) return { ok: true, notified: body.notified === true };
+    return { ok: false, noBackend: false };
+  } catch {
+    // Network failure, timeout, or no backend: hand off to WhatsApp.
+    return { ok: false, noBackend: true };
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 function labelFor(list: { value: string; label: string }[], value: string) {
   return list.find((o) => o.value === value)?.label ?? value;
@@ -134,7 +216,15 @@ export function BookingForm({
   const t = dict.js_booking;
   const [state, setState] = useState<FormState>(INITIAL_STATE);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [result, setResult] = useState<SubmitResult | null>(null);
+  const [sending, setSending] = useState(false);
+  const honeypotRef = useRef<HTMLInputElement>(null);
+  // Set on mount, not during render, so the anti-bot fill-time check measures
+  // from when the visitor could first see the form.
+  const formStartedAt = useRef(0);
+  useEffect(() => {
+    formStartedAt.current = Date.now();
+  }, []);
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setState((prev) => ({ ...prev, [key]: value }));
@@ -225,20 +315,65 @@ export function BookingForm({
     return Object.keys(next).length === 0;
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!validate()) return;
-    setSubmitted(true);
+    if (sending || !validate()) return;
+    setSending(true);
+    const payload = buildPayload(
+      state,
+      honeypotRef.current?.value ?? "",
+      formStartedAt.current,
+    );
+    setResult(await submitBooking(payload));
+    setSending(false);
   }
 
-  if (submitted) {
+  if (result && !result.ok) {
     return (
-      <div className="rounded-2xl border border-border bg-card p-8 text-center shadow-[var(--shadow-sm)]">
+      <div
+        role="alert"
+        className="rounded-2xl border border-border bg-card p-8 text-center shadow-[var(--shadow-sm)]"
+      >
+        <h3 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-foreground">
+          {t.error_heading}
+        </h3>
+        <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
+          {(result.noBackend ? t.error_body_no_backend : t.error_body_failed) +
+            t.error_body_common}
+        </p>
+        <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-hover)]"
+          >
+            <MessageCircle className="h-4 w-4" aria-hidden="true" />
+            {t.btn_continue_whatsapp}
+          </a>
+          <button
+            type="button"
+            onClick={() => setResult(null)}
+            className="inline-flex items-center justify-center rounded-full border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
+          >
+            {t.btn_try_again}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (result?.ok) {
+    return (
+      <div
+        role="status"
+        className="rounded-2xl border border-border bg-card p-8 text-center shadow-[var(--shadow-sm)]"
+      >
         <h3 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-foreground">
           {t.success_heading}
         </h3>
         <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-          {t.success_sub_unnotified}
+          {result.notified ? t.success_sub_notified : t.success_sub_unnotified}
         </p>
         <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <a
@@ -279,7 +414,7 @@ export function BookingForm({
       <div className="hidden" aria-hidden="true">
         <label>
           {t.honeypot_label}
-          <input type="text" name="company" tabIndex={-1} autoComplete="off" />
+          <input ref={honeypotRef} type="text" name="company" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
 
@@ -701,9 +836,11 @@ export function BookingForm({
 
       <button
         type="submit"
-        className="inline-flex items-center justify-center rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-md)] transition-shadow hover:shadow-[var(--shadow-hover)]"
+        disabled={sending}
+        aria-busy={sending}
+        className="inline-flex items-center justify-center rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-md)] transition-shadow hover:shadow-[var(--shadow-hover)] disabled:cursor-wait disabled:opacity-70"
       >
-        {t.btn_submit}
+        {sending ? t.btn_sending : t.btn_submit}
       </button>
     </form>
   );
