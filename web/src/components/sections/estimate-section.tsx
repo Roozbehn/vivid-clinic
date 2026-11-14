@@ -23,7 +23,7 @@ export function EstimateSection({ dict }: { dict: Dictionary }) {
           </p>
         </Reveal>
 
-        <Reveal delay={0.15} amount={0.15} scale={0.985}>
+        <Reveal delay={0.15} amount="some" scale={0.985}>
           <EstimateTool dict={dict} pricing={getLocalizedPricing(dict)} />
         </Reveal>
       </div>
