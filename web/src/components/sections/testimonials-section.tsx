@@ -31,14 +31,14 @@ export function TestimonialsSection({
           className="mx-auto flex max-w-xl flex-col items-center text-center"
         >
           <div className="flex justify-center">
-            <span className="rounded-full border border-border px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
+            <span className="eyebrow-chip">
               Patient Reviews
             </span>
           </div>
 
           <h2
             id="testimonials-h"
-            className="mt-5 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"
+            className="mt-6 font-[family-name:var(--font-display)] text-[clamp(2.6rem,9vw,5.25rem)] font-medium leading-[0.95] tracking-[-0.025em] text-chrome text-balance hyphens-auto"
           >
             What our patients say
           </h2>

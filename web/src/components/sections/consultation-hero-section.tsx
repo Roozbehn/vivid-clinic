@@ -20,11 +20,11 @@ export function ConsultationHeroSection({
       className="relative overflow-hidden bg-gradient-to-b from-primary/[0.06] via-background to-background px-6 pb-16 pt-24 sm:pb-24 sm:pt-32"
     >
       <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-        <span className="rounded-full border border-border bg-card px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
+        <span className="eyebrow-chip">
           {dict.consult_hero.eyebrow}
         </span>
 
-        <h1 className="mt-6 font-[family-name:var(--font-display)] text-5xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-6xl">
+        <h1 className="mt-8 font-[family-name:var(--font-display)] text-[clamp(2.6rem,10vw,6.5rem)] font-medium leading-[0.92] tracking-[-0.03em] text-chrome text-balance hyphens-auto">
           {dict.consult_hero.h1}
         </h1>
 

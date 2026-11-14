@@ -53,7 +53,7 @@ export function CtaSection({
           </span>
           <h2
             id="cta-h"
-            className="mt-5 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-primary-foreground sm:text-5xl"
+            className="mt-6 font-[family-name:var(--font-display)] text-[clamp(2.6rem,8vw,5rem)] font-medium leading-[0.95] tracking-[-0.025em] text-primary-foreground text-balance hyphens-auto"
           >
             {dict.cta_band.heading}
           </h2>

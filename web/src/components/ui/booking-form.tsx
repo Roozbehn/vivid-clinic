@@ -179,7 +179,7 @@ function ChipGroup({
       {options.map((o) => (
         <label
           key={o.value}
-          className={`cursor-pointer rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${
+          className={`inline-flex min-h-11 cursor-pointer items-center rounded-full border px-4 text-sm font-medium transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-background ${
             value === o.value
               ? "border-primary bg-primary text-primary-foreground"
               : "border-border bg-card text-foreground hover:bg-secondary"
@@ -225,6 +225,22 @@ export function BookingForm({
   useEffect(() => {
     formStartedAt.current = Date.now();
   }, []);
+
+  // The result card replaces the (much taller) form, so without this it can
+  // land far above the viewport and keyboard focus falls back to <body>.
+  // Bring it into view and move focus to its heading; on "Try again", return
+  // focus to the submit button.
+  const resultHeadingRef = useRef<HTMLHeadingElement>(null);
+  const submitRef = useRef<HTMLButtonElement>(null);
+  const focusSubmitOnReturn = useRef(false);
+  useEffect(() => {
+    const target = result ? resultHeadingRef.current : focusSubmitOnReturn.current ? submitRef.current : null;
+    if (!target) return;
+    focusSubmitOnReturn.current = false;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+    target.focus({ preventScroll: true });
+  }, [result]);
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setState((prev) => ({ ...prev, [key]: value }));
@@ -334,7 +350,11 @@ export function BookingForm({
         role="alert"
         className="rounded-2xl border border-border bg-card p-8 text-center shadow-[var(--shadow-sm)]"
       >
-        <h3 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-foreground">
+        <h3
+          ref={resultHeadingRef}
+          tabIndex={-1}
+          className="font-[family-name:var(--font-display)] text-3xl font-medium text-chrome focus:outline-none"
+        >
           {t.error_heading}
         </h3>
         <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
@@ -353,7 +373,10 @@ export function BookingForm({
           </a>
           <button
             type="button"
-            onClick={() => setResult(null)}
+            onClick={() => {
+              focusSubmitOnReturn.current = true;
+              setResult(null);
+            }}
             className="inline-flex items-center justify-center rounded-full border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
           >
             {t.btn_try_again}
@@ -369,7 +392,11 @@ export function BookingForm({
         role="status"
         className="rounded-2xl border border-border bg-card p-8 text-center shadow-[var(--shadow-sm)]"
       >
-        <h3 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-foreground">
+        <h3
+          ref={resultHeadingRef}
+          tabIndex={-1}
+          className="font-[family-name:var(--font-display)] text-3xl font-medium text-chrome focus:outline-none"
+        >
           {t.success_heading}
         </h3>
         <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
@@ -835,6 +862,7 @@ export function BookingForm({
       </div>
 
       <button
+        ref={submitRef}
         type="submit"
         disabled={sending}
         aria-busy={sending}

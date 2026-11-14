@@ -26,13 +26,13 @@ export function SiteHeader({
   const consultation = `${localeHref(locale)}/consultation/`;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
+    <header className="sticky top-3 z-40 mx-3 rounded-full border border-border bg-background/70 shadow-[var(--shadow-md)] backdrop-blur-xl supports-[backdrop-filter]:bg-background/45 sm:mx-6">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 py-2.5 pl-6 pr-2.5">
         <Link href={home} className="flex flex-col leading-tight">
           <span className="font-[family-name:var(--font-display)] text-xl font-semibold text-foreground">
             {dict.header.brand_name}
           </span>
-          <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+          <span className="hidden whitespace-nowrap text-[11px] uppercase tracking-[0.2em] text-muted-foreground sm:block">
             {variant === "consultation"
               ? dict.header.brand_sub_consult
               : dict.header.brand_sub_home}

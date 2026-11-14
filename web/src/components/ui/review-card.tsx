@@ -10,6 +10,7 @@ import { clinic } from "@/lib/clinic";
 function Stars({ rating, dict }: { rating: number; dict: Dictionary }) {
   return (
     <div
+      role="img"
       className="flex gap-0.5 text-accent"
       aria-label={fmt(dict.common.stars_aria, { n: rating })}
     >

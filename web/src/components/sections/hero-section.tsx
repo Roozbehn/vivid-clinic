@@ -15,14 +15,21 @@ export function HeroSection({ dict }: { dict: Dictionary }) {
           affects it; see tubes-cursor-background.tsx for the reduced-motion
           and load-failure fallbacks that keep this section's gradient as the
           baseline look. */}
+      {/* Static outlined wordmark, purely decorative, behind the canvas. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-[-0.18em] z-0 select-none text-center font-[family-name:var(--font-display)] text-[26vw] font-medium italic leading-none tracking-[-0.04em] text-transparent [-webkit-text-stroke:1px_rgba(255,236,214,0.09)]"
+      >
+        Vivid
+      </span>
       <TubesCursorBackground />
 
       <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center">
-        <span className="rounded-full border border-border bg-card px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-primary">
+        <span className="eyebrow-chip">
           {dict.hero.eyebrow}
         </span>
 
-        <h1 className="mt-6 font-[family-name:var(--font-display)] text-5xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-6xl md:text-7xl">
+        <h1 className="mt-8 font-[family-name:var(--font-display)] text-[clamp(3rem,13vw,9rem)] font-medium leading-[0.88] tracking-[-0.035em] text-chrome text-balance hyphens-auto">
           {dict.hero.h1}
         </h1>
 
@@ -52,21 +59,21 @@ export function HeroSection({ dict }: { dict: Dictionary }) {
         <dl className="mt-14 grid w-full max-w-md grid-cols-3 gap-6 border-t border-border pt-8">
           <div className="flex flex-col items-center">
             <dt className="sr-only">Average rating</dt>
-            <dd className="font-[family-name:var(--font-display)] text-3xl font-semibold text-primary">
+            <dd className="font-[family-name:var(--font-display)] text-4xl font-medium text-chrome sm:text-5xl">
               {averageRating.toFixed(1)}
             </dd>
             <dd className="mt-1 text-xs text-muted-foreground">Avg. rating</dd>
           </div>
           <div className="flex flex-col items-center border-x border-border">
             <dt className="sr-only">Total Google reviews</dt>
-            <dd className="font-[family-name:var(--font-display)] text-3xl font-semibold text-primary">
+            <dd className="font-[family-name:var(--font-display)] text-4xl font-medium text-chrome sm:text-5xl">
               {totalReviewCount}
             </dd>
             <dd className="mt-1 text-xs text-muted-foreground">Google reviews</dd>
           </div>
           <div className="flex flex-col items-center">
             <dt className="sr-only">Percentage five-star</dt>
-            <dd className="font-[family-name:var(--font-display)] text-3xl font-semibold text-primary">
+            <dd className="font-[family-name:var(--font-display)] text-4xl font-medium text-chrome sm:text-5xl">
               {Math.round(fiveStarPercentage)}%
             </dd>
             <dd className="mt-1 text-xs text-muted-foreground">Are 5★</dd>
