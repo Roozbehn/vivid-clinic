@@ -9,6 +9,12 @@ reviews**, sourced from the clinic's **authorized Google Business Profile (GBP) 
   generated from a JSON data file by Node scripts. Deploy anywhere static
   (Cloudflare Pages recommended — it matches the existing Vivid/Cloudflare setup).
 
+> **Production note:** vivid.clinic is now served by the Next.js app in `web/`, not the
+> static `dist/` site this README builds. The review data pipeline here (import, validate,
+> `src/data/*.json`) is still live: `web/` reads that data at build time. Deploy with
+> [`web/MIGRATION-STATUS.md` → Deploying](web/MIGRATION-STATUS.md#deploying). Do **not**
+> run `wrangler pages deploy dist`: it would replace the live site with this old build.
+
 ---
 
 ## ⏳ Status (as of 23 June 2026)
@@ -155,7 +161,9 @@ Run top to bottom. Each is quick; the whole thing is ~10–15 minutes.
     - Fake-content scan (no placeholder text in `dist/`)
 11. **Confirm `noindex` is gone** — `grep robots dist/index.html` should show
     `index, follow…`. Only now is it safe for SEO + ads/campaign traffic.
-12. **Deploy** the new `dist/` and (optionally) submit the sitemap in Search Console.
+12. **Deploy** by rebuilding and deploying `web/`, which picks up the new review data (see
+    [`web/MIGRATION-STATUS.md` → Deploying](web/MIGRATION-STATUS.md#deploying)), and
+    optionally submit the sitemap in Search Console. Don't deploy `dist/` itself.
 
 ---
 
@@ -263,10 +271,10 @@ npm run build        # writes dist/index.html, dist/reviews/index.html, styles/,
 npm run serve        # preview at http://localhost:8787
 ```
 
-**Deploy options:** Cloudflare Pages (recommended; `wrangler pages deploy dist`, brotli +
-caching automatic), Vercel/Netlify (output dir `dist`), or upload `dist/` to the
-`vivid.clinic` docroot. The canonical page is `https://vivid.clinic/`; an identical
-`/reviews/` alias is generated, both canonicalised to the root.
+**Deploying:** `dist/` is no longer deployed. Production is the `web/` build on the
+Cloudflare Pages project `vivid-clinic`; follow
+[`web/MIGRATION-STATUS.md` → Deploying](web/MIGRATION-STATUS.md#deploying). Use the
+`dist/` build above only for local checks of this legacy site.
 
 ---
 

@@ -7,6 +7,13 @@ control, SEO, or compliance logic.
 > This is **not** a diagnostic tool. It captures consultation *requests* only and never
 > implies treatment approval, fixed prices, or guaranteed outcomes.
 
+> **Production note:** vivid.clinic is now served by the Next.js app in `web/`, not the
+> static site this README describes. `web/src/components/ui/booking-form.tsx` is the live
+> form; `functions/api/booking.js` and `src/data/booking-options.json` below are still the
+> live backend and option list. Deploy with
+> [`web/MIGRATION-STATUS.md` → Deploying](web/MIGRATION-STATUS.md#deploying). Do **not**
+> run `wrangler pages deploy dist`: it would replace the live site with this old build.
+
 ---
 
 ## Architecture
@@ -142,13 +149,18 @@ step number, category/treatment selection, and submit status.
 
 ## Deploy (Cloudflare Pages)
 
+Production deploys the `web/` build together with `functions/`. Follow
+[`web/MIGRATION-STATUS.md` → Deploying](web/MIGRATION-STATUS.md#deploying). In short, from
+the **repo root** so `functions/` is picked up:
+
 ```bash
-npm run build                         # writes dist/ (pages) + functions/ deploys alongside
-npx wrangler pages deploy dist        # or connect the repo in the Cloudflare dashboard
+npm --prefix web ci && npm --prefix web run build      # writes web/out/
+npx wrangler pages deploy web/out --project-name vivid-clinic --branch main
 ```
 
-- Build command `npm run build`, output dir `dist`. Cloudflare auto-detects `functions/`
-  and deploys `/api/booking`.
+- Do **not** deploy `dist/` (this README's old static build) to production.
+- Running Wrangler from inside `web/` leaves out `functions/`, so `/api/booking` disappears
+  and the form falls back to WhatsApp for every request.
 - Set booking env vars (Production + Preview): `RESEND_API_KEY`, `CLINIC_NOTIFY_EMAIL`,
   `BOOKING_FROM_EMAIL`, `BOOKING_ALLOWED_ORIGIN` (see `.env.example`).
 - On a host **without** Functions support, the form still works via the WhatsApp fallback.
