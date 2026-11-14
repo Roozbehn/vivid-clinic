@@ -17,8 +17,9 @@ import { MotionProvider } from "@/components/ui/motion-provider";
 // Latin Extended-A/B and Additional, Cyrillic, General Punctuation,
 // currency, letterlike, arrows, math, geometric shapes and misc symbols
 // blocks, plus every other character the site renders that the font has.
-// All variation axes and OpenType features (incl. tnum for the count-up
-// stats) are kept. Arabic, Persian, Hebrew and Chinese text uses system
+// All OpenType features (incl. tnum for the count-up stats) are kept, and
+// so is the weight axis; Inter's optical-size axis is pinned at 16 (the size
+// most of its text renders at), which removes ~a third of the file. Arabic, Persian, Hebrew and Chinese text uses system
 // fonts — neither family covers those scripts. If a new locale needs
 // another script (e.g. Greek), re-subset from the upstream google/fonts
 // file with that block added.
