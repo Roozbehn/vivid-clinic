@@ -77,8 +77,13 @@ interface RevealProps {
   scale?: number;
   /** Un-blur as it fades in. */
   blur?: boolean;
-  /** How much of the element must be visible before it reveals (0–1). */
-  amount?: number;
+  /**
+   * How much of the element must be visible before it reveals (0–1), or
+   * "some" for any part of it. Use "some" for wrappers that can be taller
+   * than the viewport (e.g. long forms): a ratio like 0.15 of a 6,000px
+   * element can never fit on screen, so it would stay invisible forever.
+   */
+  amount?: number | "some" | "all";
   /** Render as a different element than a div. */
   as?: RevealTag;
 }

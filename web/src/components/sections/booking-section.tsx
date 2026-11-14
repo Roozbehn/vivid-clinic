@@ -27,7 +27,7 @@ export function BookingSection({ dict, locale }: { dict: Dictionary; locale: str
           </p>
         </Reveal>
 
-        <Reveal delay={0.15} amount={0.15} scale={0.985}>
+        <Reveal delay={0.15} amount="some" scale={0.985}>
           <BookingForm dict={dict} options={getLocalizedBookingOptions(dict)} locale={locale} />
         </Reveal>
 
